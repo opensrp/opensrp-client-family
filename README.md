@@ -1,2 +1,2 @@
-# opensrp-client-household
-OpenSRP Client HouseHold Library
+# opensrp-client-family
+OpenSRP Client Family Library
