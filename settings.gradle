@@ -1,1 +1,1 @@
-include ':opensrp-family'
+include ':opensrp-family', ':sample'
