@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">opensrp-client-family</string>
     <string name="title_family_detail">Family Detail</string>
+    <string name="families">Families</string>
+
+    <string name="no_matching_record_found_on_this_device">No matching record found on this device.</string>
+
+    <string name="unique_id_text">ID: %1$s</string>
+    <string name="age_text">Age: %1$s</string>
+
+
 </resources>
