@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.evernote.android.job.JobManager;
 
-import org.smartgresiter.family.FamilyLibrary;
-import org.smartgresiter.family.util.DBConstants;
-import org.smartgresiter.family.util.Utils;
+import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.util.DBConstants;
+import org.smartregister.family.util.Utils;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonFtsObject;

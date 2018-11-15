@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.smartgresiter.family">
+    package="org.smartregister.family">
 
     <application
         android:allowBackup="true"
@@ -8,18 +8,13 @@
         android:supportsRtl="true"
         android:theme="@style/FamilyTheme">
         <activity
-            android:name=".FamilyListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/FamilyTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name=".FamilyDetailActivity"
+            android:name=".activity.FamilyProfileActivity"
             android:label="@string/title_family_detail"
-            android:parentActivityName=".FamilyListActivity"
+            android:parentActivityName=".activity.FamilyRegisterActivity"
             android:theme="@style/FamilyTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.smartgresiter.family.FamilyListActivity" />
+                android:value="org.smartregister.family.activity.FamilyRegisterActivity" />
         </activity>
         <activity
             android:name=".activity.FamilyRegisterActivity"
@@ -27,6 +22,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/FamilyTheme.NoActionBar" />
+        <activity
+            android:name="com.vijay.jsonwizard.activities.JsonFormActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/FamilyTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     </application>
 
 </manifest>

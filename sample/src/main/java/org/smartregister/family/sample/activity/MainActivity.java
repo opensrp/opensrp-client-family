@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import org.smartgresiter.family.FamilyLibrary;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.domain.UniqueId;
 import org.smartregister.family.sample.R;
-import org.smartgresiter.family.activity.FamilyRegisterActivity;
+import org.smartregister.family.activity.FamilyRegisterActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,5 +8,8 @@
     <string name="unique_id_text">ID: %1$s</string>
     <string name="age_text">Age: %1$s</string>
 
+    <string name="saving_dialog_title">Saving…</string>
+    <string name="no_unique_id">No unique ids found. Click on the sync button to get more and if this error persists contact the system admin.</string>
+    <string name="error_unable_to_start_form">An error occurred when starting the form</string>
 
 </resources>
