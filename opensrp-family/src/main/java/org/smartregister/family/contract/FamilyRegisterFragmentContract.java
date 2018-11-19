@@ -8,7 +8,6 @@ import org.smartregister.domain.Response;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface FamilyRegisterFragmentContract {

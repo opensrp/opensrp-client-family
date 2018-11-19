@@ -32,6 +32,7 @@ public interface FamilyRegisterContract {
     }
 
     interface Model {
+
         void registerViewConfigurations(List<String> viewIdentifiers);
 
         void unregisterViewConfiguration(List<String> viewIdentifiers);
@@ -46,9 +47,11 @@ public interface FamilyRegisterContract {
                                  String currentLocationId) throws Exception;
 
         String getInitials();
+
     }
 
     interface Interactor {
+
         void onDestroy(boolean isChangingConfiguration);
 
         void getNextUniqueId(Triple<String, String, String> triple, FamilyRegisterContract.InteractorCallBack callBack);
@@ -60,10 +63,12 @@ public interface FamilyRegisterContract {
     }
 
     interface InteractorCallBack {
+
         void onUniqueIdFetched(Triple<String, String, String> triple, String entityId);
 
         void onNoUniqueId();
 
         void onRegistrationSaved(boolean isEdit);
+
     }
 }
