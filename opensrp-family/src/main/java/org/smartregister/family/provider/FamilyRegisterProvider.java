@@ -107,8 +107,8 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-        String ancId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), ancId));
+        String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
+        fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
     }
 
 

@@ -4,19 +4,23 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.json.JSONObject;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.family.contract.FamilyProfileContract;
+import org.smartregister.family.interactor.FamilyProfileInteractor;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
+import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.lang.ref.WeakReference;
-import java.util.Map;
+
+import static org.smartregister.util.Utils.getName;
 
 /**
  * Created by keyman on 19/11/2018.
  */
-public class FamilyProfilePresenter implements FamilyProfileContract.Presenter {
+public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallback {
 
     private static final String TAG = FamilyProfilePresenter.class.getCanonicalName();
 
@@ -25,7 +29,7 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter {
 
     public FamilyProfilePresenter(FamilyProfileContract.View loginView) {
         mProfileView = new WeakReference<>(loginView);
-        //mProfileInteractor = new ProfileInteractor(this);
+        mProfileInteractor = new FamilyProfileInteractor();
     }
 
     @Override
@@ -44,8 +48,13 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter {
     }
 
     @Override
+    public void fetchProfileData(String baseEntityId) {
+        mProfileInteractor.refreshProfileView(baseEntityId, true, this);
+    }
+
+    @Override
     public void refreshProfileView(String baseEntityId) {
-        mProfileInteractor.refreshProfileView(baseEntityId);
+        mProfileInteractor.refreshProfileView(baseEntityId, false, this);
     }
 
     @Override
@@ -85,12 +94,42 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter {
     }
 
     @Override
-    public void refreshProfileTopSection(Map<String, String> client) {
+    public void refreshProfileTopSection(CommonPersonObjectClient client) {
 
-        getProfileView().setProfileName(client.get(DBConstants.KEY.FIRST_NAME) + " " + client.get(DBConstants.KEY.LAST_NAME));
-        getProfileView().setProfileAge(String.valueOf(Utils.getAgeFromDate(client.get(DBConstants.KEY.DOB))));
-        getProfileView().setProfileID(client.get(DBConstants.KEY.UNIQUE_ID));
-        getProfileView().setProfileImage(client.get(DBConstants.KEY.BASE_ENTITY_ID));
-        getProfileView().setPhoneNumber(client.get(DBConstants.KEY.PHONE_NUMBER));
+        if (client == null || client.getColumnmaps() == null) {
+            return;
+        }
+
+        String firstName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String lastName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+
+        getProfileView().setProfileName(getName(firstName, lastName));
+
+
+        String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
+        dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+
+        getProfileView().setProfileAge(dobString);
+
+        String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
+        getProfileView().setProfileID(uniqueId);
+
+
+        getProfileView().setProfileImage(client.getCaseId());
+
+        String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
+        getProfileView().setPhoneNumber(phoneNumber);
     }
+
+    @Override
+    public void startFormForEdit(CommonPersonObjectClient client) {
+        String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(getProfileView().getApplicationContext(), client);
+        try {
+            getProfileView().startFormForEdit(JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
+
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
+        }
+    }
+
 }

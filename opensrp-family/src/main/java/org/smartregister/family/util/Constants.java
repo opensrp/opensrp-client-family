@@ -14,6 +14,8 @@ public abstract class Constants {
     public static final class EventType {
         public static final String FAMILY_REGISTRATION = "Family Registration";
         public static final String FAMILY_MEMBER_REGISTRATION = "Family Member Registration";
+        public static final String UPDATE_FAMILY_REGISTRATION = "Update Family Registration";
+
     }
 
     public static class JSON_FORM {

@@ -1,5 +1,6 @@
 package org.smartregister.family.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.Pair;
@@ -8,16 +9,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.sync.helper.ECSyncHelper;
+import org.smartregister.util.FormUtils;
+import org.smartregister.util.ImageUtils;
+import org.smartregister.view.LocationPickerView;
 import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.File;
@@ -26,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -39,6 +48,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final int REQUEST_CODE_GET_JSON = 2244;
 
     public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
+    public static final String READ_ONLY = "read_only";
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
@@ -169,6 +179,90 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         Bitmap compressedImageFile = FamilyLibrary.getInstance().getCompressor().compressToBitmap(file);
         saveStaticImageToDisk(compressedImageFile, providerId, entityId);
 
+    }
+
+
+    public static String getAutoPopulatedJsonEditFormString(Context context, CommonPersonObjectClient client) {
+        try {
+            JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.FAMILY_REGISTER);
+            LocationPickerView lpv = new LocationPickerView(context);
+            lpv.init();
+            // JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+            Log.d(TAG, "Form is " + form.toString());
+            if (form != null) {
+                form.put(JsonFormUtils.ENTITY_ID, client.getCaseId());
+                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.UPDATE_FAMILY_REGISTRATION);
+
+                JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
+                String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
+
+                metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
+
+                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false));
+
+                //inject opensrp id into the form
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    processPopulatableFields(client, jsonObject);
+
+                }
+
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return "";
+    }
+
+    protected static void processPopulatableFields(CommonPersonObjectClient client, JSONObject jsonObject) throws JSONException {
+
+
+        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB)) {
+
+            String dobString = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
+            if (StringUtils.isNotBlank(dobString)) {
+                Date dob = Utils.dobStringToDate(dobString);
+                if (dob != null) {
+                    jsonObject.put(JsonFormUtils.VALUE, dd_MM_yyyy.format(dob));
+                }
+            }
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(Constants.KEY.PHOTO)) {
+
+            Photo photo = ImageUtils.profilePhotoByClientID(client.getCaseId(), Utils.getProfileImageResourceIDentifier());
+
+            if (StringUtils.isNotBlank(photo.getFilePath())) {
+
+                jsonObject.put(JsonFormUtils.VALUE, photo.getFilePath());
+
+            }
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB_UNKNOWN)) {
+
+            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            JSONObject optionsObject = jsonObject.getJSONArray(Constants.JSON_FORM_KEY.OPTIONS).getJSONObject(0);
+            optionsObject.put(JsonFormUtils.VALUE, Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB_UNKNOWN, false));
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
+
+            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            String dobString = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
+            if (StringUtils.isNotBlank(dobString)) {
+                jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(dobString));
+            }
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.UNIQUE_ID)) {
+
+            String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
+            jsonObject.put(JsonFormUtils.VALUE, uniqueId.replace("-", ""));
+
+        } else {
+            Log.e(TAG, "ERROR:: Unprocessed Form Object Key " + jsonObject.getString(JsonFormUtils.KEY));
+        }
     }
 
     private static void saveStaticImageToDisk(Bitmap image, String providerId, String entityId) {
