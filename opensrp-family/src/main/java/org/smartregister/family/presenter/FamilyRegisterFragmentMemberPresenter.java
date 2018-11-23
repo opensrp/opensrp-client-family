@@ -1,19 +1,19 @@
 package org.smartregister.family.presenter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.model.FamilyRegisterFramentModel;
-import org.smartregister.family.util.DBConstants;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
+import org.smartregister.family.contract.FamilyRegisterFragmentContract;
+import org.smartregister.family.model.FamilyRegisterFramentModel;
+import org.smartregister.family.util.DBConstants;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class FamilyRegisterFragmentPresenter implements FamilyRegisterFragmentContract.Presenter {
+public class FamilyRegisterFragmentMemberPresenter implements FamilyRegisterFragmentContract.Presenter {
 
     private WeakReference<FamilyRegisterFragmentContract.View> viewReference;
 
@@ -24,11 +24,12 @@ public class FamilyRegisterFragmentPresenter implements FamilyRegisterFragmentCo
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
     private String viewConfigurationIdentifier;
 
-    public FamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, String viewConfigurationIdentifier) {
+    public FamilyRegisterFragmentMemberPresenter(FamilyRegisterFragmentContract.View view, String viewConfigurationIdentifier) {
         this.viewReference = new WeakReference<>(view);
         this.model = new FamilyRegisterFramentModel();
         this.viewConfigurationIdentifier = viewConfigurationIdentifier;
         this.config = model.defaultRegisterConfiguration();
+
     }
 
     @Override
@@ -50,7 +51,7 @@ public class FamilyRegisterFragmentPresenter implements FamilyRegisterFragmentCo
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = DBConstants.FAMILY_TABLE_NAME;
+        String tableName = DBConstants.FAMILY_MEMBER_TABLE_NAME;
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);

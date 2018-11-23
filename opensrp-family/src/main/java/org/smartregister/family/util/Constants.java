@@ -20,7 +20,7 @@ public abstract class Constants {
 
     public static class JSON_FORM {
         public static final String FAMILY_REGISTER = "family_register";
-        public static final String FAMILY_MEMBER_REGISTER = "family_member";
+        public static final String FAMILY_MEMBER_REGISTER = "family_member_register";
     }
 
     public static class JSON_FORM_KEY {

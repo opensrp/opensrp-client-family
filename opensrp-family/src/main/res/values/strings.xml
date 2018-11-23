@@ -15,4 +15,9 @@
     <string name="new_registration_saved">New registration saved &#x21;</string>
     <string name="registration_info_updated">Registration info updated &#x21;</string>
 
+    <string name="member">Member</string>
+    <string name="due">Due</string>
+    <string name="activity">Activity</string>
+
+    <string name="add_member">Add Member</string>
 </resources>
