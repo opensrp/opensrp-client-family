@@ -7,12 +7,12 @@ import android.util.Pair;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.family.FamilyLibrary;
-import org.smartregister.family.contract.FamilyRegisterContract;
-import org.smartregister.family.util.AppExecutors;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.UniqueId;
+import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.contract.FamilyRegisterContract;
+import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
@@ -28,7 +28,6 @@ import java.util.Date;
  * Created by keyman 12/11/2018.
  */
 public class FamilyRegisterInteractor implements FamilyRegisterContract.Interactor {
-
 
     public static final String TAG = FamilyRegisterInteractor.class.getName();
 

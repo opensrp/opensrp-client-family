@@ -2,11 +2,19 @@ package org.smartregister.family.presenter;
 
 import android.content.Intent;
 import android.util.Log;
+import android.util.Pair;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
+import org.smartregister.clientandeventmodel.Client;
+import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.FetchStatus;
+import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.interactor.FamilyProfileInteractor;
+import org.smartregister.family.model.FamilyProfileModel;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
@@ -20,47 +28,52 @@ import static org.smartregister.util.Utils.getName;
 /**
  * Created by keyman on 19/11/2018.
  */
-public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallback {
+public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
 
     private static final String TAG = FamilyProfilePresenter.class.getCanonicalName();
 
-    private WeakReference<FamilyProfileContract.View> mProfileView;
-    private FamilyProfileContract.Interactor mProfileInteractor;
+    private WeakReference<FamilyProfileContract.View> view;
+    private FamilyProfileContract.Interactor interactor;
+    private FamilyProfileContract.Model model;
 
-    public FamilyProfilePresenter(FamilyProfileContract.View loginView) {
-        mProfileView = new WeakReference<>(loginView);
-        mProfileInteractor = new FamilyProfileInteractor();
+    private String familyBaseEntityId;
+
+    public FamilyProfilePresenter(FamilyProfileContract.View loginView, String familyBaseEntityId) {
+        this.view = new WeakReference<>(loginView);
+        this.interactor = new FamilyProfileInteractor();
+        this.model = new FamilyProfileModel();
+        this.familyBaseEntityId = familyBaseEntityId;
     }
 
     @Override
     public void onDestroy(boolean isChangingConfiguration) {
 
-        mProfileView = null;//set to null on destroy
+        view = null;//set to null on destroy
 
         // Inform interactor
-        mProfileInteractor.onDestroy(isChangingConfiguration);
+        interactor.onDestroy(isChangingConfiguration);
 
         // Activity destroyed set interactor to null
         if (!isChangingConfiguration) {
-            mProfileInteractor = null;
+            interactor = null;
         }
 
     }
 
     @Override
-    public void fetchProfileData(String baseEntityId) {
-        mProfileInteractor.refreshProfileView(baseEntityId, true, this);
+    public void fetchProfileData() {
+        interactor.refreshProfileView(familyBaseEntityId, true, this);
     }
 
     @Override
-    public void refreshProfileView(String baseEntityId) {
-        mProfileInteractor.refreshProfileView(baseEntityId, false, this);
+    public void refreshProfileView() {
+        interactor.refreshProfileView(familyBaseEntityId, false, this);
     }
 
     @Override
-    public FamilyProfileContract.View getProfileView() {
-        if (mProfileView != null) {
-            return mProfileView.get();
+    public FamilyProfileContract.View getView() {
+        if (view != null) {
+            return view.get();
         } else {
             return null;
         }
@@ -103,33 +116,90 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
         String firstName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
 
-        getProfileView().setProfileName(getName(firstName, lastName));
+        getView().setProfileName(getName(firstName, lastName));
 
 
         String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
 
-        getProfileView().setProfileAge(dobString);
+        getView().setProfileAge(dobString);
 
         String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        getProfileView().setProfileID(uniqueId);
+        getView().setProfileID(uniqueId);
 
 
-        getProfileView().setProfileImage(client.getCaseId());
+        getView().setProfileImage(client.getCaseId());
 
         String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
-        getProfileView().setPhoneNumber(phoneNumber);
+        getView().setPhoneNumber(phoneNumber);
     }
 
     @Override
     public void startFormForEdit(CommonPersonObjectClient client) {
-        String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(getProfileView().getApplicationContext(), client);
+        String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(getView().getApplicationContext(), client);
         try {
-            getProfileView().startFormForEdit(JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
+            getView().startFormForEdit(JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
 
         } catch (Exception e) {
             Log.e("TAG", e.getMessage());
         }
     }
 
+    @Override
+    public void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception {
+
+        if (StringUtils.isBlank(entityId)) {
+            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+            interactor.getNextUniqueId(triple, this);
+            return;
+        }
+
+        JSONObject form = model.getFormAsJson(formName, entityId, currentLocationId);
+        getView().startFormActivity(form);
+
+    }
+
+
+    @Override
+    public void onNoUniqueId() {
+        getView().displayShortToast(R.string.no_unique_id);
+    }
+
+    @Override
+    public void onUniqueIdFetched(Triple<String, String, String> triple, String entityId) {
+        try {
+            startForm(triple.getLeft(), entityId, triple.getMiddle(), triple.getRight());
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            getView().displayToast(R.string.error_unable_to_start_form);
+        }
+    }
+
+    @Override
+    public void saveFamilyMember(String jsonString) {
+
+        try {
+            getView().showProgressDialog(R.string.saving_dialog_title);
+
+            Pair<Client, Event> pair = model.processMemberRegistration(jsonString, familyBaseEntityId);
+            if (pair == null) {
+                return;
+            }
+
+            interactor.saveRegistration(pair, jsonString, false, this);
+
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    @Override
+    public void onRegistrationSaved(boolean isEdit) {
+        getView().refreshMemberList(FetchStatus.fetched);
+        getView().hideProgressDialog();
+    }
+
+    public String getFamilyBaseEntityId() {
+        return familyBaseEntityId;
+    }
 }

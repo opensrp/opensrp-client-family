@@ -13,6 +13,7 @@ public class DBConstants {
         public static final String FIRST_NAME = "first_name";
         public static final String LAST_NAME = "last_name";
         public static final String BASE_ENTITY_ID = "base_entity_id";
+        public static final String RELATIONAL_ID = "relational_id";
         public static final String DOB = "dob";//Date Of Birth
         public static final String DOB_UNKNOWN = "dob_unknown";
         public static final String AGE = "age";

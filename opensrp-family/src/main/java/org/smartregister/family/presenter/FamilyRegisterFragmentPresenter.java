@@ -1,12 +1,12 @@
 package org.smartregister.family.presenter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.model.FamilyRegisterFramentModel;
-import org.smartregister.family.util.DBConstants;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
+import org.smartregister.family.contract.FamilyRegisterFragmentContract;
+import org.smartregister.family.model.FamilyRegisterFramentModel;
+import org.smartregister.family.util.DBConstants;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

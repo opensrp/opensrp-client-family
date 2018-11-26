@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 
 import org.json.JSONObject;
+import org.smartregister.AllConstants;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyRegisterContract;
@@ -15,7 +16,6 @@ import org.smartregister.family.fragment.FamilyRegisterFragment;
 import org.smartregister.family.presenter.FamilyRegisterPresenter;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
-import org.smartregister.AllConstants;
 import org.smartregister.view.activity.BaseRegisterActivity;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
@@ -89,8 +89,6 @@ public class FamilyRegisterActivity extends BaseRegisterActivity implements Fami
 
                 JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.FAMILY_REGISTRATION)) {
-                    ((FamilyRegisterContract.Presenter) presenter).saveForm(jsonString, false);
-                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.FAMILY_MEMBER_REGISTRATION)) {
                     ((FamilyRegisterContract.Presenter) presenter).saveForm(jsonString, false);
                 }
             } catch (Exception e) {

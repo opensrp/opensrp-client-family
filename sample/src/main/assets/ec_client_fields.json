@@ -72,6 +72,13 @@
           }
         },
         {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.family"
+          }
+        },
+        {
           "column_name": "first_name",
           "type": "Client",
           "json_mapping": {

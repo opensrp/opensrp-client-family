@@ -6,17 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.apache.commons.lang3.StringUtils;
-import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.FamilyProfileActivity;
-import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.presenter.FamilyRegisterFragmentMemberPresenter;
+import org.smartregister.family.contract.FamilyProfileMemberContract;
+import org.smartregister.family.presenter.FamilyProfileMemberPresenter;
 import org.smartregister.family.provider.FamilyRegisterProvider;
 import org.smartregister.family.util.Constants;
-import org.smartregister.family.util.DBConstants;
-import org.smartregister.family.util.Utils;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.Set;
@@ -24,7 +20,7 @@ import java.util.Set;
 /**
  * Created by keyman on 23/11/2018.
  */
-public class FamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyRegisterFragmentContract.View {
+public class FamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyProfileMemberContract.View {
 
     public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     public static final String CLICK_VIEW_DOSAGE_STATUS = "click_view_dosage_status";
@@ -51,7 +47,8 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
 
     @Override
     protected void initializePresenter() {
-        presenter = new FamilyRegisterFragmentMemberPresenter(this, null);
+        String baseEntityId = getArguments().getString(Constants.INTENT_KEY.BASE_ENTITY_ID);
+        presenter = new FamilyProfileMemberPresenter(this, null, baseEntityId);
     }
 
     @Override
@@ -68,12 +65,12 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
 
     @Override
     protected String getMainCondition() {
-        return "";
+        return ((FamilyProfileMemberPresenter) presenter).getMainCondition();
     }
 
     @Override
     protected String getDefaultSortQuery() {
-        return DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
+        return ((FamilyProfileMemberPresenter) presenter).getDefaultSortQuery();
     }
 
     @Override
@@ -81,31 +78,16 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
         ((FamilyProfileActivity) getActivity()).startFormActivity(Constants.JSON_FORM.FAMILY_MEMBER_REGISTER, null, null);
     }
 
-    public void addMember() {
-        startRegistration();
-    }
-
     @Override
     protected void onViewClicked(View view) {
         if (getActivity() == null) {
             return;
         }
-
-        if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_NORMAL) {
-            //goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), false);
-        } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_DOSAGE_STATUS) {
-            CommonPersonObjectClient pc = (CommonPersonObjectClient) view.getTag();
-            String baseEntityId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.BASE_ENTITY_ID, true);
-
-            if (StringUtils.isNotBlank(baseEntityId)) {
-                //proceedToContact(baseEntityId);
-            }
-        }
     }
 
     @Override
     public void showNotFoundPopup(String s) {
-
+        // TODO add implementation
     }
 
 }

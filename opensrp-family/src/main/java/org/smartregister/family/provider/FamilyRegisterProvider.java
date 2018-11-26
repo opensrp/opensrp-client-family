@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
-import org.smartregister.family.R;
-import org.smartregister.family.fragment.FamilyRegisterFragment;
-import org.smartregister.family.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
+import org.smartregister.family.R;
+import org.smartregister.family.fragment.FamilyRegisterFragment;
+import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
@@ -118,7 +118,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
             CommonPersonObject commonPersonObject = commonRepository.findByBaseEntityId(pc.entityId());
             if (commonPersonObject != null) {
                 viewHolder.dueButton.setVisibility(View.VISIBLE);
-                viewHolder.dueButton.setText("CONTACT 1\n22/05/2018");
+                viewHolder.dueButton.setText("Due\n02/05/2019");
 
                 String ga = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONTACT_STATUS, false);
 

@@ -65,4 +65,8 @@ public abstract class Constants {
         public static final int TRUE = 1;
     }
 
+    public static class RELATIONSHIP {
+        public static final String FAMILY = "family";
+    }
+
 }

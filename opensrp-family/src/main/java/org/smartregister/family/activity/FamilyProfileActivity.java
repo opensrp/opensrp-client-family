@@ -1,6 +1,8 @@
 package org.smartregister.family.activity;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -10,6 +12,12 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vijay.jsonwizard.activities.JsonFormActivity;
+
+import org.json.JSONObject;
+import org.smartregister.AllConstants;
+import org.smartregister.domain.FetchStatus;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.contract.FamilyProfileContract;
@@ -37,7 +45,8 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
 
     @Override
     protected void initializePresenter() {
-        presenter = new FamilyProfilePresenter(this);
+        String familyBaseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
+        presenter = new FamilyProfilePresenter(this, familyBaseEntityId);
     }
 
     @Override
@@ -74,8 +83,8 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
     @Override
     protected void onResumption() {
         super.onResumption();
-        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        ((FamilyProfilePresenter) presenter).refreshProfileView(baseEntityId);
+
+        ((FamilyProfilePresenter) presenter).refreshProfileView();
     }
 
     @Override
@@ -101,11 +110,7 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
         int itemId = item.getItemId();
 
         if (itemId == R.id.add_member) {
-            Fragment fragment = adapter.getItem(0);
-            if (fragment instanceof FamilyProfileMemberFragment) {
-                FamilyProfileMemberFragment memberFragment = (FamilyProfileMemberFragment) fragment;
-                memberFragment.addMember();
-            }
+            startFormActivity(Constants.JSON_FORM.FAMILY_MEMBER_REGISTER, null, null);
         }
 
         return super.onOptionsItemSelected(item);
@@ -113,8 +118,84 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
 
     @Override
     protected void fetchProfileData() {
-        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        ((FamilyProfilePresenter) presenter).fetchProfileData(baseEntityId);
+
+        ((FamilyProfilePresenter) presenter).fetchProfileData();
+    }
+
+    @Override
+    public void startFormActivity(String formName, String entityId, String metaData) {
+        try {
+            String locationId = FamilyLibrary.getInstance().context().allSharedPreferences().getPreference(AllConstants.CURRENT_LOCATION_ID);
+            ((FamilyProfilePresenter) presenter).startForm(formName, entityId, metaData, locationId);
+
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            // displayToast(getString(R.string.error_unable_to_start_form));
+        }
+
+    }
+
+    @Override
+    public void startFormActivity(JSONObject form) {
+        Intent intent = new Intent(this, JsonFormActivity.class);
+        intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, form.toString());
+        startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+    }
+
+    @Override
+    public void startFormForEdit(int jsonFormActivityRequestCode, String metaData) {
+        Intent intent = new Intent(this, JsonFormActivity.class);
+        intent.putExtra(Constants.INTENT_KEY.JSON, metaData);
+
+        Log.d(TAG, "form is " + metaData);
+
+        startActivityForResult(intent, jsonFormActivityRequestCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+            try {
+                String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
+                Log.d("JSONResult", jsonString);
+
+                JSONObject form = new JSONObject(jsonString);
+                if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.FAMILY_REGISTRATION)) {
+                    //((FamilyProfileContract.Presenter) presenter).updateFamilyRegister(jsonString, false);
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.FAMILY_MEMBER_REGISTRATION)) {
+                    ((FamilyProfileContract.Presenter) presenter).saveFamilyMember(jsonString);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
+
+        }
+    }
+
+    @Override
+    public void refreshMemberList(final FetchStatus fetchStatus) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            FamilyProfileMemberFragment memberFragment = getProfileMemberFragment();
+            if (memberFragment != null && fetchStatus.equals(FetchStatus.fetched)) {
+                memberFragment.refreshListView();
+            }
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    FamilyProfileMemberFragment memberFragment = getProfileMemberFragment();
+                    if (memberFragment != null && fetchStatus.equals(FetchStatus.fetched)) {
+                        memberFragment.refreshListView();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void displayShortToast(int resourceId) {
+        Utils.showShortToast(this, getString(resourceId));
     }
 
     @Override
@@ -139,16 +220,15 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
 
     @Override
     public void setPhoneNumber(String phoneNumber) {
+        // TODO Set phone number
     }
 
-    @Override
-    public void startFormForEdit(int jsonFormActivityRequestCode, String metaData) {
-        Intent intent = new Intent(this, JsonFormUtils.class);
-        intent.putExtra(Constants.INTENT_KEY.JSON, metaData);
-
-        Log.d(TAG, "form is " + metaData);
-
-        startActivityForResult(intent, jsonFormActivityRequestCode);
+    public FamilyProfileMemberFragment getProfileMemberFragment() {
+        Fragment fragment = adapter.getItem(0);
+        if (fragment != null && fragment instanceof FamilyProfileMemberFragment) {
+            return (FamilyProfileMemberFragment) fragment;
+        }
+        return null;
     }
 
 }
