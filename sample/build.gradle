@@ -20,6 +20,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         applicationId "org.sample.family.sample"
