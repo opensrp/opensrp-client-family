@@ -32,7 +32,8 @@ public class FamilyRegisterModel implements FamilyRegisterContract.Model {
 
     @Override
     public void saveLanguage(String language) {
-        Map<String, String> langs = getAvailableLanguagesMap();
+        // TODO Save Language
+        //Map<String, String> langs = getAvailableLanguagesMap();
         //Utils.saveLanguage(Utils.getKeyByValue(langs, language));
     }
 

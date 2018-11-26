@@ -13,6 +13,7 @@ import org.smartregister.family.contract.FamilyProfileMemberContract;
 import org.smartregister.family.presenter.FamilyProfileMemberPresenter;
 import org.smartregister.family.provider.FamilyRegisterProvider;
 import org.smartregister.family.util.Constants;
+import org.smartregister.view.activity.BaseRegisterActivity;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.Set;
@@ -22,8 +23,8 @@ import java.util.Set;
  */
 public class FamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyProfileMemberContract.View {
 
-    public static final String CLICK_VIEW_NORMAL = "click_view_normal";
-    public static final String CLICK_VIEW_DOSAGE_STATUS = "click_view_dosage_status";
+    //public static final String CLICK_VIEW_NORMAL = "click_view_normal";
+    //public static final String CLICK_VIEW_STATUS = "click_view_status";
 
     public static FamilyProfileMemberFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -60,10 +61,6 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
     }
 
     @Override
-    public void setUniqueID(String s) {
-    }
-
-    @Override
     protected String getMainCondition() {
         return ((FamilyProfileMemberPresenter) presenter).getMainCondition();
     }
@@ -86,8 +83,18 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
     }
 
     @Override
-    public void showNotFoundPopup(String s) {
-        // TODO add implementation
+    public void setUniqueID(String s) {
+        if (getSearchView() != null) {
+            getSearchView().setText(s);
+        }
+    }
+
+    @Override
+    public void showNotFoundPopup(String uniqueId) {
+        if (getActivity() == null) {
+            return;
+        }
+        NoMatchDialogFragment.launchDialog((BaseRegisterActivity) getActivity(), DIALOG_TAG, uniqueId);
     }
 
 }

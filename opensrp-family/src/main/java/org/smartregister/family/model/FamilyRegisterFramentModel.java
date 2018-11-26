@@ -92,47 +92,6 @@ public class FamilyRegisterFramentModel implements FamilyRegisterFragmentContrac
         return sortText;
     }
 
-    private String getJsonString(JSONObject jsonObject, String field) {
-        try {
-            if (jsonObject != null && jsonObject.has(field)) {
-                String string = jsonObject.getString(field);
-                if (StringUtils.isBlank(string)) {
-                    return "";
-                } else {
-                    return string;
-                }
-            }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), "", e);
-        }
-        return "";
-
-    }
-
-    private JSONObject getJsonObject(JSONObject jsonObject, String field) {
-        try {
-            if (jsonObject != null && jsonObject.has(field)) {
-                return jsonObject.getJSONObject(field);
-            }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), "", e);
-        }
-        return null;
-
-    }
-
-    private JSONObject getJsonObject(JSONArray jsonArray, int position) {
-        try {
-            if (jsonArray != null && jsonArray.length() > 0) {
-                return jsonArray.getJSONObject(position);
-            }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), "", e);
-        }
-        return null;
-
-    }
-
     @Override
     public JSONArray getJsonArray(Response<String> response) {
         try {

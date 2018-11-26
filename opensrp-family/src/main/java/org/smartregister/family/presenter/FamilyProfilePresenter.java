@@ -85,9 +85,9 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
             String jsonString = data.getStringExtra(Constants.INTENT_KEY.JSON);
             Log.d("JSONResult", jsonString);
 
-            JSONObject form = new JSONObject(jsonString);
+           /*JSONObject form = new JSONObject(jsonString);
 
-            /*getProfileView().showProgressDialog(form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE) ? R.string.removing_dialog_title : R.string.saving_dialog_title);
+            getProfileView().showProgressDialog(form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE) ? R.string.removing_dialog_title : R.string.saving_dialog_title);
 
             if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_REGISTRATION)) {
 
@@ -96,7 +96,7 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
 
             } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
 
-                mRegisterInteractor.removeWomanFromANCRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
+                mRegisterInteractor.removeWomanFromRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
 
             } else {
                 getProfileView().hideProgressDialog();
@@ -130,8 +130,8 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
 
         getView().setProfileImage(client.getCaseId());
 
-        String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
-        getView().setPhoneNumber(phoneNumber);
+        // String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
+        // getView().setPhoneNumber(phoneNumber);
     }
 
     @Override

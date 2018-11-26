@@ -45,10 +45,6 @@ public class FamilyRegisterFragment extends BaseRegisterFragment implements Fami
     }
 
     @Override
-    public void setUniqueID(String s) {
-    }
-
-    @Override
     protected String getMainCondition() {
         return "";
     }
@@ -73,6 +69,13 @@ public class FamilyRegisterFragment extends BaseRegisterFragment implements Fami
     }
 
     @Override
+    public void setUniqueID(String s) {
+        if (getSearchView() != null) {
+            getSearchView().setText(s);
+        }
+    }
+
+    @Override
     protected void onViewClicked(View view) {
 
         if (getActivity() == null) {
@@ -86,7 +89,7 @@ public class FamilyRegisterFragment extends BaseRegisterFragment implements Fami
             String baseEntityId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.BASE_ENTITY_ID, true);
 
             if (StringUtils.isNotBlank(baseEntityId)) {
-                //proceedToContact(baseEntityId);
+                // TODO Proceed to dose status
             }
         }
     }

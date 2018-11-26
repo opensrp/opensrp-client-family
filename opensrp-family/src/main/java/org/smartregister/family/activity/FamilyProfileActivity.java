@@ -37,9 +37,8 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
     private TextView nameView;
     private TextView detailOneView;
     private TextView detailTwoView;
-    private TextView detailThreeView;
+    // private TextView detailThreeView;
     private ImageView imageView;
-    private String phoneNumber;
 
     private ViewPagerAdapter adapter;
 
@@ -56,7 +55,7 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
 
         detailOneView = findViewById(R.id.textview_detail_one);
         detailTwoView = findViewById(R.id.textview_detail_two);
-        detailThreeView = findViewById(R.id.textview_detail_three);
+        // detailThreeView = findViewById(R.id.textview_detail_three);
 
         nameView = findViewById(R.id.textview_name);
         imageView = findViewById(R.id.imageview_profile);
@@ -216,11 +215,6 @@ public class FamilyProfileActivity extends BaseProfileActivity implements Family
     @Override
     public void setProfileImage(String baseEntityId) {
         imageRenderHelper.refreshProfileImage(baseEntityId, imageView, Utils.getProfileImageResourceIDentifier());
-    }
-
-    @Override
-    public void setPhoneNumber(String phoneNumber) {
-        // TODO Set phone number
     }
 
     public FamilyProfileMemberFragment getProfileMemberFragment() {
