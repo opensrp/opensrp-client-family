@@ -19,12 +19,12 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion androidCompileSdkVersion
 
     defaultConfig {
         applicationId "org.sample.family.sample"
-        minSdkVersion 18
-        targetSdkVersion 28
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
