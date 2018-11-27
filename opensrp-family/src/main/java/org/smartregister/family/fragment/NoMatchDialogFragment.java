@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.smartregister.family.R;
-import org.smartregister.family.activity.FamilyProfileActivity;
 import org.smartregister.view.activity.BaseRegisterActivity;
 
 @SuppressLint("ValidFragment")

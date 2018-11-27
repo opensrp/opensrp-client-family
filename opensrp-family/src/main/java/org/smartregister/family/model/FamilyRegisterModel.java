@@ -15,7 +15,6 @@ import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.util.FormUtils;
 
 import java.util.List;
-import java.util.Map;
 
 public class FamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils formUtils;
