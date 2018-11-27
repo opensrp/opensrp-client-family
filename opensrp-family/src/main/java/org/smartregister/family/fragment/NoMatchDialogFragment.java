@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import org.smartregister.view.activity.BaseRegisterActivity;
 
 @SuppressLint("ValidFragment")
 public class NoMatchDialogFragment extends DialogFragment {
+
+    public static final String TAG = NoMatchDialogFragment.class.getName();
+
     private final NoMatchDialogActionHandler noMatchDialogActionHandler = new NoMatchDialogActionHandler();
     private final BaseRegisterActivity baseRegisterActivity;
     private final String uniqueId;
@@ -83,10 +87,15 @@ public class NoMatchDialogFragment extends DialogFragment {
                 baseRegisterActivity.setSearchTerm("");
             } else if (view.getId() == R.id.go_to_advanced_search) {
                 baseRegisterActivity.setSearchTerm("");
-                //goToAdvancedSearch(whoAncId);
+                goToAdvancedSearch(uniqueId);
                 baseRegisterActivity.setSelectedBottomBarMenuItem(R.id.action_search);
                 dismiss();
             }
+        }
+
+        private void goToAdvancedSearch(String uniqueId) {
+            Log.i(TAG, uniqueId);
+            // TODO Implement Advanced Search Page
         }
     }
 }

@@ -15,7 +15,6 @@ import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.util.FormUtils;
 
 import java.util.List;
-import java.util.Map;
 
 public class FamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils formUtils;
@@ -32,14 +31,15 @@ public class FamilyRegisterModel implements FamilyRegisterContract.Model {
 
     @Override
     public void saveLanguage(String language) {
-        Map<String, String> langs = getAvailableLanguagesMap();
+        // TODO Save Language
+        //Map<String, String> langs = getAvailableLanguagesMap();
         //Utils.saveLanguage(Utils.getKeyByValue(langs, language));
     }
 
-    private Map<String, String> getAvailableLanguagesMap() {
+    /*private Map<String, String> getAvailableLanguagesMap() {
         return null;
         //return AncApplication.getJsonSpecHelper().getAvailableLanguagesMap();
-    }
+    }*/
 
     @Override
     public String getLocationId(String locationName) {

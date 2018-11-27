@@ -67,11 +67,12 @@ public class FamilyProfileMemberPresenter implements FamilyProfileMemberContract
 
     @Override
     public void startSync() {
-        //ServiceTools.startSyncService(getActivity());
+        // TODO implement start sync
     }
 
     @Override
     public void searchGlobally(String uniqueId) {
+        // TODO implement Global search
     }
 
     @Override

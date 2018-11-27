@@ -77,6 +77,7 @@ public class FamilyRegisterFragmentPresenter implements FamilyRegisterFragmentCo
 
     @Override
     public void searchGlobally(String uniqueId) {
+        // TODO implement search global
     }
 
     protected FamilyRegisterFragmentContract.View getView() {

@@ -35,8 +35,6 @@ public interface FamilyProfileContract {
 
         void setProfileImage(String baseEntityId);
 
-        void setPhoneNumber(String phoneNumber);
-
     }
 
     interface Presenter extends BaseProfileContract.Presenter {
