@@ -3,21 +3,29 @@ package org.smartregister.family.sample.application;
 import android.util.Log;
 
 import com.evernote.android.job.JobManager;
+import com.vijay.jsonwizard.activities.JsonFormActivity;
 
-import org.smartregister.family.FamilyLibrary;
-import org.smartregister.family.util.DBConstants;
-import org.smartregister.family.util.Utils;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonFtsObject;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
+import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.domain.FamilyMetadata;
 import org.smartregister.family.sample.BuildConfig;
+import org.smartregister.family.sample.activity.FamilyProfileActivity;
 import org.smartregister.family.sample.job.SampleJobCreator;
 import org.smartregister.family.sample.repository.SampleRepository;
+import org.smartregister.family.sample.util.SampleConstants;
+import org.smartregister.family.util.DBConstants;
+import org.smartregister.family.util.Utils;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.repository.Repository;
 import org.smartregister.view.activity.DrishtiApplication;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class SampleApplication extends DrishtiApplication {
     private static final String TAG = SampleApplication.class.getCanonicalName();
@@ -36,7 +44,7 @@ public class SampleApplication extends DrishtiApplication {
         //Initialize Modules
         CoreLibrary.init(context);
         ConfigurableViewsLibrary.init(context, getRepository());
-        FamilyLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        FamilyLibrary.init(context, getRepository(), getMetadata(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 
         SyncStatusBroadcastReceiver.init(this);
         LocationHelper.init(Utils.ALLOWED_LEVELS, Utils.DEFAULT_LOCATION_LEVEL);
@@ -51,6 +59,8 @@ public class SampleApplication extends DrishtiApplication {
 
         //init Job Manager
         JobManager.create(this).addJobCreator(new SampleJobCreator());
+
+        sampleUniqueIds();
 
     }
 
@@ -87,7 +97,7 @@ public class SampleApplication extends DrishtiApplication {
     }
 
     private static String[] getFtsTables() {
-        return new String[]{DBConstants.FAMILY_TABLE_NAME};
+        return new String[]{SampleConstants.TABLE_NAME.FAMILY};
     }
 
     private static String[] getFtsSearchFields() {
@@ -97,6 +107,30 @@ public class SampleApplication extends DrishtiApplication {
     private static String[] getFtsSortFields() {
         return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY
                 .LAST_INTERACTED_WITH};
+    }
+
+    private FamilyMetadata getMetadata() {
+        FamilyMetadata metadata = new FamilyMetadata(JsonFormActivity.class, FamilyProfileActivity.class);
+        metadata.updateFamilyRegister(SampleConstants.JSON_FORM.FAMILY_REGISTER, SampleConstants.TABLE_NAME.FAMILY, SampleConstants.EventType.FAMILY_REGISTRATION, SampleConstants.EventType.UPDATE_FAMILY_REGISTRATION, SampleConstants.CONFIGURATION.FAMILY_REGISTER);
+        metadata.updateFamilyMemberRegister(SampleConstants.JSON_FORM.FAMILY_MEMBER_REGISTER, SampleConstants.TABLE_NAME.FAMILY_MEMBER, SampleConstants.EventType.FAMILY_REGISTRATION, SampleConstants.EventType.UPDATE_FAMILY_MEMBER_REGISTRATION, SampleConstants.CONFIGURATION.FAMILY_MEMBER_REGISTER, SampleConstants.RELATIONSHIP.FAMILY);
+        return metadata;
+    }
+
+    private void sampleUniqueIds() {
+        List<String> ids = generateIds(20);
+        FamilyLibrary.getInstance().getUniqueIdRepository().bulkInserOpenmrsIds(ids);
+    }
+
+    private List<String> generateIds(int size) {
+        List<String> ids = new ArrayList<>();
+        Random r = new Random();
+
+        for (int i = 0; i < size; i++) {
+            Integer randomInt = r.nextInt(1000) + 1;
+            ids.add(randomInt.toString());
+        }
+
+        return ids;
     }
 
 }

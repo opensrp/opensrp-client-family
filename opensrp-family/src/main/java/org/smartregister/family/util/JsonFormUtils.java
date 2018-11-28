@@ -60,7 +60,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String entityId = id;
         form.getJSONObject(METADATA).put(ENCOUNTER_LOCATION, currentLocationId);
 
-        if (Constants.JSON_FORM.FAMILY_REGISTER.equals(formName)) {
+        if (Utils.metadata().familyRegister.formName.equals(formName) || Utils.metadata().familyMemberRegister.formName.equals(formName)) {
             if (StringUtils.isNotBlank(entityId)) {
                 entityId = entityId.replace("-", "");
             }
@@ -141,7 +141,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
-            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, DBConstants.FAMILY_TABLE_NAME);
+            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, Utils.metadata().familyRegister.tableName);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
@@ -211,9 +211,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             formTag.databaseVersion = FamilyLibrary.getInstance().getDatabaseVersion();
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
-            baseClient.addRelationship(Constants.RELATIONSHIP.FAMILY, familyBaseEntityId);
+            baseClient.addRelationship(Utils.metadata().familyMemberRegister.familyRelationKey, familyBaseEntityId);
 
-            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, DBConstants.FAMILY_TABLE_NAME);
+            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, Utils.metadata().familyMemberRegister.tableName);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
@@ -253,17 +253,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     }
 
-
-    public static String getAutoPopulatedJsonEditFormString(Context context, CommonPersonObjectClient client) {
+    public static JSONObject getAutoPopulatedJsonEditFormString(Context context, CommonPersonObjectClient client) {
         try {
-            JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.FAMILY_REGISTER);
+            JSONObject form = FormUtils.getInstance(context).getFormJson(Utils.metadata().familyRegister.formName);
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();
             // JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
             Log.d(TAG, "Form is " + form.toString());
             if (form != null) {
                 form.put(JsonFormUtils.ENTITY_ID, client.getCaseId());
-                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.UPDATE_FAMILY_REGISTRATION);
+                form.put(JsonFormUtils.ENCOUNTER_TYPE, Utils.metadata().familyRegister.updateEventType);
 
                 JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
                 String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
@@ -282,13 +281,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                 }
 
-                return form.toString();
+                return form;
             }
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
-        return "";
+        return null;
     }
 
     protected static void processPopulatableFields(CommonPersonObjectClient client, JSONObject jsonObject) throws JSONException {
@@ -364,7 +363,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 profileImage.setFilepath(absoluteFileName);
                 profileImage.setFilecategory("profilepic");
                 profileImage.setSyncStatus(ImageRepository.TYPE_Unsynced);
-                ImageRepository imageRepo = FamilyLibrary.getInstance().context().imageRepository();
+                ImageRepository imageRepo = Utils.context().imageRepository();
                 imageRepo.add(profileImage);
             }
 

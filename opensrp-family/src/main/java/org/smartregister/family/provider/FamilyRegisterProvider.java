@@ -16,7 +16,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.family.R;
-import org.smartregister.family.fragment.FamilyRegisterFragment;
+import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
@@ -139,13 +139,13 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
         view.setTag(client);
-        view.setTag(R.id.VIEW_ID, FamilyRegisterFragment.CLICK_VIEW_NORMAL);
+        view.setTag(R.id.VIEW_ID, BaseFamilyRegisterFragment.CLICK_VIEW_NORMAL);
     }
 
     private void attachDosageOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
         view.setTag(client);
-        view.setTag(R.id.VIEW_ID, FamilyRegisterFragment.CLICK_VIEW_DOSAGE_STATUS);
+        view.setTag(R.id.VIEW_ID, BaseFamilyRegisterFragment.CLICK_VIEW_DOSAGE_STATUS);
     }
 
     @Override

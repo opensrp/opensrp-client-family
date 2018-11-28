@@ -8,10 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
-import org.smartregister.family.activity.FamilyProfileActivity;
-import org.smartregister.family.activity.FamilyRegisterActivity;
+import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.presenter.FamilyRegisterFragmentPresenter;
 import org.smartregister.family.provider.FamilyRegisterProvider;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
@@ -21,20 +19,10 @@ import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.Set;
 
-public class FamilyRegisterFragment extends BaseRegisterFragment implements FamilyRegisterFragmentContract.View {
-    private static final String TAG = FamilyRegisterFragment.class.getCanonicalName();
+public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment implements FamilyRegisterFragmentContract.View {
+    private static final String TAG = BaseFamilyRegisterFragment.class.getCanonicalName();
     public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     public static final String CLICK_VIEW_DOSAGE_STATUS = "click_view_dosage_status";
-
-    @Override
-    protected void initializePresenter() {
-        if (getActivity() == null) {
-            return;
-        }
-
-        String viewConfigurationIdentifier = ((BaseRegisterActivity) getActivity()).getViewIdentifiers().get(0);
-        presenter = new FamilyRegisterFragmentPresenter(this, viewConfigurationIdentifier);
-    }
 
     @Override
     public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
@@ -45,18 +33,8 @@ public class FamilyRegisterFragment extends BaseRegisterFragment implements Fami
     }
 
     @Override
-    protected String getMainCondition() {
-        return "";
-    }
-
-    @Override
-    protected String getDefaultSortQuery() {
-        return DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
-    }
-
-    @Override
     protected void startRegistration() {
-        ((FamilyRegisterActivity) getActivity()).startFormActivity(Constants.JSON_FORM.FAMILY_REGISTER, null, null);
+        ((BaseFamilyRegisterActivity) getActivity()).startFormActivity(Utils.metadata().familyRegister.formName, null, null);
     }
 
 
@@ -97,12 +75,16 @@ public class FamilyRegisterFragment extends BaseRegisterFragment implements Fami
     private void goToPatientDetailActivity(CommonPersonObjectClient patient,
                                            boolean launchDialog) {
         if (launchDialog) {
-            Log.i(FamilyRegisterFragment.TAG, patient.name);
+            Log.i(BaseFamilyRegisterFragment.TAG, patient.name);
         }
 
-        Intent intent = new Intent(getActivity(), FamilyProfileActivity.class);
+        Intent intent = new Intent(getActivity(), Utils.metadata().profileActivity);
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
         startActivity(intent);
     }
 
+    @Override
+    public FamilyRegisterFragmentContract.Presenter presenter() {
+        return (FamilyRegisterFragmentContract.Presenter) presenter;
+    }
 }

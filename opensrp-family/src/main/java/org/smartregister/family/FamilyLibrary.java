@@ -2,6 +2,7 @@ package org.smartregister.family;
 
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
+import org.smartregister.family.domain.FamilyMetadata;
 import org.smartregister.repository.Repository;
 import org.smartregister.repository.UniqueIdRepository;
 import org.smartregister.sync.ClientProcessorForJava;
@@ -17,6 +18,7 @@ public class FamilyLibrary {
 
     private final Context context;
     private final Repository repository;
+    private final FamilyMetadata metadata;
 
     private int applicationVersion;
     private int databaseVersion;
@@ -27,12 +29,11 @@ public class FamilyLibrary {
     private ClientProcessorForJava clientProcessorForJava;
     private Compressor compressor;
 
-    public static void init(Context context, Repository repository, int applicationVersion, int databaseVersion) {
+    public static void init(Context context, Repository repository, FamilyMetadata familyMetadata, int applicationVersion, int databaseVersion) {
         if (instance == null) {
-            instance = new FamilyLibrary(context, repository, applicationVersion, databaseVersion);
+            instance = new FamilyLibrary(context, repository, familyMetadata, applicationVersion, databaseVersion);
         }
     }
-
 
     public static FamilyLibrary getInstance() {
         if (instance == null) {
@@ -44,9 +45,10 @@ public class FamilyLibrary {
         return instance;
     }
 
-    private FamilyLibrary(Context contextArg, Repository repositoryArg, int applicationVersion, int databaseVersion) {
+    private FamilyLibrary(Context contextArg, Repository repositoryArg, FamilyMetadata metadataArg, int applicationVersion, int databaseVersion) {
         this.context = contextArg;
         this.repository = repositoryArg;
+        this.metadata = metadataArg;
         this.applicationVersion = applicationVersion;
         this.databaseVersion = databaseVersion;
     }
@@ -57,6 +59,10 @@ public class FamilyLibrary {
 
     public Repository getRepository() {
         return repository;
+    }
+
+    public FamilyMetadata metadata() {
+        return metadata;
     }
 
     public int getApplicationVersion() {
@@ -102,9 +108,9 @@ public class FamilyLibrary {
      *
      * @param context
      */
-    public static void reset(Context context, Repository repository, int applicationVersion, int databaseVersion) {
+    public static void reset(Context context, Repository repository, FamilyMetadata metadata, int applicationVersion, int databaseVersion) {
         if (context != null) {
-            instance = new FamilyLibrary(context, repository, applicationVersion, databaseVersion);
+            instance = new FamilyLibrary(context, repository, metadata, applicationVersion, databaseVersion);
         }
     }
 }

@@ -23,15 +23,15 @@ import java.util.List;
 /**
  * Created by keyman on 12/11/2018.
  */
-public class FamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
+public abstract class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
 
-    public static final String TAG = FamilyRegisterPresenter.class.getName();
+    public static final String TAG = BaseFamilyRegisterPresenter.class.getName();
 
     private WeakReference<FamilyRegisterContract.View> viewReference;
     private FamilyRegisterContract.Interactor interactor;
     private FamilyRegisterContract.Model model;
 
-    public FamilyRegisterPresenter(FamilyRegisterContract.View view) {
+    public BaseFamilyRegisterPresenter(FamilyRegisterContract.View view) {
         viewReference = new WeakReference<>(view);
         interactor = new FamilyRegisterInteractor();
         model = new FamilyRegisterModel();
@@ -160,5 +160,4 @@ public class FamilyRegisterPresenter implements FamilyRegisterContract.Presenter
         else
             return null;
     }
-
 }

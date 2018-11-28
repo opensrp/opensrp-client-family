@@ -16,6 +16,7 @@ import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
 import org.smartregister.family.util.ConfigHelper;
 import org.smartregister.family.util.DBConstants;
+import org.smartregister.family.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class FamilyRegisterFramentModel implements FamilyRegisterFragmentContrac
 
     @Override
     public RegisterConfiguration defaultRegisterConfiguration() {
-        return ConfigHelper.defaultRegisterConfiguration(FamilyLibrary.getInstance().context().applicationContext());
+        return ConfigHelper.defaultRegisterConfiguration(Utils.context().applicationContext());
     }
 
     @Override

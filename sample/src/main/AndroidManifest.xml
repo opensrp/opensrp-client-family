@@ -10,12 +10,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/FamilyTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.FamilyRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/FamilyTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.FamilyProfileActivity"
+            android:label="@string/title_family_detail"
+            android:parentActivityName=".activity.FamilyRegisterActivity"
+            android:theme="@style/FamilyTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.FamilyRegisterActivity" />
         </activity>
     </application>
 

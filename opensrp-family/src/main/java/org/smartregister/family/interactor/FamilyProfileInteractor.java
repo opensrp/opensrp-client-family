@@ -11,6 +11,7 @@ import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.UniqueId;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyProfileContract;
@@ -18,6 +19,7 @@ import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
+import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.UniqueIdRepository;
@@ -54,7 +56,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                final CommonPersonObject personObject = FamilyLibrary.getInstance().context().commonrepository(DBConstants.FAMILY_TABLE_NAME).findByBaseEntityId(baseEntityId);
+                final CommonPersonObject personObject = getCommonRepository(Utils.metadata().familyRegister.tableName).findByBaseEntityId(baseEntityId);
                 final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personObject.getCaseId(),
                         personObject.getDetails(), "");
                 pClient.setColumnmaps(personObject.getColumnmaps());
@@ -180,7 +182,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
 
 
     public AllSharedPreferences getAllSharedPreferences() {
-        return FamilyLibrary.getInstance().context().allSharedPreferences();
+        return Utils.context().allSharedPreferences();
     }
 
     public ECSyncHelper getSyncHelper() {
@@ -189,5 +191,9 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
 
     public ClientProcessorForJava getClientProcessorForJava() {
         return FamilyLibrary.getInstance().getClientProcessorForJava();
+    }
+
+    public CommonRepository getCommonRepository(String tableName) {
+        return Utils.context().commonrepository(tableName);
     }
 }

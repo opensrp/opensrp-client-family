@@ -10,6 +10,7 @@ public interface FamilyProfileMemberContract {
 
         void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns);
 
+        FamilyProfileMemberContract.Presenter presenter();
     }
 
     interface Presenter extends BaseRegisterFragmentContract.Presenter {
@@ -17,6 +18,6 @@ public interface FamilyProfileMemberContract {
         String getMainCondition();
 
         String getDefaultSortQuery();
-        
+
     }
 }

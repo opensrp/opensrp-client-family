@@ -16,6 +16,7 @@ import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
+import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.UniqueIdRepository;
@@ -161,7 +162,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
     }
 
     public AllSharedPreferences getAllSharedPreferences() {
-        return FamilyLibrary.getInstance().context().allSharedPreferences();
+        return Utils.context().allSharedPreferences();
     }
 
     public UniqueIdRepository getUniqueIdRepository() {

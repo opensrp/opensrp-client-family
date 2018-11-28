@@ -28,9 +28,9 @@ import static org.smartregister.util.Utils.getName;
 /**
  * Created by keyman on 19/11/2018.
  */
-public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
+public abstract class BaseFamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
 
-    private static final String TAG = FamilyProfilePresenter.class.getCanonicalName();
+    private static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
 
     private WeakReference<FamilyProfileContract.View> view;
     private FamilyProfileContract.Interactor interactor;
@@ -38,7 +38,7 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
 
     private String familyBaseEntityId;
 
-    public FamilyProfilePresenter(FamilyProfileContract.View loginView, String familyBaseEntityId) {
+    public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, String familyBaseEntityId) {
         this.view = new WeakReference<>(loginView);
         this.interactor = new FamilyProfileInteractor();
         this.model = new FamilyProfileModel();
@@ -118,27 +118,27 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
 
         getView().setProfileName(getName(firstName, lastName));
 
+        String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
+        uniqueId = String.format(getView().getString(R.string.unique_id_text), uniqueId);
+        getView().setProfileDetailOne(uniqueId);
 
         String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+        dobString = String.format(getView().getString(R.string.age_text), dobString);
+        getView().setProfileDetailTwo(dobString);
 
-        getView().setProfileAge(dobString);
-
-        String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        getView().setProfileID(uniqueId);
-
+        String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
+        getView().setProfileDetailThree(phoneNumber);
 
         getView().setProfileImage(client.getCaseId());
 
-        // String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
-        // getView().setPhoneNumber(phoneNumber);
     }
 
     @Override
     public void startFormForEdit(CommonPersonObjectClient client) {
-        String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(getView().getApplicationContext(), client);
+        JSONObject form = JsonFormUtils.getAutoPopulatedJsonEditFormString(getView().getApplicationContext(), client);
         try {
-            getView().startFormForEdit(JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
+            getView().startFormActivity(form);
 
         } catch (Exception e) {
             Log.e("TAG", e.getMessage());
@@ -158,7 +158,6 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
         getView().startFormActivity(form);
 
     }
-
 
     @Override
     public void onNoUniqueId() {
@@ -199,7 +198,7 @@ public class FamilyProfilePresenter implements FamilyProfileContract.Presenter, 
         getView().hideProgressDialog();
     }
 
-    public String getFamilyBaseEntityId() {
+    public String familyBaseEntityId() {
         return familyBaseEntityId;
     }
 }

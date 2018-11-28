@@ -48,7 +48,7 @@ public class FamilyRegisterModel implements FamilyRegisterContract.Model {
 
     @Override
     public Pair<Client, Event> processRegistration(String jsonString) {
-        return JsonFormUtils.processFamilyRegistrationForm(FamilyLibrary.getInstance().context().allSharedPreferences(), jsonString);
+        return JsonFormUtils.processFamilyRegistrationForm(Utils.context().allSharedPreferences(), jsonString);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class FamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils getFormUtils() {
         if (formUtils == null) {
             try {
-                formUtils = FormUtils.getInstance(FamilyLibrary.getInstance().context().applicationContext());
+                formUtils = FormUtils.getInstance(Utils.context().applicationContext());
             } catch (Exception e) {
                 Log.e(FamilyRegisterModel.class.getCanonicalName(), e.getMessage(), e);
             }
