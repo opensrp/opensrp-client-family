@@ -3,6 +3,7 @@ package org.smartregister.family.fragment;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -30,6 +31,26 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
         clientAdapter = new RecyclerViewPaginatedAdapter(null, familyRegisterProvider, context().commonrepository(this.tablename));
         clientAdapter.setCurrentlimit(20);
         clientsView.setAdapter(clientAdapter);
+    }
+
+    @Override
+    public void setupViews(View view) {
+        super.setupViews(view);
+
+        ImageView qrCodeScanImageView = view.findViewById(org.smartregister.R.id.scanQrCode);
+        if (qrCodeScanImageView != null) {
+            qrCodeScanImageView.setVisibility(View.GONE);
+        }
+
+        ImageView leftMenu = view.findViewById(org.smartregister.R.id.left_menu);
+        if (leftMenu != null) {
+            leftMenu.setVisibility(View.VISIBLE);
+        }
+
+        View rightLayout = view.findViewById(org.smartregister.R.id.top_right_layout);
+        if (rightLayout != null) {
+            rightLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
