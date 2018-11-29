@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -51,6 +52,28 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
         if (rightLayout != null) {
             rightLayout.setVisibility(View.GONE);
         }
+
+        // Search
+        View searchBarLayout = view.findViewById(org.smartregister.R.id.search_bar_layout);
+        searchBarLayout.setBackgroundResource(R.color.customAppThemeBlue);
+
+        if (getSearchView() != null) {
+            getSearchView().setBackgroundResource(R.color.white);
+            getSearchView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_icon_search, 0, 0, 0);
+        }
+
+        //Title
+        ImageView logo = view.findViewById(org.smartregister.R.id.opensrp_logo_image_view);
+        if (logo != null) {
+            logo.setVisibility(View.GONE);
+        }
+
+        TextView titleView = view.findViewById(org.smartregister.R.id.txt_title_label);
+        if (titleView != null) {
+            titleView.setVisibility(View.VISIBLE);
+            titleView.setText(getString(R.string.all_families));
+        }
+
     }
 
     @Override
