@@ -1,6 +1,7 @@
 package org.smartregister.family.activity;
 
 import android.content.Intent;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -71,6 +72,7 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
         bottomNavigationView = findViewById(org.smartregister.R.id.bottom_navigation);
 
         if (bottomNavigationView != null) {
+            bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
             bottomNavigationView.getMenu().removeItem(R.id.action_clients);
             bottomNavigationView.getMenu().removeItem(R.id.action_register);
             bottomNavigationView.getMenu().removeItem(R.id.action_search);
