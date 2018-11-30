@@ -8,9 +8,11 @@ import org.smartregister.AllConstants;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
+import org.smartregister.family.listener.FamilyBottomNavigationListener;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
+import org.smartregister.helper.BottomNavigationHelper;
 import org.smartregister.view.activity.BaseRegisterActivity;
 
 import java.util.Arrays;
@@ -58,6 +60,28 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
+
+        }
+    }
+
+    @Override
+    protected void registerBottomNavigation() {
+
+        bottomNavigationHelper = new BottomNavigationHelper();
+        bottomNavigationView = findViewById(org.smartregister.R.id.bottom_navigation);
+
+        if (bottomNavigationView != null) {
+            bottomNavigationView.getMenu().removeItem(R.id.action_clients);
+            bottomNavigationView.getMenu().removeItem(R.id.action_register);
+            bottomNavigationView.getMenu().removeItem(R.id.action_search);
+            bottomNavigationView.getMenu().removeItem(R.id.action_library);
+
+            bottomNavigationView.inflateMenu(R.menu.bottom_nav_family_menu);
+
+            bottomNavigationHelper.disableShiftMode(bottomNavigationView);
+
+            FamilyBottomNavigationListener familyBottomNavigationListener = new FamilyBottomNavigationListener(this);
+            bottomNavigationView.setOnNavigationItemSelectedListener(familyBottomNavigationListener);
 
         }
     }

@@ -17,6 +17,8 @@ import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
+import org.smartregister.view.customcontrols.CustomFontTextView;
+import org.smartregister.view.customcontrols.FontVariant;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.Set;
@@ -38,42 +40,52 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
     public void setupViews(View view) {
         super.setupViews(view);
 
-        ImageView qrCodeScanImageView = view.findViewById(org.smartregister.R.id.scanQrCode);
+        // Update top left icon
+        qrCodeScanImageView = view.findViewById(R.id.scanQrCode);
         if (qrCodeScanImageView != null) {
             qrCodeScanImageView.setVisibility(View.GONE);
         }
 
-        ImageView leftMenu = view.findViewById(org.smartregister.R.id.left_menu);
+        ImageView leftMenu = view.findViewById(R.id.left_menu);
         if (leftMenu != null) {
             leftMenu.setVisibility(View.VISIBLE);
         }
 
-        View rightLayout = view.findViewById(org.smartregister.R.id.top_right_layout);
-        if (rightLayout != null) {
-            rightLayout.setVisibility(View.GONE);
-        }
-
-        // Search
-        View searchBarLayout = view.findViewById(org.smartregister.R.id.search_bar_layout);
+        // Update Search bar
+        View searchBarLayout = view.findViewById(R.id.search_bar_layout);
         searchBarLayout.setBackgroundResource(R.color.customAppThemeBlue);
 
         if (getSearchView() != null) {
             getSearchView().setBackgroundResource(R.color.white);
-            getSearchView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_icon_search, 0, 0, 0);
+            getSearchView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_search, 0, 0, 0);
         }
 
-        //Title
-        ImageView logo = view.findViewById(org.smartregister.R.id.opensrp_logo_image_view);
+        // Update sort filter
+        TextView filterView = view.findViewById(R.id.filter_text_view);
+        if (filterView != null) {
+            filterView.setText(getString(R.string.sort));
+        }
+
+        // Update title name
+        ImageView logo = view.findViewById(R.id.opensrp_logo_image_view);
         if (logo != null) {
             logo.setVisibility(View.GONE);
         }
 
-        TextView titleView = view.findViewById(org.smartregister.R.id.txt_title_label);
+        CustomFontTextView titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(View.VISIBLE);
             titleView.setText(getString(R.string.all_families));
+            titleView.setFontVariant(FontVariant.REGULAR);
         }
+    }
 
+    @Override
+    protected void refreshSyncProgressSpinner() {
+        super.refreshSyncProgressSpinner();
+        if(syncButton != null) {
+            syncButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
