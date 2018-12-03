@@ -5,8 +5,8 @@ import org.smartregister.family.presenter.BaseFamilyRegisterPresenter;
 
 public class FamilyRegisterPresenter extends BaseFamilyRegisterPresenter {
 
-    public FamilyRegisterPresenter(FamilyRegisterContract.View view) {
-        super(view);
+    public FamilyRegisterPresenter(FamilyRegisterContract.View view, FamilyRegisterContract.Model model) {
+        super(view, model);
     }
 
 }

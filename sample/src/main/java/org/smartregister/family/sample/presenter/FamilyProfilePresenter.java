@@ -5,8 +5,8 @@ import org.smartregister.family.presenter.BaseFamilyProfilePresenter;
 
 public class FamilyProfilePresenter extends BaseFamilyProfilePresenter {
 
-    public FamilyProfilePresenter(FamilyProfileContract.View loginView, String familyBaseEntityId) {
-        super(loginView, familyBaseEntityId);
+    public FamilyProfilePresenter(FamilyProfileContract.View loginView, FamilyProfileContract.Model model, String familyBaseEntityId) {
+        super(loginView, model, familyBaseEntityId);
     }
 
 }

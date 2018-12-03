@@ -6,8 +6,8 @@ import org.smartregister.family.util.DBConstants;
 
 public class FamilyRegisterFragmentPresenter extends BaseFamilyRegisterFragmentPresenter {
 
-    public FamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, String viewConfigurationIdentifier) {
-        super(view, viewConfigurationIdentifier);
+    public FamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier) {
+        super(view, model, viewConfigurationIdentifier);
     }
 
     @Override

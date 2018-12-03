@@ -1,6 +1,7 @@
 package org.smartregister.family.sample.fragment;
 
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
+import org.smartregister.family.sample.model.FamilyRegisterFramentModel;
 import org.smartregister.family.sample.presenter.FamilyRegisterFragmentPresenter;
 import org.smartregister.view.activity.BaseRegisterActivity;
 
@@ -13,7 +14,7 @@ public class FamilyRegisterFragment extends BaseFamilyRegisterFragment {
         }
 
         String viewConfigurationIdentifier = ((BaseRegisterActivity) getActivity()).getViewIdentifiers().get(0);
-        presenter = new FamilyRegisterFragmentPresenter(this, viewConfigurationIdentifier);
+        presenter = new FamilyRegisterFragmentPresenter(this, new FamilyRegisterFramentModel(), viewConfigurationIdentifier);
     }
 
     @Override

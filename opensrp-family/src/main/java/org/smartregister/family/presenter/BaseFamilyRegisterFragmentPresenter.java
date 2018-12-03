@@ -5,8 +5,6 @@ import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.model.FamilyRegisterFramentModel;
-import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
 import java.lang.ref.WeakReference;
@@ -25,9 +23,9 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
     private String viewConfigurationIdentifier;
 
-    public BaseFamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, String viewConfigurationIdentifier) {
+    public BaseFamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier) {
         this.viewReference = new WeakReference<>(view);
-        this.model = new FamilyRegisterFramentModel();
+        this.model = model;
         this.viewConfigurationIdentifier = viewConfigurationIdentifier;
         this.config = model.defaultRegisterConfiguration();
     }

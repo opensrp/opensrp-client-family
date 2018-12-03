@@ -14,7 +14,6 @@ import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.interactor.FamilyProfileInteractor;
-import org.smartregister.family.model.FamilyProfileModel;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
@@ -38,10 +37,10 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
 
     private String familyBaseEntityId;
 
-    public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, String familyBaseEntityId) {
+    public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, FamilyProfileContract.Model model, String familyBaseEntityId) {
         this.view = new WeakReference<>(loginView);
         this.interactor = new FamilyProfileInteractor();
-        this.model = new FamilyProfileModel();
+        this.model = model;
         this.familyBaseEntityId = familyBaseEntityId;
     }
 

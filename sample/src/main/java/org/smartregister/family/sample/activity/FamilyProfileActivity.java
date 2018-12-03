@@ -10,6 +10,7 @@ import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.sample.fragment.FamilyProfileActivityFragment;
 import org.smartregister.family.sample.fragment.FamilyProfileDueFragment;
 import org.smartregister.family.sample.fragment.FamilyProfileMemberFragment;
+import org.smartregister.family.sample.model.FamilyProfileModel;
 import org.smartregister.family.sample.presenter.FamilyProfilePresenter;
 import org.smartregister.family.util.Constants;
 
@@ -18,7 +19,7 @@ public class FamilyProfileActivity extends BaseFamilyProfileActivity {
     @Override
     protected void initializePresenter() {
         String familyBaseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        presenter = new FamilyProfilePresenter(this, familyBaseEntityId);
+        presenter = new FamilyProfilePresenter(this, new FamilyProfileModel(), familyBaseEntityId);
     }
 
     @Override

@@ -12,7 +12,6 @@ import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.ResponseStatus;
-import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
 import org.smartregister.family.util.ConfigHelper;
 import org.smartregister.family.util.DBConstants;
@@ -25,7 +24,7 @@ import java.util.Set;
 /**
  * Created by keyman on 12/07/2018.
  */
-public class FamilyRegisterFramentModel implements FamilyRegisterFragmentContract.Model {
+public abstract class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentContract.Model {
 
     @Override
     public RegisterConfiguration defaultRegisterConfiguration() {
@@ -52,16 +51,20 @@ public class FamilyRegisterFramentModel implements FamilyRegisterFragmentContrac
     @Override
     public String mainSelect(String tableName, String mainCondition) {
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+        queryBUilder.SelectInitiateMainTable(tableName, mainColumns(tableName));
+        return queryBUilder.mainCondition(mainCondition);
+    }
+
+    protected String[] mainColumns(String tableName) {
         String[] columns = new String[]{
-                tableName + ".relationalid",
+                tableName + "." + DBConstants.KEY.RELATIONAL_ID,
                 tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
                 tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
                 tableName + "." + DBConstants.KEY.FIRST_NAME,
                 tableName + "." + DBConstants.KEY.LAST_NAME,
                 tableName + "." + DBConstants.KEY.UNIQUE_ID,
                 tableName + "." + DBConstants.KEY.DOB};
-        queryBUilder.SelectInitiateMainTable(tableName, columns);
-        return queryBUilder.mainCondition(mainCondition);
+        return columns;
     }
 
     @Override

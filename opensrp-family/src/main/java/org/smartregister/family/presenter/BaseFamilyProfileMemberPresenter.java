@@ -5,7 +5,6 @@ import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyProfileMemberContract;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.model.FamilyRegisterFramentModel;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
@@ -27,9 +26,9 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     private String viewConfigurationIdentifier;
 
-    public BaseFamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, String viewConfigurationIdentifier, String familyBaseEntityId) {
+    public BaseFamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier, String familyBaseEntityId) {
         this.viewReference = new WeakReference<>(view);
-        this.model = new FamilyRegisterFramentModel();
+        this.model = model;
         this.viewConfigurationIdentifier = viewConfigurationIdentifier;
         this.config = model.defaultRegisterConfiguration();
         this.familyBaseEntityId = familyBaseEntityId;
