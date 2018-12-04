@@ -1,6 +1,9 @@
 package org.smartregister.family.util;
 
+import org.smartregister.Context;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
+import org.smartregister.family.domain.FamilyMetadata;
 
 import java.util.ArrayList;
 
@@ -20,5 +23,13 @@ public class Utils extends org.smartregister.util.Utils {
 
     public static int getProfileImageResourceIDentifier() {
         return R.drawable.ic_icon_nav_clients;
+    }
+
+    public static Context context() {
+        return FamilyLibrary.getInstance().context();
+    }
+
+    public static FamilyMetadata metadata() {
+        return FamilyLibrary.getInstance().metadata();
     }
 }

@@ -14,7 +14,7 @@ import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.interactor.FamilyRegisterInteractor;
-import org.smartregister.family.model.FamilyRegisterModel;
+import org.smartregister.family.model.BaseFamilyRegisterModel;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.lang.ref.WeakReference;
@@ -23,18 +23,18 @@ import java.util.List;
 /**
  * Created by keyman on 12/11/2018.
  */
-public class FamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
+public abstract class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
 
-    public static final String TAG = FamilyRegisterPresenter.class.getName();
+    public static final String TAG = BaseFamilyRegisterPresenter.class.getName();
 
     private WeakReference<FamilyRegisterContract.View> viewReference;
     private FamilyRegisterContract.Interactor interactor;
     private FamilyRegisterContract.Model model;
 
-    public FamilyRegisterPresenter(FamilyRegisterContract.View view) {
+    public BaseFamilyRegisterPresenter(FamilyRegisterContract.View view, FamilyRegisterContract.Model model) {
         viewReference = new WeakReference<>(view);
         interactor = new FamilyRegisterInteractor();
-        model = new FamilyRegisterModel();
+        this.model = model;
     }
 
     public void setModel(FamilyRegisterContract.Model model) {
@@ -160,5 +160,4 @@ public class FamilyRegisterPresenter implements FamilyRegisterContract.Presenter
         else
             return null;
     }
-
 }

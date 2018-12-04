@@ -19,21 +19,25 @@ public interface FamilyProfileContract {
 
         Context getApplicationContext();
 
-        void startFormActivity(JSONObject form);
+        String getString(int resourceId);
 
-        void startFormForEdit(int jsonFormActivityRequestCode, String metaData);
+        void startFormActivity(JSONObject form);
 
         void refreshMemberList(final FetchStatus fetchStatus);
 
         void displayShortToast(int resourceId);
 
+        void setProfileImage(String baseEntityId);
+
         void setProfileName(String fullName);
 
-        void setProfileID(String uniqueId);
+        void setProfileDetailOne(String detailOne);
 
-        void setProfileAge(String age);
+        void setProfileDetailTwo(String detailTwo);
 
-        void setProfileImage(String baseEntityId);
+        void setProfileDetailThree(String detailThree);
+
+        FamilyProfileContract.Presenter presenter();
 
     }
 
@@ -50,6 +54,8 @@ public interface FamilyProfileContract {
         void refreshProfileView();
 
         void processFormDetailsSave(Intent data, AllSharedPreferences allSharedPreferences);
+
+        String familyBaseEntityId();
 
     }
 

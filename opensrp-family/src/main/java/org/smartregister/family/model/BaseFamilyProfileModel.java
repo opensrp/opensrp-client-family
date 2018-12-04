@@ -9,9 +9,10 @@ import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.util.JsonFormUtils;
+import org.smartregister.family.util.Utils;
 import org.smartregister.util.FormUtils;
 
-public class FamilyProfileModel implements FamilyProfileContract.Model {
+public abstract class BaseFamilyProfileModel implements FamilyProfileContract.Model {
 
     private FormUtils formUtils;
 
@@ -33,9 +34,9 @@ public class FamilyProfileModel implements FamilyProfileContract.Model {
     private FormUtils getFormUtils() {
         if (formUtils == null) {
             try {
-                formUtils = FormUtils.getInstance(FamilyLibrary.getInstance().context().applicationContext());
+                formUtils = FormUtils.getInstance(Utils.context().applicationContext());
             } catch (Exception e) {
-                Log.e(FamilyProfileModel.class.getCanonicalName(), e.getMessage(), e);
+                Log.e(BaseFamilyProfileModel.class.getCanonicalName(), e.getMessage(), e);
             }
         }
         return formUtils;

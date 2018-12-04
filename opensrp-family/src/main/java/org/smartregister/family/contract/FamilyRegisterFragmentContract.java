@@ -17,11 +17,17 @@ public interface FamilyRegisterFragmentContract {
 
         void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns);
 
+        FamilyRegisterFragmentContract.Presenter presenter();
+
     }
 
     interface Presenter extends BaseRegisterFragmentContract.Presenter {
 
         void updateSortAndFilter(List<Field> filterList, Field sortField);
+
+        String getMainCondition();
+
+        String getDefaultSortQuery();
 
     }
 

@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
-import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
@@ -16,7 +15,7 @@ import org.smartregister.util.FormUtils;
 
 import java.util.List;
 
-public class FamilyRegisterModel implements FamilyRegisterContract.Model {
+public abstract class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils formUtils;
 
     @Override
@@ -48,7 +47,7 @@ public class FamilyRegisterModel implements FamilyRegisterContract.Model {
 
     @Override
     public Pair<Client, Event> processRegistration(String jsonString) {
-        return JsonFormUtils.processFamilyRegistrationForm(FamilyLibrary.getInstance().context().allSharedPreferences(), jsonString);
+        return JsonFormUtils.processFamilyRegistrationForm(Utils.context().allSharedPreferences(), jsonString);
     }
 
     @Override
@@ -63,9 +62,9 @@ public class FamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils getFormUtils() {
         if (formUtils == null) {
             try {
-                formUtils = FormUtils.getInstance(FamilyLibrary.getInstance().context().applicationContext());
+                formUtils = FormUtils.getInstance(Utils.context().applicationContext());
             } catch (Exception e) {
-                Log.e(FamilyRegisterModel.class.getCanonicalName(), e.getMessage(), e);
+                Log.e(BaseFamilyRegisterModel.class.getCanonicalName(), e.getMessage(), e);
             }
         }
         return formUtils;

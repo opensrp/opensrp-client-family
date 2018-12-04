@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
-import org.smartregister.family.activity.FamilyProfileActivity;
+import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.contract.FamilyProfileMemberContract;
-import org.smartregister.family.presenter.FamilyProfileMemberPresenter;
 import org.smartregister.family.provider.FamilyRegisterProvider;
-import org.smartregister.family.util.Constants;
+import org.smartregister.family.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
@@ -21,20 +20,10 @@ import java.util.Set;
 /**
  * Created by keyman on 23/11/2018.
  */
-public class FamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyProfileMemberContract.View {
+public abstract class BaseFamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyProfileMemberContract.View {
 
     //public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     //public static final String CLICK_VIEW_STATUS = "click_view_status";
-
-    public static FamilyProfileMemberFragment newInstance(Bundle bundle) {
-        Bundle args = bundle;
-        FamilyProfileMemberFragment fragment = new FamilyProfileMemberFragment();
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Nullable
     @Override
@@ -47,12 +36,6 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
     }
 
     @Override
-    protected void initializePresenter() {
-        String baseEntityId = getArguments().getString(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        presenter = new FamilyProfileMemberPresenter(this, null, baseEntityId);
-    }
-
-    @Override
     public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
         FamilyRegisterProvider familyRegisterProvider = new FamilyRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
         clientAdapter = new RecyclerViewPaginatedAdapter(null, familyRegisterProvider, context().commonrepository(this.tablename));
@@ -62,17 +45,17 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
 
     @Override
     protected String getMainCondition() {
-        return ((FamilyProfileMemberPresenter) presenter).getMainCondition();
+        return presenter().getMainCondition();
     }
 
     @Override
     protected String getDefaultSortQuery() {
-        return ((FamilyProfileMemberPresenter) presenter).getDefaultSortQuery();
+        return presenter().getDefaultSortQuery();
     }
 
     @Override
     protected void startRegistration() {
-        ((FamilyProfileActivity) getActivity()).startFormActivity(Constants.JSON_FORM.FAMILY_MEMBER_REGISTER, null, null);
+        ((BaseFamilyProfileActivity) getActivity()).startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
     }
 
     @Override
@@ -97,4 +80,8 @@ public class FamilyProfileMemberFragment extends BaseRegisterFragment implements
         NoMatchDialogFragment.launchDialog((BaseRegisterActivity) getActivity(), DIALOG_TAG, uniqueId);
     }
 
+    @Override
+    public FamilyProfileMemberContract.Presenter presenter() {
+        return (FamilyProfileMemberContract.Presenter) presenter;
+    }
 }

@@ -1,0 +1,42 @@
+package org.smartregister.family.sample.activity;
+
+import android.support.v4.app.Fragment;
+import android.view.MenuItem;
+
+import org.smartregister.family.activity.BaseFamilyRegisterActivity;
+import org.smartregister.family.sample.fragment.FamilyRegisterFragment;
+import org.smartregister.family.sample.model.FamilyRegisterModel;
+import org.smartregister.family.sample.presenter.FamilyRegisterPresenter;
+import org.smartregister.view.fragment.BaseRegisterFragment;
+
+public class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
+
+    @Override
+    protected void initializePresenter() {
+        presenter = new FamilyRegisterPresenter(this, new FamilyRegisterModel());
+    }
+
+    @Override
+    protected BaseRegisterFragment getRegisterFragment() {
+        return new FamilyRegisterFragment();
+    }
+
+    @Override
+    protected Fragment[] getOtherFragments() {
+        return new Fragment[0];
+    }
+
+    @Override
+    protected void registerBottomNavigation() {
+        super.registerBottomNavigation();
+
+        MenuItem clients = bottomNavigationView.getMenu().findItem(org.smartregister.R.id.action_clients);
+        if (clients != null) {
+            clients.setTitle(getString(org.smartregister.family.R.string.families));
+        }
+
+        bottomNavigationView.getMenu().removeItem(org.smartregister.R.id.action_search);
+        bottomNavigationView.getMenu().removeItem(org.smartregister.R.id.action_library);
+    }
+
+}

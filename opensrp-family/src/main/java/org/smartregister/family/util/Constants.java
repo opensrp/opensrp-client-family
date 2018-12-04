@@ -6,23 +6,6 @@ package org.smartregister.family.util;
 
 public abstract class Constants {
 
-    public static class CONFIGURATION {
-        public static final String LOGIN = "login";
-        public static final String FAMILY_REGISTER = "family_register";
-    }
-
-    public static final class EventType {
-        public static final String FAMILY_REGISTRATION = "Family Registration";
-        public static final String FAMILY_MEMBER_REGISTRATION = "Family Member Registration";
-        public static final String UPDATE_FAMILY_REGISTRATION = "Update Family Registration";
-
-    }
-
-    public static class JSON_FORM {
-        public static final String FAMILY_REGISTER = "family_register";
-        public static final String FAMILY_MEMBER_REGISTER = "family_member_register";
-    }
-
     public static class JSON_FORM_KEY {
         public static final String ENTITY_ID = "entity_id";
         public static final String OPTIONS = "options";
@@ -64,9 +47,4 @@ public abstract class Constants {
     public static class BOOLEAN_INT {
         public static final int TRUE = 1;
     }
-
-    public static class RELATIONSHIP {
-        public static final String FAMILY = "family";
-    }
-
 }

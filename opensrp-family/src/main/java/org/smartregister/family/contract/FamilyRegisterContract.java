@@ -16,7 +16,7 @@ import java.util.List;
 public interface FamilyRegisterContract {
 
     interface View extends BaseRegisterContract.View {
-
+        FamilyRegisterContract.Presenter presenter();
     }
 
     interface Presenter extends BaseRegisterContract.Presenter {

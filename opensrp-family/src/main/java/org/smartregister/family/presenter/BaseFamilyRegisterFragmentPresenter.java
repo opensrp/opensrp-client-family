@@ -1,37 +1,33 @@
 package org.smartregister.family.presenter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
-import org.smartregister.family.contract.FamilyProfileMemberContract;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
-import org.smartregister.family.model.FamilyRegisterFramentModel;
-import org.smartregister.family.util.DBConstants;
+import org.smartregister.family.util.Utils;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class FamilyProfileMemberPresenter implements FamilyProfileMemberContract.Presenter {
+public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegisterFragmentContract.Presenter {
 
-    private WeakReference<FamilyProfileMemberContract.View> viewReference;
+    private WeakReference<FamilyRegisterFragmentContract.View> viewReference;
 
     private FamilyRegisterFragmentContract.Model model;
 
     private RegisterConfiguration config;
 
-    private String familyBaseEntityId;
-
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
     private String viewConfigurationIdentifier;
 
-    public FamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, String viewConfigurationIdentifier, String familyBaseEntityId) {
+    public BaseFamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier) {
         this.viewReference = new WeakReference<>(view);
-        this.model = new FamilyRegisterFramentModel();
+        this.model = model;
         this.viewConfigurationIdentifier = viewConfigurationIdentifier;
         this.config = model.defaultRegisterConfiguration();
-        this.familyBaseEntityId = familyBaseEntityId;
-
     }
 
     @Override
@@ -53,7 +49,7 @@ public class FamilyProfileMemberPresenter implements FamilyProfileMemberContract
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = DBConstants.FAMILY_MEMBER_TABLE_NAME;
+        String tableName = Utils.metadata().familyRegister.tableName;
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);
@@ -67,25 +63,23 @@ public class FamilyProfileMemberPresenter implements FamilyProfileMemberContract
 
     @Override
     public void startSync() {
-        // TODO implement start sync
+        //ServiceTools.startSyncService(getActivity());
+    }
+
+    @Override
+    public void updateSortAndFilter(List<Field> filterList, Field sortField) {
+        String filterText = model.getFilterText(filterList, getView().getString(org.smartregister.R.string.filter));
+        String sortText = model.getSortText(sortField);
+
+        getView().updateFilterAndFilterStatus(filterText, sortText);
     }
 
     @Override
     public void searchGlobally(String uniqueId) {
-        // TODO implement Global search
+        // TODO implement search global
     }
 
-    @Override
-    public String getMainCondition() {
-        return DBConstants.KEY.RELATIONAL_ID + " = '" + familyBaseEntityId + "' ";
-    }
-
-    @Override
-    public String getDefaultSortQuery() {
-        return DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
-    }
-
-    protected FamilyProfileMemberContract.View getView() {
+    protected FamilyRegisterFragmentContract.View getView() {
         if (viewReference != null)
             return viewReference.get();
         else
@@ -100,7 +94,4 @@ public class FamilyProfileMemberPresenter implements FamilyProfileMemberContract
         this.model = model;
     }
 
-    public String getFamilyBaseEntityId() {
-        return familyBaseEntityId;
-    }
 }

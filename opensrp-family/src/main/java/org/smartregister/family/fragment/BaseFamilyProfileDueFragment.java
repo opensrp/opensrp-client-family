@@ -11,17 +11,7 @@ import org.smartregister.view.fragment.BaseProfileFragment;
 /**
  * Created by ndegwamartin on 12/07/2018.
  */
-public class FamilyProfileDueFragment extends BaseProfileFragment {
-
-    public static FamilyProfileDueFragment newInstance(Bundle bundle) {
-        Bundle args = bundle;
-        FamilyProfileDueFragment fragment = new FamilyProfileDueFragment();
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
-        return fragment;
-    }
+public abstract class BaseFamilyProfileDueFragment extends BaseProfileFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -5,9 +5,6 @@ package org.smartregister.family.util;
  */
 public class DBConstants {
 
-    public static final String FAMILY_TABLE_NAME = "ec_family";
-    public static final String FAMILY_MEMBER_TABLE_NAME = "ec_family_member";
-
     public static final class KEY {
         public static final String ID = "_ID";
         public static final String FIRST_NAME = "first_name";
