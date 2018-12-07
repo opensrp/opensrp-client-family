@@ -14,7 +14,6 @@ import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.interactor.FamilyRegisterInteractor;
-import org.smartregister.family.model.BaseFamilyRegisterModel;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.lang.ref.WeakReference;
