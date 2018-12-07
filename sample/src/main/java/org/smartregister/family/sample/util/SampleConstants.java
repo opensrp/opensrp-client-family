@@ -18,7 +18,7 @@ public class SampleConstants {
     }
 
     public static class JSON_FORM {
-        public static final String FAMILY_REGISTER = "family_register";
+        public static final String FAMILY_REGISTER = "wizard_form";//"family_register";
         public static final String FAMILY_MEMBER_REGISTER = "family_member_register";
     }
 

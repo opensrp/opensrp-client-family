@@ -1,18 +1,21 @@
 package org.smartregister.family.domain;
 
 import com.vijay.jsonwizard.activities.JsonFormActivity;
+import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
 import org.smartregister.view.activity.BaseProfileActivity;
 
 public class FamilyMetadata {
 
+    public final Class nativeWizardFormActivity;
     public final Class nativeFormActivity;
     public final Class profileActivity;
 
     public FamilyRegister familyRegister;
     public FamilyMemberRegister familyMemberRegister;
 
-    public FamilyMetadata(Class<? extends JsonFormActivity> nativeFormActivity, Class<? extends BaseProfileActivity> profileActivity) {
+    public FamilyMetadata(Class<? extends JsonWizardFormActivity> nativeWizardFormActivity, Class<? extends JsonFormActivity> nativeFormActivity, Class<? extends BaseProfileActivity> profileActivity) {
+        this.nativeWizardFormActivity = nativeWizardFormActivity;
         this.nativeFormActivity = nativeFormActivity;
         this.profileActivity = profileActivity;
     }

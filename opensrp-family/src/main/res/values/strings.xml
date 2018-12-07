@@ -28,4 +28,7 @@
     <string name="scan_qr">Scan QR</string>
     <string name="job_aids">Job Aids</string>
 
+    <!-- form -->
+    <string name="add_fam">Add Family</string>
+
 </resources>
