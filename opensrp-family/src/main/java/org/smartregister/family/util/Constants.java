@@ -17,6 +17,8 @@ public abstract class Constants {
 
     public static class JSON_FORM_EXTRA {
         public static final String JSON = "json";
+        public static final String NEXT = "next";
+
     }
 
     public static class OPENMRS {

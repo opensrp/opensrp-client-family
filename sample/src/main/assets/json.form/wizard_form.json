@@ -179,7 +179,6 @@
         "barcode_type": "qrcode",
         "hint": "ID *",
         "scanButtonText": "Scan QR Code",
-        "value": "0",
         "v_numeric": {
           "value": "true",
           "err": "Please enter a valid ID"
@@ -205,6 +204,10 @@
         "type": "edit_text",
         "hint": "Surname *",
         "edit_type": "name",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of birth"
+        },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please enter a valid name"
@@ -243,8 +246,12 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "First name",
+        "hint": "First name *",
         "edit_type": "name",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the middle name"
+        },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please enter a valid name"
