@@ -20,8 +20,8 @@ public class FamilyMetadata {
         this.profileActivity = profileActivity;
     }
 
-    public void updateFamilyRegister(String formName, String tableName, String registerEventType, String updateEventType, String config) {
-        this.familyRegister = new FamilyRegister(formName, tableName, registerEventType, updateEventType, config);
+    public void updateFamilyRegister(String formName, String tableName, String registerEventType, String updateEventType, String config, String familyHeadRelationKey, String familyCareGiverRelationKey) {
+        this.familyRegister = new FamilyRegister(formName, tableName, registerEventType, updateEventType, config, familyHeadRelationKey, familyCareGiverRelationKey);
     }
 
     public void updateFamilyMemberRegister(String formName, String tableName, String registerEventType, String updateEventType, String config, String familyRelationKey) {
@@ -40,12 +40,19 @@ public class FamilyMetadata {
 
         public final String config;
 
-        public FamilyRegister(String formName, String tableName, String registerEventType, String updateEventType, String config) {
+        public final String familyHeadRelationKey;
+
+        public final String familyCareGiverRelationKey;
+
+
+        public FamilyRegister(String formName, String tableName, String registerEventType, String updateEventType, String config, String familyHeadRelationKey, String familyCareGiverRelationKey) {
             this.formName = formName;
             this.tableName = tableName;
             this.registerEventType = registerEventType;
             this.updateEventType = updateEventType;
             this.config = config;
+            this.familyHeadRelationKey = familyHeadRelationKey;
+            this.familyCareGiverRelationKey = familyCareGiverRelationKey;
         }
     }
 

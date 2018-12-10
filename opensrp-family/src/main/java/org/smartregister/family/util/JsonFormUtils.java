@@ -3,7 +3,6 @@ package org.smartregister.family.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.util.Pair;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -19,6 +18,7 @@ import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.ImageRepository;
@@ -49,6 +49,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
     public static final String READ_ONLY = "read_only";
+
+    public static final String STEP2 = "step2";
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
@@ -81,7 +83,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
 
-    public static Pair<Client, Event> processFamilyRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
+    public static FamilyEventClient processFamilyRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
 
         try {
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
@@ -98,7 +100,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 entityId = generateRandomUUIDString();
             }
 
-            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+            String encounterType = Utils.metadata().familyRegister.registerEventType;
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
 
             // String lastLocationName = null;
@@ -145,17 +147,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
-            return Pair.create(baseClient, baseEvent);
+            return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
     }
 
-    public static Pair<Client, Event> processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
+    public static FamilyEventClient processFamilyHeadRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
 
         try {
-            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
+            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString, STEP2);
 
             if (!registrationFormParams.getLeft()) {
                 return null;
@@ -169,7 +171,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 entityId = generateRandomUUIDString();
             }
 
-            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+            String encounterType = Utils.metadata().familyMemberRegister.registerEventType;
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
 
             // String lastLocationName = null;
@@ -217,7 +219,79 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
-            return Pair.create(baseClient, baseEvent);
+            return new FamilyEventClient(baseClient, baseEvent);
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            return null;
+        }
+    }
+
+    public static FamilyEventClient processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
+
+        try {
+            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
+
+            if (!registrationFormParams.getLeft()) {
+                return null;
+            }
+
+            JSONObject jsonForm = registrationFormParams.getMiddle();
+            JSONArray fields = registrationFormParams.getRight();
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+            if (StringUtils.isBlank(entityId)) {
+                entityId = generateRandomUUIDString();
+            }
+
+            String encounterType = Utils.metadata().familyMemberRegister.registerEventType;
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // String lastLocationName = null;
+            // String lastLocationId = null;
+            // TODO Replace values for location questions with their corresponding location IDs
+
+
+            JSONObject lastInteractedWith = new JSONObject();
+            lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
+            lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
+            fields.put(lastInteractedWith);
+
+            JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
+            JSONArray options = getJSONArray(dobUnknownObject, Constants.JSON_FORM_KEY.OPTIONS);
+            JSONObject option = getJSONObject(options, 0);
+            String dobUnKnownString = option != null ? option.getString(VALUE) : null;
+            if (StringUtils.isNotBlank(dobUnKnownString) && Boolean.valueOf(dobUnKnownString)) {
+
+                String ageString = getFieldValue(fields, DBConstants.KEY.AGE);
+                if (StringUtils.isNotBlank(ageString) && NumberUtils.isNumber(ageString)) {
+                    int age = Integer.valueOf(ageString);
+                    JSONObject dobJSONObject = getFieldJSONObject(fields, DBConstants.KEY.DOB);
+                    dobJSONObject.put(VALUE, Utils.getDob(age));
+
+                    //Mark the birth date as an approximation
+                    JSONObject isBirthdateApproximate = new JSONObject();
+                    isBirthdateApproximate.put(Constants.KEY.KEY, FormEntityConstants.Person.birthdate_estimated);
+                    isBirthdateApproximate.put(Constants.KEY.VALUE, Constants.BOOLEAN_INT.TRUE);
+                    isBirthdateApproximate.put(Constants.OPENMRS.ENTITY, Constants.ENTITY.PERSON);//Required for value to be processed
+                    isBirthdateApproximate.put(Constants.OPENMRS.ENTITY_ID, FormEntityConstants.Person.birthdate_estimated);
+                    fields.put(isBirthdateApproximate);
+
+                }
+            }
+
+            FormTag formTag = new FormTag();
+            formTag.providerId = allSharedPreferences.fetchRegisteredANM();
+            formTag.appVersion = FamilyLibrary.getInstance().getApplicationVersion();
+            formTag.databaseVersion = FamilyLibrary.getInstance().getDatabaseVersion();
+
+            Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
+            baseClient.addRelationship(Utils.metadata().familyMemberRegister.familyRelationKey, familyBaseEntityId);
+
+            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, Utils.metadata().familyMemberRegister.tableName);
+
+            JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
+
+            return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
@@ -390,6 +464,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return registrationFormParams;
     }
 
+    protected static Triple<Boolean, JSONObject, JSONArray> validateParameters(String jsonString, String step) {
+
+        JSONObject jsonForm = toJSONObject(jsonString);
+        JSONArray fields = fields(jsonForm, step);
+
+        Triple<Boolean, JSONObject, JSONArray> registrationFormParams = Triple.of(jsonForm != null && fields != null, jsonForm, fields);
+        return registrationFormParams;
+    }
+
     private static Event tagSyncMetadata(AllSharedPreferences allSharedPreferences, Event event) {
         String providerId = allSharedPreferences.fetchRegisteredANM();
         event.setProviderId(providerId);
@@ -399,4 +482,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return event;
     }
 
+    public static JSONArray fields(JSONObject jsonForm, String step) {
+        try {
+
+            JSONObject step1 = jsonForm.has(step) ? jsonForm.getJSONObject(step) : null;
+            if (step1 == null) {
+                return null;
+            }
+
+            return step1.has(FIELDS) ? step1.getJSONArray(FIELDS) : null;
+
+        } catch (JSONException e) {
+            Log.e(TAG, "", e);
+        }
+        return null;
+    }
 }

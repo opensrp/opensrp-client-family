@@ -18,12 +18,15 @@ public class SampleConstants {
     }
 
     public static class JSON_FORM {
-        public static final String FAMILY_REGISTER = "wizard_form";//"family_register";
+        public static final String FAMILY_REGISTER = "family_register";
         public static final String FAMILY_MEMBER_REGISTER = "family_member_register";
     }
 
     public static class RELATIONSHIP {
         public static final String FAMILY = "family";
+        public static final String FAMILY_HEAD = "family_head";
+        public static final String PRIMARY_CAREGIVER = "primary_caregiver";
+
     }
 
     public static class TABLE_NAME {

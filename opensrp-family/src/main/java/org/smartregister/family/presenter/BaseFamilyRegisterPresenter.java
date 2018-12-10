@@ -13,6 +13,7 @@ import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyRegisterContract;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.interactor.FamilyRegisterInteractor;
 import org.smartregister.repository.AllSharedPreferences;
 
@@ -99,12 +100,12 @@ public abstract class BaseFamilyRegisterPresenter implements FamilyRegisterContr
 
             getView().showProgressDialog(R.string.saving_dialog_title);
 
-            Pair<Client, Event> pair = model.processRegistration(jsonString);
-            if (pair == null) {
+            List<FamilyEventClient> familyEventClientList = model.processRegistration(jsonString);
+            if (familyEventClientList == null || familyEventClientList.isEmpty()) {
                 return;
             }
 
-            interactor.saveRegistration(pair, jsonString, isEditMode, this);
+            interactor.saveRegistration(familyEventClientList, jsonString, isEditMode, this);
 
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));

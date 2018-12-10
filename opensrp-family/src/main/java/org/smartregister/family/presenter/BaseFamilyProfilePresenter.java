@@ -2,17 +2,15 @@ package org.smartregister.family.presenter;
 
 import android.content.Intent;
 import android.util.Log;
-import android.util.Pair;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyProfileContract;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.interactor.FamilyProfileInteractor;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
@@ -179,12 +177,12 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
         try {
             getView().showProgressDialog(R.string.saving_dialog_title);
 
-            Pair<Client, Event> pair = model.processMemberRegistration(jsonString, familyBaseEntityId);
-            if (pair == null) {
+            FamilyEventClient familyEventClient = model.processMemberRegistration(jsonString, familyBaseEntityId);
+            if (familyEventClient == null) {
                 return;
             }
 
-            interactor.saveRegistration(pair, jsonString, false, this);
+            interactor.saveRegistration(familyEventClient, jsonString, false, this);
 
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));

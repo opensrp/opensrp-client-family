@@ -1,11 +1,8 @@
 package org.smartregister.family.contract;
 
-import android.util.Pair;
-
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.view.contract.BaseRegisterContract;
 
 import java.util.List;
@@ -41,7 +38,7 @@ public interface FamilyRegisterContract {
 
         String getLocationId(String locationName);
 
-        Pair<Client, Event> processRegistration(String jsonString);
+        List<FamilyEventClient> processRegistration(String jsonString);
 
         JSONObject getFormAsJson(String formName, String entityId,
                                  String currentLocationId) throws Exception;
@@ -56,7 +53,7 @@ public interface FamilyRegisterContract {
 
         void getNextUniqueId(Triple<String, String, String> triple, FamilyRegisterContract.InteractorCallBack callBack);
 
-        void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final FamilyRegisterContract.InteractorCallBack callBack);
+        void saveRegistration(final List<FamilyEventClient> familyEventClientList, final String jsonString, final boolean isEditMode, final FamilyRegisterContract.InteractorCallBack callBack);
 
         void removeFamilyFromRegister(String closeFormJsonString, String providerId);
 
