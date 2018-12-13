@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
-import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
@@ -95,6 +93,9 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         patientName = patientName + ", " + dobString;
 
         fillValue(viewHolder.patientNameAge, patientName);
+
+        String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, false);
+        fillValue(viewHolder.gender, gender);
 
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
