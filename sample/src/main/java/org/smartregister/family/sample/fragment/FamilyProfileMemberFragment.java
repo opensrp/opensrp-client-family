@@ -3,7 +3,7 @@ package org.smartregister.family.sample.fragment;
 import android.os.Bundle;
 
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
-import org.smartregister.family.sample.model.FamilyRegisterFramentModel;
+import org.smartregister.family.sample.model.FamilyProfileMemberModel;
 import org.smartregister.family.sample.presenter.FamilyProfileMemberPresenter;
 import org.smartregister.family.util.Constants;
 
@@ -22,6 +22,6 @@ public class FamilyProfileMemberFragment extends BaseFamilyProfileMemberFragment
     @Override
     protected void initializePresenter() {
         String baseEntityId = getArguments().getString(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        presenter = new FamilyProfileMemberPresenter(this, new FamilyRegisterFramentModel(), null, baseEntityId);
+        presenter = new FamilyProfileMemberPresenter(this, new FamilyProfileMemberModel(), null, baseEntityId);
     }
 }

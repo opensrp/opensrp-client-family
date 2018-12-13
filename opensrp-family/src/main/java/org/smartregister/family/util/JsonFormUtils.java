@@ -143,6 +143,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
+
+            // Default family values
+            baseClient.setLastName("Family");
+            baseClient.setBirthdate(new Date(0));
+            baseClient.setGender("Male");
+
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, Utils.metadata().familyRegister.tableName);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs

@@ -22,8 +22,8 @@ import java.util.Set;
  */
 public abstract class BaseFamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyProfileMemberContract.View {
 
-    //public static final String CLICK_VIEW_NORMAL = "click_view_normal";
-    //public static final String CLICK_VIEW_STATUS = "click_view_status";
+    public static final String CLICK_VIEW_NORMAL = "click_view_normal";
+    public static final String CLICK_VIEW_NEXT_ARROW = "click_next_arrow";
 
     @Nullable
     @Override

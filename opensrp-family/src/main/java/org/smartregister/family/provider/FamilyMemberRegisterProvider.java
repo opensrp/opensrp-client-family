@@ -7,16 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.family.R;
-import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
+import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
@@ -35,7 +35,7 @@ import static org.smartregister.family.util.Utils.getName;
  * Created by keyman on 13/11/2018.
  */
 
-public class   FamilyMemberRegisterProvider implements RecyclerViewProvider<FamilyMemberRegisterProvider.RegisterViewHolder> {
+public class FamilyMemberRegisterProvider implements RecyclerViewProvider<FamilyMemberRegisterProvider.RegisterViewHolder> {
 
     private final LayoutInflater inflater;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
@@ -64,7 +64,6 @@ public class   FamilyMemberRegisterProvider implements RecyclerViewProvider<Fami
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
-            populateLastColumn(pc, viewHolder);
 
             return;
         }
@@ -90,62 +89,36 @@ public class   FamilyMemberRegisterProvider implements RecyclerViewProvider<Fami
         String lastName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         String patientName = getName(firstName, lastName);
 
-        fillValue(viewHolder.patientName, WordUtils.capitalize(patientName));
-
         String dobString = Utils.getDuration(Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
-        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
+
+        patientName = patientName + ", " + dobString;
+
+        fillValue(viewHolder.patientNameAge, patientName);
 
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
 
-
-        View dueButton = viewHolder.dueButton;
-        attachDosageOnclickListener(dueButton, client);
+        View nextArrow = viewHolder.nextArrow;
+        attachNextArrowOnclickListener(nextArrow, client);
 
     }
-
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
-    }
-
-
-    private void populateLastColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-
-        if (commonRepository != null) {
-            CommonPersonObject commonPersonObject = commonRepository.findByBaseEntityId(pc.entityId());
-            if (commonPersonObject != null) {
-                viewHolder.dueButton.setVisibility(View.VISIBLE);
-                viewHolder.dueButton.setText("Due\n02/05/2019");
-
-                String ga = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONTACT_STATUS, false);
-
-                if (StringUtils.isNotBlank(ga)) {
-
-                    viewHolder.dueButton.setBackgroundColor(context.getResources().getColor(R.color.progress_orange));
-                    viewHolder.dueButton.setTextColor(context.getResources().getColor(R.color.white));
-                }
-
-                //updateDoseButton();
-            } else {
-                viewHolder.dueButton.setVisibility(View.GONE);
-                //attachSyncOnclickListener(viewHolder.sync, pc);
-            }
-        }
+        //fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
     }
 
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
         view.setTag(client);
-        view.setTag(R.id.VIEW_ID, BaseFamilyRegisterFragment.CLICK_VIEW_NORMAL);
+        view.setTag(R.id.VIEW_ID, BaseFamilyProfileMemberFragment.CLICK_VIEW_NORMAL);
     }
 
-    private void attachDosageOnclickListener(View view, SmartRegisterClient client) {
+    private void attachNextArrowOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
         view.setTag(client);
-        view.setTag(R.id.VIEW_ID, BaseFamilyRegisterFragment.CLICK_VIEW_DOSAGE_STATUS);
+        view.setTag(R.id.VIEW_ID, BaseFamilyProfileMemberFragment.CLICK_VIEW_NEXT_ARROW);
     }
 
     @Override
@@ -209,21 +182,22 @@ public class   FamilyMemberRegisterProvider implements RecyclerViewProvider<Fami
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
-        public TextView patientName;
-        public TextView age;
-        public TextView ga;
-        public TextView ancId;
-        public Button dueButton;
+        public TextView patientNameAge;
+        public TextView gender;
+        public TextView familyHead;
+        public TextView primaryCaregiver;
+        public ImageView nextArrow;
+
         public View patientColumn;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
-            patientName = itemView.findViewById(R.id.patient_name);
-            age = itemView.findViewById(R.id.age);
-            ga = itemView.findViewById(R.id.ga);
-            ancId = itemView.findViewById(R.id.anc_id);
-            dueButton = itemView.findViewById(R.id.due_button);
+            patientNameAge = itemView.findViewById(R.id.patient_name_age);
+            gender = itemView.findViewById(R.id.gender);
+            familyHead = itemView.findViewById(R.id.family_head);
+            primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
+            nextArrow = itemView.findViewById(R.id.next_arrow);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
         }

@@ -3,14 +3,7 @@
     android:id="@+id/register_columns"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:background="@color/white"
-    android:orientation="horizontal">
-
-    <View
-        android:layout_width="10dp"
-        android:layout_height="wrap_content"
-        android:background="@color/text_black" />
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/patient_column"
@@ -19,12 +12,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="7dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginBottom="@dimen/register_list_top_bottom_margin"
+        android:layout_marginEnd="@dimen/register_list_item_margin"
+        android:layout_marginLeft="@dimen/register_list_item_margin"
+        android:layout_marginRight="@dimen/register_list_item_margin"
+        android:layout_marginStart="@dimen/register_list_item_margin"
+        android:layout_marginTop="@dimen/register_list_top_bottom_margin"
         android:orientation="vertical">
 
         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -36,7 +29,7 @@
             android:paddingStart="0dp"
             android:text="Patient Name"
             android:textColor="@color/text_black"
-            android:textSize="20sp" />
+            android:textSize="@dimen/register_list_title_size" />
 
 
         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -46,10 +39,10 @@
             android:layout_height="wrap_content"
             android:paddingLeft="0dp"
             android:paddingStart="0dp"
-            android:paddingTop="7dp"
+            android:paddingTop="@dimen/register_list_top_bottom_padding"
             android:text="Lavington #445"
             android:textColor="@color/light_grey_text"
-            android:textSize="17sp"
+            android:textSize="@dimen/register_list_desc_size"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -62,12 +55,12 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/grey_left_border"
-        android:paddingBottom="7dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:paddingTop="7dp">
+        android:paddingBottom="@dimen/register_list_top_bottom_padding"
+        android:paddingEnd="@dimen/register_list_item_padding"
+        android:paddingLeft="@dimen/register_list_item_padding"
+        android:paddingRight="@dimen/register_list_item_padding"
+        android:paddingStart="@dimen/register_list_item_padding"
+        android:paddingTop="@dimen/register_list_top_bottom_padding">
 
         <Button
             android:id="@+id/due_button"
@@ -76,17 +69,16 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:background="@drawable/due_contact"
-            android:elevation="8dp"
+            android:elevation="@dimen/register_list_elevation"
             android:gravity="center"
             android:hapticFeedbackEnabled="true"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:stateListAnimator="@drawable/button"
-            android:text="due"
             android:textAllCaps="false"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/vaccine_blue_bg_st"
-            android:textSize="15sp"
+            android:textSize="@dimen/register_list_due_size"
             android:typeface="normal" />
 
     </LinearLayout>
@@ -96,11 +88,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="@dimen/register_list_member_icon_margin"
+        android:layout_marginRight="@dimen/register_list_member_icon_margin"
         android:layout_toLeftOf="@+id/due_button_wrapper"
         android:orientation="horizontal"
-        android:paddingBottom="7dp">
+        android:paddingBottom="@dimen/register_list_top_bottom_padding">
 
         <ImageView
             android:layout_width="wrap_content"
