@@ -35,7 +35,7 @@ import static org.smartregister.family.util.Utils.getName;
  * Created by keyman on 13/11/2018.
  */
 
-public class FamilyMemberRegisterProvider implements RecyclerViewProvider<FamilyMemberRegisterProvider.RegisterViewHolder> {
+public class   FamilyMemberRegisterProvider implements RecyclerViewProvider<FamilyMemberRegisterProvider.RegisterViewHolder> {
 
     private final LayoutInflater inflater;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
