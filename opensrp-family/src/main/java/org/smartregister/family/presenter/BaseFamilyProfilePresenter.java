@@ -115,17 +115,16 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
 
         getView().setProfileName(getName(firstName, lastName));
 
-        String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        uniqueId = String.format(getView().getString(R.string.unique_id_text), uniqueId);
-        getView().setProfileDetailOne(uniqueId);
+        String villageTown = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, false);
+        getView().setProfileDetailOne(villageTown);
 
-        String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
+        /*String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
         dobString = String.format(getView().getString(R.string.age_text), dobString);
         getView().setProfileDetailTwo(dobString);
 
         String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
-        getView().setProfileDetailThree(phoneNumber);
+        getView().setProfileDetailThree(phoneNumber);*/
 
         getView().setProfileImage(client.getCaseId());
 
