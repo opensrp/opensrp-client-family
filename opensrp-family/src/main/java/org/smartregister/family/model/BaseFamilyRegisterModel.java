@@ -53,6 +53,7 @@ public abstract class BaseFamilyRegisterModel implements FamilyRegisterContract.
             return null;
         }
 
+        familyEventClient.getClient().setLastName("Family");
         familyEventClientList.add(familyEventClient);
 
         FamilyEventClient familyHeadEventClient = JsonFormUtils.processFamilyHeadRegistrationForm(Utils.context().allSharedPreferences(), jsonString, familyEventClient.getClient().getBaseEntityId());

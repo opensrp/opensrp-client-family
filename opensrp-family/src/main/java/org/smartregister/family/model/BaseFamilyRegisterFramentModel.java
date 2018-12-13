@@ -63,7 +63,7 @@ public abstract class BaseFamilyRegisterFramentModel implements FamilyRegisterFr
                 tableName + "." + DBConstants.KEY.FIRST_NAME,
                 tableName + "." + DBConstants.KEY.LAST_NAME,
                 tableName + "." + DBConstants.KEY.UNIQUE_ID,
-                tableName + "." + DBConstants.KEY.DOB};
+                tableName + "." + DBConstants.KEY.VILLAGE_TOWN};
         return columns;
     }
 

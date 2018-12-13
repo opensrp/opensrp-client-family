@@ -19,5 +19,7 @@ public class DBConstants {
         public static final String PHONE_NUMBER = "phone_number";
         public static final String LAST_INTERACTED_WITH = "last_interacted_with";
         public static final String CONTACT_STATUS = "contact_status";
+        public static final String VILLAGE_TOWN = "village_town";
+
     }
 }

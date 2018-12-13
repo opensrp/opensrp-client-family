@@ -35,7 +35,7 @@ import static org.smartregister.family.util.Utils.getName;
  * Created by keyman on 13/11/2018.
  */
 
-public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegisterProvider.RegisterViewHolder> {
+public class FamilyMemberRegisterProvider implements RecyclerViewProvider<FamilyMemberRegisterProvider.RegisterViewHolder> {
 
     private final LayoutInflater inflater;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
@@ -46,7 +46,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     private Context context;
     private CommonRepository commonRepository;
 
-    public FamilyRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
+    public FamilyMemberRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
@@ -63,6 +63,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
+            populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
 
             return;
@@ -91,16 +92,25 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
         fillValue(viewHolder.patientName, WordUtils.capitalize(patientName));
 
-        String villageTown = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, true);
-        fillValue((viewHolder.villageTown), villageTown);
+        String dobString = Utils.getDuration(Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
+        dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
 
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
+
 
         View dueButton = viewHolder.dueButton;
         attachDosageOnclickListener(dueButton, client);
 
     }
+
+
+    private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
+        String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
+        fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
+    }
+
 
     private void populateLastColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
 
@@ -108,8 +118,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
             CommonPersonObject commonPersonObject = commonRepository.findByBaseEntityId(pc.entityId());
             if (commonPersonObject != null) {
                 viewHolder.dueButton.setVisibility(View.VISIBLE);
-                viewHolder.dueButton.setText("Visit Due");
-                viewHolder.dueButton.setAllCaps(true);
+                viewHolder.dueButton.setText("Due\n02/05/2019");
 
                 String ga = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONTACT_STATUS, false);
 
@@ -160,7 +169,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
     @Override
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.family_register_list_row, parent, false);
+        View view = inflater.inflate(R.layout.family_member_register_list_row, parent, false);
 
         /*
         ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
@@ -201,22 +210,22 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
         public TextView patientName;
-        public TextView villageTown;
+        public TextView age;
+        public TextView ga;
+        public TextView ancId;
         public Button dueButton;
         public View patientColumn;
-        public View memberIcon;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
             patientName = itemView.findViewById(R.id.patient_name);
-
-            villageTown = itemView.findViewById(R.id.village_town);
+            age = itemView.findViewById(R.id.age);
+            ga = itemView.findViewById(R.id.ga);
+            ancId = itemView.findViewById(R.id.anc_id);
             dueButton = itemView.findViewById(R.id.due_button);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
-
-            memberIcon = itemView.findViewById(R.id.member_icon_layout);
         }
     }
 

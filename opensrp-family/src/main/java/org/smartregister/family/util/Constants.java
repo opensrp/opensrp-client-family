@@ -13,6 +13,7 @@ public abstract class Constants {
         public static final String ATTRIBUTES = "attributes";
         public static final String DEATH_DATE = "deathdate";
         public static final String DEATH_DATE_APPROX = "deathdateApprox";
+        public static final String UNIQUE_ID = "unique_id";
     }
 
     public static class JSON_FORM_EXTRA {

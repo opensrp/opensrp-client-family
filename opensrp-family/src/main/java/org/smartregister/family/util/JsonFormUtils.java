@@ -68,8 +68,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
             // Inject opensrp id into the form
-            JSONArray field = fields(form);
-            JSONObject uniqueId = getFieldJSONObject(field, DBConstants.KEY.UNIQUE_ID);
+            JSONArray field = fields(form, STEP2);
+            JSONObject uniqueId = getFieldJSONObject(field, Constants.JSON_FORM_KEY.UNIQUE_ID);
             if (uniqueId != null) {
                 uniqueId.remove(JsonFormUtils.VALUE);
                 uniqueId.put(JsonFormUtils.VALUE, entityId);
