@@ -9,6 +9,8 @@
     <dimen name="register_list_item_margin">15dp</dimen>
     <dimen name="register_list_member_icon_margin">10dp</dimen>
     <dimen name="register_list_top_bottom_margin">7dp</dimen>
+
+    <dimen name="register_list_max_padding">15dp</dimen>
     <dimen name="register_list_member_item_padding">10dp</dimen>
     <dimen name="register_list_item_padding">10dp</dimen>
     <dimen name="register_list_elevation">8dp</dimen>

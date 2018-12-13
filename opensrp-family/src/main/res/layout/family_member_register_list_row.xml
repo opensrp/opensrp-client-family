@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingBottom="@dimen/register_list_member_item_padding"
-    android:paddingTop="@dimen/register_list_member_item_padding">
+    android:paddingBottom="@dimen/register_list_max_padding"
+    android:paddingTop="@dimen/register_list_max_padding">
 
     <ImageView
         android:id="@+id/profile"
@@ -91,9 +91,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:paddingBottom="@dimen/register_list_top_bottom_padding"
-        android:paddingEnd="@dimen/register_list_member_item_padding"
+        android:paddingEnd="@dimen/register_list_max_padding"
         android:paddingLeft="@dimen/register_list_member_item_padding"
-        android:paddingRight="@dimen/register_list_member_item_padding"
+        android:paddingRight="@dimen/register_list_max_padding"
         android:paddingStart="@dimen/register_list_member_item_padding"
         android:paddingTop="@dimen/register_list_top_bottom_padding"
         android:src="@drawable/ic_arrow_forward" />
