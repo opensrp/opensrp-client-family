@@ -21,7 +21,7 @@
         android:paddingStart="@dimen/register_list_top_bottom_min_padding"
         android:paddingTop="@dimen/register_list_top_bottom_min_padding"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_member" />
+        android:src="@mipmap/ic_member" />
 
     <LinearLayout
         android:id="@+id/patient_column"
@@ -96,6 +96,6 @@
         android:paddingRight="@dimen/register_list_max_padding"
         android:paddingStart="@dimen/register_list_member_item_padding"
         android:paddingTop="@dimen/register_list_top_bottom_padding"
-        android:src="@drawable/ic_arrow_forward" />
+        android:src="@mipmap/ic_arrow_forward" />
 
 </RelativeLayout>

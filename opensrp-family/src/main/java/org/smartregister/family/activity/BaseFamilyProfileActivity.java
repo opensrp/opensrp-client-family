@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -23,6 +22,8 @@ import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.activity.BaseProfileActivity;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public abstract class BaseFamilyProfileActivity extends BaseProfileActivity implements FamilyProfileContract.View {
 
     public static final String TAG = BaseFamilyProfileActivity.class.getName();
@@ -31,7 +32,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
     private TextView detailOneView;
     private TextView detailTwoView;
     private TextView detailThreeView;
-    private ImageView imageView;
+    private CircleImageView imageView;
 
     protected ViewPagerAdapter adapter;
 
@@ -44,7 +45,9 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
         detailThreeView = findViewById(R.id.textview_detail_three);
 
         nameView = findViewById(R.id.textview_name);
+
         imageView = findViewById(R.id.imageview_profile);
+        imageView.setBorderWidth(2);
     }
 
     @Override
