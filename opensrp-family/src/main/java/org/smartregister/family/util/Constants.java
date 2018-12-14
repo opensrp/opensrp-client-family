@@ -14,7 +14,7 @@ public abstract class Constants {
         public static final String DEATH_DATE = "deathdate";
         public static final String DEATH_DATE_APPROX = "deathdateApprox";
         public static final String UNIQUE_ID = "unique_id";
-
+        public static final String LAST_INTERACTED_WITH = "last_interacted_with";
         public static final String DOB = "dob";
         public static final String DOB_UNKNOWN = "dob_unknown";
         public static final String AGE = "age";

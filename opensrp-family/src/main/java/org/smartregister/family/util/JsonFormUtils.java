@@ -109,7 +109,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             JSONObject lastInteractedWith = new JSONObject();
-            lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
+            lastInteractedWith.put(Constants.KEY.KEY, Constants.JSON_FORM_KEY.LAST_INTERACTED_WITH);
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
 
@@ -186,7 +186,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             JSONObject lastInteractedWith = new JSONObject();
-            lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
+            lastInteractedWith.put(Constants.KEY.KEY, Constants.JSON_FORM_KEY.LAST_INTERACTED_WITH);
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
 
@@ -258,20 +258,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             JSONObject lastInteractedWith = new JSONObject();
-            lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
+            lastInteractedWith.put(Constants.KEY.KEY, Constants.JSON_FORM_KEY.LAST_INTERACTED_WITH);
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
 
-            JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
+            JSONObject dobUnknownObject = getFieldJSONObject(fields, Constants.JSON_FORM_KEY.DOB_UNKNOWN);
             JSONArray options = getJSONArray(dobUnknownObject, Constants.JSON_FORM_KEY.OPTIONS);
             JSONObject option = getJSONObject(options, 0);
             String dobUnKnownString = option != null ? option.getString(VALUE) : null;
             if (StringUtils.isNotBlank(dobUnKnownString) && Boolean.valueOf(dobUnKnownString)) {
 
-                String ageString = getFieldValue(fields, DBConstants.KEY.AGE);
+                String ageString = getFieldValue(fields, Constants.JSON_FORM_KEY.AGE);
                 if (StringUtils.isNotBlank(ageString) && NumberUtils.isNumber(ageString)) {
                     int age = Integer.valueOf(ageString);
-                    JSONObject dobJSONObject = getFieldJSONObject(fields, DBConstants.KEY.DOB);
+                    JSONObject dobJSONObject = getFieldJSONObject(fields, Constants.JSON_FORM_KEY.DOB);
                     dobJSONObject.put(VALUE, Utils.getDob(age));
 
                     //Mark the birth date as an approximation
@@ -349,7 +349,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                 metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
 
-                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false));
+                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, Utils.getValue(client.getColumnmaps(), Constants.JSON_FORM_KEY.UNIQUE_ID, false));
 
                 //inject opensrp id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
@@ -373,9 +373,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     protected static void processPopulatableFields(CommonPersonObjectClient client, JSONObject jsonObject) throws JSONException {
 
 
-        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB)) {
+        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(Constants.JSON_FORM_KEY.DOB)) {
 
-            String dobString = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
+            String dobString = Utils.getValue(client.getColumnmaps(), Constants.JSON_FORM_KEY.DOB, false);
             if (StringUtils.isNotBlank(dobString)) {
                 Date dob = Utils.dobStringToDate(dobString);
                 if (dob != null) {
@@ -392,23 +392,23 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, photo.getFilePath());
 
             }
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB_UNKNOWN)) {
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(Constants.JSON_FORM_KEY.DOB_UNKNOWN)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
             JSONObject optionsObject = jsonObject.getJSONArray(Constants.JSON_FORM_KEY.OPTIONS).getJSONObject(0);
-            optionsObject.put(JsonFormUtils.VALUE, Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB_UNKNOWN, false));
+            optionsObject.put(JsonFormUtils.VALUE, Utils.getValue(client.getColumnmaps(), Constants.JSON_FORM_KEY.DOB_UNKNOWN, false));
 
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(Constants.JSON_FORM_KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            String dobString = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
+            String dobString = Utils.getValue(client.getColumnmaps(), Constants.JSON_FORM_KEY.DOB, false);
             if (StringUtils.isNotBlank(dobString)) {
                 jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(dobString));
             }
 
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.UNIQUE_ID)) {
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(Constants.JSON_FORM_KEY.UNIQUE_ID)) {
 
-            String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
+            String uniqueId = Utils.getValue(client.getColumnmaps(), Constants.JSON_FORM_KEY.UNIQUE_ID, false);
             jsonObject.put(JsonFormUtils.VALUE, uniqueId.replace("-", ""));
 
         } else {
