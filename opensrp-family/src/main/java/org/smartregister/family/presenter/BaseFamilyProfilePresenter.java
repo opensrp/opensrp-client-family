@@ -2,17 +2,15 @@ package org.smartregister.family.presenter;
 
 import android.content.Intent;
 import android.util.Log;
-import android.util.Pair;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyProfileContract;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.interactor.FamilyProfileInteractor;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
@@ -117,17 +115,16 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
 
         getView().setProfileName(getName(firstName, lastName));
 
-        String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        uniqueId = String.format(getView().getString(R.string.unique_id_text), uniqueId);
-        getView().setProfileDetailOne(uniqueId);
+        String villageTown = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, false);
+        getView().setProfileDetailOne(villageTown);
 
-        String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
+        /*String dobString = Utils.getDuration(Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
         dobString = String.format(getView().getString(R.string.age_text), dobString);
         getView().setProfileDetailTwo(dobString);
 
         String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
-        getView().setProfileDetailThree(phoneNumber);
+        getView().setProfileDetailThree(phoneNumber);*/
 
         getView().setProfileImage(client.getCaseId());
 
@@ -179,12 +176,12 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
         try {
             getView().showProgressDialog(R.string.saving_dialog_title);
 
-            Pair<Client, Event> pair = model.processMemberRegistration(jsonString, familyBaseEntityId);
-            if (pair == null) {
+            FamilyEventClient familyEventClient = model.processMemberRegistration(jsonString, familyBaseEntityId);
+            if (familyEventClient == null) {
                 return;
             }
 
-            interactor.saveRegistration(pair, jsonString, false, this);
+            interactor.saveRegistration(familyEventClient, jsonString, false, this);
 
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));

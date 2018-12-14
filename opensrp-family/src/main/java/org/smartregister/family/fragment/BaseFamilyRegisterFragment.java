@@ -46,11 +46,6 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
             qrCodeScanImageView.setVisibility(View.GONE);
         }
 
-        ImageView leftMenu = view.findViewById(R.id.left_menu);
-        if (leftMenu != null) {
-            leftMenu.setVisibility(View.VISIBLE);
-        }
-
         // Update Search bar
         View searchBarLayout = view.findViewById(R.id.search_bar_layout);
         searchBarLayout.setBackgroundResource(R.color.customAppThemeBlue);
@@ -83,7 +78,7 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
     @Override
     protected void refreshSyncProgressSpinner() {
         super.refreshSyncProgressSpinner();
-        if(syncButton != null) {
+        if (syncButton != null) {
             syncButton.setVisibility(View.GONE);
         }
     }

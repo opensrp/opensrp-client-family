@@ -24,6 +24,9 @@ public class SampleConstants {
 
     public static class RELATIONSHIP {
         public static final String FAMILY = "family";
+        public static final String FAMILY_HEAD = "family_head";
+        public static final String PRIMARY_CAREGIVER = "primary_caregiver";
+
     }
 
     public static class TABLE_NAME {

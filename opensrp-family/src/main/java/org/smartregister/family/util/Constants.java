@@ -13,10 +13,18 @@ public abstract class Constants {
         public static final String ATTRIBUTES = "attributes";
         public static final String DEATH_DATE = "deathdate";
         public static final String DEATH_DATE_APPROX = "deathdateApprox";
+        public static final String UNIQUE_ID = "unique_id";
+        public static final String LAST_INTERACTED_WITH = "last_interacted_with";
+        public static final String DOB = "dob";
+        public static final String DOB_UNKNOWN = "dob_unknown";
+        public static final String AGE = "age";
+
     }
 
     public static class JSON_FORM_EXTRA {
         public static final String JSON = "json";
+        public static final String NEXT = "next";
+
     }
 
     public static class OPENMRS {

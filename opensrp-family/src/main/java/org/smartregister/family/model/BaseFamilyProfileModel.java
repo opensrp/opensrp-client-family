@@ -1,13 +1,11 @@
 package org.smartregister.family.model;
 
 import android.util.Log;
-import android.util.Pair;
 
 import org.json.JSONObject;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyProfileContract;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.util.FormUtils;
@@ -26,7 +24,7 @@ public abstract class BaseFamilyProfileModel implements FamilyProfileContract.Mo
     }
 
     @Override
-    public Pair<Client, Event> processMemberRegistration(String jsonString, String familyBaseEntityId) {
+    public FamilyEventClient processMemberRegistration(String jsonString, String familyBaseEntityId) {
         return JsonFormUtils.processFamilyMemberRegistrationForm(FamilyLibrary.getInstance().context().allSharedPreferences(), jsonString, familyBaseEntityId);
     }
 

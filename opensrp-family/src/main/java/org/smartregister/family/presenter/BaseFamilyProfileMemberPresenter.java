@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyProfileMemberContract;
-import org.smartregister.family.contract.FamilyRegisterFragmentContract;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
@@ -16,7 +15,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     private WeakReference<FamilyProfileMemberContract.View> viewReference;
 
-    private FamilyRegisterFragmentContract.Model model;
+    private FamilyProfileMemberContract.Model model;
 
     private RegisterConfiguration config;
 
@@ -26,7 +25,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     private String viewConfigurationIdentifier;
 
-    public BaseFamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier, String familyBaseEntityId) {
+    public BaseFamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, FamilyProfileMemberContract.Model model, String viewConfigurationIdentifier, String familyBaseEntityId) {
         this.viewReference = new WeakReference<>(view);
         this.model = model;
         this.viewConfigurationIdentifier = viewConfigurationIdentifier;
@@ -96,7 +95,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
         this.visibleColumns = visibleColumns;
     }
 
-    public void setModel(FamilyRegisterFragmentContract.Model model) {
+    public void setModel(FamilyProfileMemberContract.Model model) {
         this.model = model;
     }
 

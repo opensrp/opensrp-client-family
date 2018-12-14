@@ -28,4 +28,11 @@
     <string name="scan_qr">Scan QR</string>
     <string name="job_aids">Job Aids</string>
 
+    <!-- form -->
+    <string name="add_fam">Add Family</string>
+
+    <!-- register -->
+    <string name="family_head">Family Head</string>
+    <string name="primary_care_giver">Primary Caregiver</string>
+
 </resources>

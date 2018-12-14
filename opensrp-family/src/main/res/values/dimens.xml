@@ -5,6 +5,20 @@
     <dimen name="item_width">200dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
-    <dimen name="register_list_item_height">82dp</dimen>
+    <dimen name="register_list_item_height">85dp</dimen>
     <dimen name="register_list_item_margin">15dp</dimen>
+    <dimen name="register_list_member_icon_margin">10dp</dimen>
+    <dimen name="register_list_top_bottom_margin">7dp</dimen>
+
+    <dimen name="register_list_max_padding">15dp</dimen>
+    <dimen name="register_list_member_item_padding">10dp</dimen>
+    <dimen name="register_list_item_padding">10dp</dimen>
+    <dimen name="register_list_elevation">8dp</dimen>
+    <dimen name="register_list_top_bottom_padding">7dp</dimen>
+    <dimen name="register_list_top_bottom_min_padding">2dp</dimen>
+
+
+    <dimen name="register_list_title_size">20sp</dimen>
+    <dimen name="register_list_desc_size">17sp</dimen>
+    <dimen name="register_list_due_size">15sp</dimen>
 </resources>

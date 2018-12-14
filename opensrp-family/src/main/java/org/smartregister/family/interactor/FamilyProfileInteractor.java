@@ -2,7 +2,6 @@ package org.smartregister.family.interactor;
 
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
-import android.util.Pair;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -15,6 +14,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.UniqueId;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyProfileContract;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
@@ -103,12 +103,12 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
 
 
     @Override
-    public void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final FamilyProfileContract.InteractorCallBack callBack) {
+    public void saveRegistration(final FamilyEventClient familyEventClient, final String jsonString, final boolean isEditMode, final FamilyProfileContract.InteractorCallBack callBack) {
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                saveRegistration(pair, jsonString, isEditMode);
+                saveRegistration(familyEventClient, jsonString, isEditMode);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -121,12 +121,12 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
         appExecutors.diskIO().execute(runnable);
     }
 
-    private void saveRegistration(Pair<Client, Event> pair, String jsonString, boolean isEditMode) {
+    private void saveRegistration(FamilyEventClient familyEventClient, String jsonString, boolean isEditMode) {
 
         try {
 
-            Client baseClient = pair.first;
-            Event baseEvent = pair.second;
+            Client baseClient = familyEventClient.getClient();
+            Event baseEvent = familyEventClient.getEvent();
 
             if (baseClient != null) {
                 JSONObject clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));

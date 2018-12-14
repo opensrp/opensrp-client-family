@@ -7,15 +7,12 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.AllConstants;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
-import org.smartregister.domain.UniqueId;
 import org.smartregister.family.sample.BuildConfig;
 import org.smartregister.family.sample.application.SampleApplication;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 import org.smartregister.repository.SettingsRepository;
 import org.smartregister.repository.UniqueIdRepository;
-
-import java.util.Random;
 
 /**
  * Created by keyman on 28/07/2017.

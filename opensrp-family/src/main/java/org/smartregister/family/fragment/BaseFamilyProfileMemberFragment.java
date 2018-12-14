@@ -10,7 +10,7 @@ import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.contract.FamilyProfileMemberContract;
-import org.smartregister.family.provider.FamilyRegisterProvider;
+import org.smartregister.family.provider.FamilyMemberRegisterProvider;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
 import org.smartregister.view.fragment.BaseRegisterFragment;
@@ -22,8 +22,8 @@ import java.util.Set;
  */
 public abstract class BaseFamilyProfileMemberFragment extends BaseRegisterFragment implements FamilyProfileMemberContract.View {
 
-    //public static final String CLICK_VIEW_NORMAL = "click_view_normal";
-    //public static final String CLICK_VIEW_STATUS = "click_view_status";
+    public static final String CLICK_VIEW_NORMAL = "click_view_normal";
+    public static final String CLICK_VIEW_NEXT_ARROW = "click_next_arrow";
 
     @Nullable
     @Override
@@ -37,8 +37,8 @@ public abstract class BaseFamilyProfileMemberFragment extends BaseRegisterFragme
 
     @Override
     public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
-        FamilyRegisterProvider familyRegisterProvider = new FamilyRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
-        clientAdapter = new RecyclerViewPaginatedAdapter(null, familyRegisterProvider, context().commonrepository(this.tablename));
+        FamilyMemberRegisterProvider familyMemberRegisterProvider = new FamilyMemberRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
+        clientAdapter = new RecyclerViewPaginatedAdapter(null, familyMemberRegisterProvider, context().commonrepository(this.tablename));
         clientAdapter.setCurrentlimit(20);
         clientsView.setAdapter(clientAdapter);
     }

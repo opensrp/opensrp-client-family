@@ -12,12 +12,11 @@ public class DBConstants {
         public static final String BASE_ENTITY_ID = "base_entity_id";
         public static final String RELATIONAL_ID = "relational_id";
         public static final String DOB = "dob";//Date Of Birth
-        public static final String DOB_UNKNOWN = "dob_unknown";
-        public static final String AGE = "age";
         public static final String GENDER = "gender";
         public static final String UNIQUE_ID = "unique_id";
-        public static final String PHONE_NUMBER = "phone_number";
         public static final String LAST_INTERACTED_WITH = "last_interacted_with";
         public static final String CONTACT_STATUS = "contact_status";
+        public static final String VILLAGE_TOWN = "village_town";
+
     }
 }

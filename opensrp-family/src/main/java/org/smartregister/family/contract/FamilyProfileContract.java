@@ -2,14 +2,12 @@ package org.smartregister.family.contract;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Pair;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.FetchStatus;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.contract.BaseProfileContract;
 
@@ -67,7 +65,7 @@ public interface FamilyProfileContract {
 
         void getNextUniqueId(Triple<String, String, String> triple, FamilyProfileContract.InteractorCallBack callBack);
 
-        void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final FamilyProfileContract.InteractorCallBack callBack);
+        void saveRegistration(final FamilyEventClient familyEventClient, final String jsonString, final boolean isEditMode, final FamilyProfileContract.InteractorCallBack callBack);
 
     }
 
@@ -89,7 +87,7 @@ public interface FamilyProfileContract {
 
         JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception;
 
-        Pair<Client, Event> processMemberRegistration(String jsonString, String familyBaseEntityId);
+        FamilyEventClient processMemberRegistration(String jsonString, String familyBaseEntityId);
 
     }
 

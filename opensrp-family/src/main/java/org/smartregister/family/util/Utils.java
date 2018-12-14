@@ -22,7 +22,7 @@ public class Utils extends org.smartregister.util.Utils {
     }
 
     public static int getProfileImageResourceIDentifier() {
-        return R.drawable.ic_icon_nav_clients;
+        return R.mipmap.ic_family;
     }
 
     public static Context context() {

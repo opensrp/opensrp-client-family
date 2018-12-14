@@ -12,4 +12,7 @@
     <color name="vaccine_blue_bg_end">#3495bf</color>
 
     <color name="progress_orange">#fca917</color>
+
+    <color name="family_actionbar">#30383C</color>
+    <color name="family_navigation">#596468</color>
 </resources>

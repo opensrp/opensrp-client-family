@@ -1,18 +1,18 @@
 package org.smartregister.family.model;
 
 import android.util.Log;
-import android.util.Pair;
 
 import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.family.contract.FamilyRegisterContract;
+import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.util.FormUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
@@ -46,8 +46,27 @@ public abstract class BaseFamilyRegisterModel implements FamilyRegisterContract.
     }
 
     @Override
-    public Pair<Client, Event> processRegistration(String jsonString) {
-        return JsonFormUtils.processFamilyRegistrationForm(Utils.context().allSharedPreferences(), jsonString);
+    public List<FamilyEventClient> processRegistration(String jsonString) {
+        List<FamilyEventClient> familyEventClientList = new ArrayList<>();
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyRegistrationForm(Utils.context().allSharedPreferences(), jsonString);
+        if (familyEventClient == null) {
+            return null;
+        }
+
+        familyEventClientList.add(familyEventClient);
+
+        FamilyEventClient familyHeadEventClient = JsonFormUtils.processFamilyHeadRegistrationForm(Utils.context().allSharedPreferences(), jsonString, familyEventClient.getClient().getBaseEntityId());
+        if (familyHeadEventClient == null) {
+            return familyEventClientList;
+        }
+
+        // Update the family head and primary caregiver
+        Client familyClient = familyEventClient.getClient();
+        familyClient.addRelationship(Utils.metadata().familyRegister.familyHeadRelationKey, familyHeadEventClient.getClient().getBaseEntityId());
+        familyClient.addRelationship(Utils.metadata().familyRegister.familyCareGiverRelationKey, familyHeadEventClient.getClient().getBaseEntityId());
+
+        familyEventClientList.add(familyHeadEventClient);
+        return familyEventClientList;
     }
 
     @Override
