@@ -35,4 +35,7 @@
     <string name="family_head">Family Head</string>
     <string name="primary_care_giver">Primary Caregiver</string>
 
+    <!-- member -->
+    <string name="return_to_all_families">Return to all families</string>
+
 </resources>
