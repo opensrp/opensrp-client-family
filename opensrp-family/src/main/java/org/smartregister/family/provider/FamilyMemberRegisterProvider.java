@@ -20,6 +20,7 @@ import org.smartregister.family.R;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
+import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.customcontrols.CustomFontTextView;
@@ -48,6 +49,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
     private Context context;
     private CommonRepository commonRepository;
+    private ImageRenderHelper imageRenderHelper;
 
     private String familyHead;
     private String primaryCaregiver;
@@ -62,6 +64,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
         this.context = context;
         this.commonRepository = commonRepository;
+        this.imageRenderHelper = new ImageRenderHelper(context);
 
         this.familyHead = familyHead;
         this.primaryCaregiver = primaryCaregiver;
@@ -95,23 +98,38 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String middleName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.MIDDLE_NAME, true);
         String lastName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        String patientName = getName(firstName, lastName);
 
-        String dobString = Utils.getDuration(Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
+        String patientName = getName(firstName, middleName, lastName);
+
+        String dob = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false);
+        String dobString = Utils.getDuration(dob);
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+
+        if (firstName.startsWith("S")) {
+            pc.getColumnmaps().put("dod", "2018-01-07T03:00:00.000+03:00");
+        }
 
         String dod = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOD, false);
         if (StringUtils.isNotBlank(dod)) {
+
+            dobString = Utils.getDuration(dod, dob);
+            dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+
             patientName = patientName + ", " + dobString + " " + context.getString(R.string.deceased_brackets);
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
+            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier());
+            viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
             patientName = patientName + ", " + dobString;
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
+            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIDentifier());
+            viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
         fillValue(viewHolder.patientNameAge, patientName);
@@ -221,6 +239,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
+        public ImageView profile;
         public CustomFontTextView patientNameAge;
         public TextView gender;
         public TextView familyHead;
@@ -231,6 +250,8 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
+
+            profile = itemView.findViewById(R.id.profile);
 
             patientNameAge = itemView.findViewById(R.id.patient_name_age);
             gender = itemView.findViewById(R.id.gender);

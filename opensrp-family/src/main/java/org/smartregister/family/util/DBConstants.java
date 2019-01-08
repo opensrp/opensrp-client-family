@@ -8,6 +8,7 @@ public class DBConstants {
     public static final class KEY {
         public static final String ID = "_ID";
         public static final String FIRST_NAME = "first_name";
+        public static final String MIDDLE_NAME = "middle_name";
         public static final String LAST_NAME = "last_name";
         public static final String BASE_ENTITY_ID = "base_entity_id";
         public static final String RELATIONAL_ID = "relational_id";

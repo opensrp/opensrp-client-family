@@ -93,6 +93,13 @@
           }
         },
         {
+          "column_name": "middle_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "middleName"
+          }
+        },
+        {
           "column_name": "last_name",
           "type": "Client",
           "json_mapping": {
