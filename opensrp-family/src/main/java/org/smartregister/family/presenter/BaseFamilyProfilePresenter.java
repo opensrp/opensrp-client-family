@@ -33,7 +33,7 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
     protected FamilyProfileContract.Interactor interactor;
     protected FamilyProfileContract.Model model;
 
-    private String familyBaseEntityId;
+    protected String familyBaseEntityId;
 
     public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, FamilyProfileContract.Model model, String familyBaseEntityId) {
         this.view = new WeakReference<>(loginView);
