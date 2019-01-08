@@ -3,9 +3,9 @@ package org.smartregister.family;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.family.domain.FamilyMetadata;
+import org.smartregister.family.sync.FamilyClientProcessorForJava;
 import org.smartregister.repository.Repository;
 import org.smartregister.repository.UniqueIdRepository;
-import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
 
 import id.zelory.compressor.Compressor;
@@ -26,7 +26,7 @@ public class FamilyLibrary {
     private UniqueIdRepository uniqueIdRepository;
     private ECSyncHelper syncHelper;
 
-    private ClientProcessorForJava clientProcessorForJava;
+    private FamilyClientProcessorForJava clientProcessorForJava;
     private Compressor compressor;
 
     public static void init(Context context, Repository repository, FamilyMetadata familyMetadata, int applicationVersion, int databaseVersion) {
@@ -88,9 +88,9 @@ public class FamilyLibrary {
     }
 
 
-    public ClientProcessorForJava getClientProcessorForJava() {
+    public FamilyClientProcessorForJava getClientProcessorForJava() {
         if (clientProcessorForJava == null) {
-            clientProcessorForJava = ClientProcessorForJava.getInstance(context().applicationContext());
+            clientProcessorForJava = FamilyClientProcessorForJava.getInstance(context().applicationContext());
         }
         return clientProcessorForJava;
     }
