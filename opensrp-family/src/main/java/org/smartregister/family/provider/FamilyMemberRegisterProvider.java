@@ -2,6 +2,8 @@ package org.smartregister.family.provider;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,8 @@ import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
+import org.smartregister.view.customcontrols.CustomFontTextView;
+import org.smartregister.view.customcontrols.FontVariant;
 import org.smartregister.view.dialog.FilterOption;
 import org.smartregister.view.dialog.ServiceModeOption;
 import org.smartregister.view.dialog.SortOption;
@@ -97,7 +101,18 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         String dobString = Utils.getDuration(Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
 
-        patientName = patientName + ", " + dobString;
+        String dod = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOD, false);
+        if (StringUtils.isNotBlank(dod)) {
+            patientName = patientName + ", " + dobString + " " + context.getString(R.string.deceased_brackets);
+            viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
+            viewHolder.patientNameAge.setTextColor(Color.GRAY);
+            viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
+        } else {
+            patientName = patientName + ", " + dobString;
+            viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
+            viewHolder.patientNameAge.setTextColor(Color.BLACK);
+            viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
+        }
 
         fillValue(viewHolder.patientNameAge, patientName);
 
@@ -206,7 +221,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
-        public TextView patientNameAge;
+        public CustomFontTextView patientNameAge;
         public TextView gender;
         public TextView familyHead;
         public TextView primaryCaregiver;

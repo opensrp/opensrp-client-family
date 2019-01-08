@@ -18,7 +18,7 @@
     <dimen name="register_list_top_bottom_min_padding">2dp</dimen>
 
 
-    <dimen name="register_list_title_size">20sp</dimen>
+    <dimen name="register_list_title_size">19sp</dimen>
     <dimen name="register_list_desc_size">17sp</dimen>
     <dimen name="register_list_due_size">15sp</dimen>
 
