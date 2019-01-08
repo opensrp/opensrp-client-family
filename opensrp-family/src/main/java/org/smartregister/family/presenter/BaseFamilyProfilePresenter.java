@@ -27,11 +27,11 @@ import static org.smartregister.util.Utils.getName;
  */
 public abstract class BaseFamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
 
-    private static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
+    protected static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
 
-    private WeakReference<FamilyProfileContract.View> view;
-    private FamilyProfileContract.Interactor interactor;
-    private FamilyProfileContract.Model model;
+    protected WeakReference<FamilyProfileContract.View> view;
+    protected FamilyProfileContract.Interactor interactor;
+    protected FamilyProfileContract.Model model;
 
     private String familyBaseEntityId;
 

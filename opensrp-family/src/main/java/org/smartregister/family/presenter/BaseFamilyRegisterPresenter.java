@@ -27,9 +27,9 @@ public abstract class BaseFamilyRegisterPresenter implements FamilyRegisterContr
 
     public static final String TAG = BaseFamilyRegisterPresenter.class.getName();
 
-    private WeakReference<FamilyRegisterContract.View> viewReference;
-    private FamilyRegisterContract.Interactor interactor;
-    private FamilyRegisterContract.Model model;
+    protected WeakReference<FamilyRegisterContract.View> viewReference;
+    protected FamilyRegisterContract.Interactor interactor;
+    protected FamilyRegisterContract.Model model;
 
     public BaseFamilyRegisterPresenter(FamilyRegisterContract.View view, FamilyRegisterContract.Model model) {
         viewReference = new WeakReference<>(view);
