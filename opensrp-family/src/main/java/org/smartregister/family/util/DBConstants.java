@@ -17,6 +17,13 @@ public class DBConstants {
         public static final String LAST_INTERACTED_WITH = "last_interacted_with";
         public static final String CONTACT_STATUS = "contact_status";
         public static final String VILLAGE_TOWN = "village_town";
-
+        public static final String QUATER_CLAN = "quarter_clan";
+        public static final String STREET = "street";
+        public static final String LANDMARK = "landmark";
+        public static final String GPS = "gps";
+        public static final String FAMILY_SOURCE_INCOME = "fam_source_income";
+        public static final String PRIMARY_CAREGIVER = "primary_caregiver";
+        public static final String FAMILY_HEAD = "family_head";
+        public static final String PHONE_NUMBER = "phone_number";
     }
 }

@@ -27,13 +27,13 @@ import static org.smartregister.util.Utils.getName;
  */
 public abstract class BaseFamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
 
-    private static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
+    protected static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
 
-    private WeakReference<FamilyProfileContract.View> view;
-    private FamilyProfileContract.Interactor interactor;
-    private FamilyProfileContract.Model model;
+    protected WeakReference<FamilyProfileContract.View> view;
+    protected FamilyProfileContract.Interactor interactor;
+    protected FamilyProfileContract.Model model;
 
-    private String familyBaseEntityId;
+    protected String familyBaseEntityId;
 
     public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, FamilyProfileContract.Model model, String familyBaseEntityId) {
         this.view = new WeakReference<>(loginView);
@@ -182,6 +182,24 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
             }
 
             interactor.saveRegistration(familyEventClient, jsonString, false, this);
+
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    @Override
+    public void updateFamilyRegister(String jsonString) {
+
+        try {
+            getView().showProgressDialog(R.string.saving_dialog_title);
+
+            FamilyEventClient familyEventClient = model.processFamilyRegistrationForm(jsonString, familyBaseEntityId);
+            if (familyEventClient == null) {
+                return;
+            }
+
+            interactor.saveRegistration(familyEventClient, jsonString, true, this);
 
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));

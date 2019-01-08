@@ -28,6 +28,11 @@ public abstract class BaseFamilyProfileModel implements FamilyProfileContract.Mo
         return JsonFormUtils.processFamilyMemberRegistrationForm(FamilyLibrary.getInstance().context().allSharedPreferences(), jsonString, familyBaseEntityId);
     }
 
+    @Override
+    public FamilyEventClient processFamilyRegistrationForm(String jsonString, String familyBaseEntityId) {
+        return JsonFormUtils.processFamilyUpdateForm(FamilyLibrary.getInstance().context().allSharedPreferences(), jsonString, familyBaseEntityId);
+    }
+
 
     private FormUtils getFormUtils() {
         if (formUtils == null) {

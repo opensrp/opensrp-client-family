@@ -67,9 +67,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 entityId = entityId.replace("-", "");
             }
 
-            // Inject opensrp id into the form
-            JSONArray field = fields(form, STEP2);
+            JSONArray field = fields(form, STEP1);
             JSONObject uniqueId = getFieldJSONObject(field, Constants.JSON_FORM_KEY.UNIQUE_ID);
+            if (uniqueId != null) {
+                uniqueId.remove(JsonFormUtils.VALUE);
+                uniqueId.put(JsonFormUtils.VALUE, entityId+"_Family");
+            }
+
+            // Inject opensrp id into the form
+            field = fields(form, STEP2);
+            uniqueId = getFieldJSONObject(field, Constants.JSON_FORM_KEY.UNIQUE_ID);
             if (uniqueId != null) {
                 uniqueId.remove(JsonFormUtils.VALUE);
                 uniqueId.put(JsonFormUtils.VALUE, entityId);
@@ -83,7 +90,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
 
-    public static FamilyEventClient processFamilyRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
+    public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString) {
 
         try {
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
@@ -232,8 +239,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    public static FamilyEventClient processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
+    public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
+        return processFamilyForm(allSharedPreferences,jsonString,familyBaseEntityId,Utils.metadata().familyMemberRegister.updateEventType);
+    }
 
+    public static FamilyEventClient processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
+        return processFamilyForm(allSharedPreferences,jsonString,familyBaseEntityId,Utils.metadata().familyMemberRegister.registerEventType);
+    }
+
+    private static FamilyEventClient processFamilyForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId, String encounterType){
         try {
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
 
@@ -249,7 +263,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 entityId = generateRandomUUIDString();
             }
 
-            String encounterType = Utils.metadata().familyMemberRegister.registerEventType;
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
 
             // String lastLocationName = null;
@@ -303,7 +316,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             return null;
         }
     }
-
 
     public static void mergeAndSaveClient(ECSyncHelper ecUpdater, Client baseClient) throws Exception {
         JSONObject updatedClientJson = new JSONObject(org.smartregister.util.JsonFormUtils.gson.toJson(baseClient));

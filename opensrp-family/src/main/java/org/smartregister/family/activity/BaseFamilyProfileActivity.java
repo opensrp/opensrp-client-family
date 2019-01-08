@@ -118,8 +118,8 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
                 Log.d("JSONResult", jsonString);
 
                 JSONObject form = new JSONObject(jsonString);
-                if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Utils.metadata().familyRegister.registerEventType)) {
-                    // presenter().updateFamilyRegister(jsonString, false);
+                if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Utils.metadata().familyRegister.updateEventType)) {
+                    presenter().updateFamilyRegister(jsonString);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Utils.metadata().familyMemberRegister.registerEventType)) {
                     presenter().saveFamilyMember(jsonString);
                 }

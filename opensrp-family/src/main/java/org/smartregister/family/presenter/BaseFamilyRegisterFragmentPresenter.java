@@ -14,14 +14,14 @@ import java.util.TreeSet;
 
 public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegisterFragmentContract.Presenter {
 
-    private WeakReference<FamilyRegisterFragmentContract.View> viewReference;
+    protected WeakReference<FamilyRegisterFragmentContract.View> viewReference;
 
-    private FamilyRegisterFragmentContract.Model model;
+    protected FamilyRegisterFragmentContract.Model model;
 
-    private RegisterConfiguration config;
+    protected RegisterConfiguration config;
 
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
-    private String viewConfigurationIdentifier;
+    protected String viewConfigurationIdentifier;
 
     public BaseFamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier) {
         this.viewReference = new WeakReference<>(view);
