@@ -36,8 +36,8 @@ public abstract class BaseFamilyProfileMemberFragment extends BaseRegisterFragme
     }
 
     @Override
-    public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
-        FamilyMemberRegisterProvider familyMemberRegisterProvider = new FamilyMemberRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
+    public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns, String familyHead, String primaryCaregiver) {
+        FamilyMemberRegisterProvider familyMemberRegisterProvider = new FamilyMemberRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler, familyHead, primaryCaregiver);
         clientAdapter = new RecyclerViewPaginatedAdapter(null, familyMemberRegisterProvider, context().commonrepository(this.tablename));
         clientAdapter.setCurrentlimit(20);
         clientsView.setAdapter(clientAdapter);

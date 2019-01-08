@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
@@ -44,7 +45,10 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     private Context context;
     private CommonRepository commonRepository;
 
-    public FamilyMemberRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
+    private String familyHead;
+    private String primaryCaregiver;
+
+    public FamilyMemberRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener, String familyHead, String primaryCaregiver) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
@@ -54,6 +58,9 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
         this.context = context;
         this.commonRepository = commonRepository;
+
+        this.familyHead = familyHead;
+        this.primaryCaregiver = primaryCaregiver;
     }
 
     @Override
@@ -94,7 +101,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
         fillValue(viewHolder.patientNameAge, patientName);
 
-        String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, false);
+        String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);
 
         View patient = viewHolder.patientColumn;
@@ -108,6 +115,22 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
         //fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
+
+        String baseEntityId = pc.getCaseId();
+        if (StringUtils.isNotBlank(baseEntityId)) {
+            if (baseEntityId.equals(familyHead)) {
+                viewHolder.familyHead.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.familyHead.setVisibility(View.GONE);
+            }
+
+
+            if (baseEntityId.equals(primaryCaregiver)) {
+                viewHolder.primaryCaregiver.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.primaryCaregiver.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {

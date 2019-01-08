@@ -53,6 +53,7 @@ public abstract class BaseFamilyProfileMemberModel implements FamilyProfileMembe
                 tableName + "." + DBConstants.KEY.UNIQUE_ID,
                 tableName + "." + DBConstants.KEY.GENDER,
                 tableName + "." + DBConstants.KEY.DOB,
+                tableName + "." + DBConstants.KEY.DOD,
         };
         return columns;
     }

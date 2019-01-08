@@ -115,7 +115,7 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
             goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), false);
         } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_DOSAGE_STATUS) {
             CommonPersonObjectClient pc = (CommonPersonObjectClient) view.getTag();
-            String baseEntityId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.BASE_ENTITY_ID, true);
+            String baseEntityId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.BASE_ENTITY_ID, false);
 
             if (StringUtils.isNotBlank(baseEntityId)) {
                 // TODO Proceed to dose status
@@ -131,6 +131,8 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
 
         Intent intent = new Intent(getActivity(), Utils.metadata().profileActivity);
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
+        intent.putExtra(Constants.INTENT_KEY.FAMILY_HEAD, Utils.getValue(patient.getColumnmaps(), DBConstants.KEY.FAMILY_HEAD, false));
+        intent.putExtra(Constants.INTENT_KEY.PRIMARY_CAREGIVER, Utils.getValue(patient.getColumnmaps(), DBConstants.KEY.PRIMARY_CAREGIVER, true));
         startActivity(intent);
     }
 

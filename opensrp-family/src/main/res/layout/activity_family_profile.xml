@@ -84,6 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textview_name"
+                    android:layout_marginBottom="@dimen/register_member_nav_margin"
                     android:layout_toEndOf="@+id/imageview_profile"
                     android:layout_toRightOf="@+id/imageview_profile"
                     android:orientation="horizontal">
@@ -96,8 +97,10 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/register_member_village_size" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -115,8 +118,10 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/register_member_village_size" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -133,8 +138,10 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/white"
+                        android:textSize="@dimen/register_member_village_size"
                         android:visibility="invisible" />
                 </LinearLayout>
             </RelativeLayout>

@@ -16,7 +16,7 @@
     <!-- profile -->
     <string name="unique_id_text">ID: %1$s</string>
     <string name="age_text">Age: %1$s</string>
-    <string name="member">Member</string>
+    <string name="member">Members</string>
     <string name="due">Due</string>
     <string name="activity">Activity</string>
 
