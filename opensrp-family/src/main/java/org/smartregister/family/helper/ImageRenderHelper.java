@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.domain.Photo;
 import org.smartregister.util.ImageUtils;
-import org.smartregister.util.OpenSRPImageLoader;
-import org.smartregister.view.activity.DrishtiApplication;
 
 /**
  * Created by ndegwamartin on 13/07/2018.
