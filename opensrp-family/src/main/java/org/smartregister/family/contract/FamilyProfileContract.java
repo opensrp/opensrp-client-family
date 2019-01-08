@@ -47,6 +47,8 @@ public interface FamilyProfileContract {
 
         void saveFamilyMember(String jsonString);
 
+        void updateFamilyRegister(String jsonString);
+
         void fetchProfileData();
 
         void refreshProfileView();
@@ -88,6 +90,8 @@ public interface FamilyProfileContract {
         JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception;
 
         FamilyEventClient processMemberRegistration(String jsonString, String familyBaseEntityId);
+
+        FamilyEventClient processFamilyRegistrationForm(String jsonString, String familyBaseEntityId);
 
     }
 

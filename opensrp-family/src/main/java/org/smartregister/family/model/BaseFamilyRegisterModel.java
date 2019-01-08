@@ -48,7 +48,7 @@ public abstract class BaseFamilyRegisterModel implements FamilyRegisterContract.
     @Override
     public List<FamilyEventClient> processRegistration(String jsonString) {
         List<FamilyEventClient> familyEventClientList = new ArrayList<>();
-        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyRegistrationForm(Utils.context().allSharedPreferences(), jsonString);
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyUpdateForm(Utils.context().allSharedPreferences(), jsonString);
         if (familyEventClient == null) {
             return null;
         }

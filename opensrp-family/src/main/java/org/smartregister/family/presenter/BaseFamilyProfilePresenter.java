@@ -189,6 +189,24 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
     }
 
     @Override
+    public void updateFamilyRegister(String jsonString) {
+
+        try {
+            getView().showProgressDialog(R.string.saving_dialog_title);
+
+            FamilyEventClient familyEventClient = model.processFamilyRegistrationForm(jsonString, familyBaseEntityId);
+            if (familyEventClient == null) {
+                return;
+            }
+
+            interactor.saveRegistration(familyEventClient, jsonString, true, this);
+
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    @Override
     public void onRegistrationSaved(boolean isEdit) {
         getView().refreshMemberList(FetchStatus.fetched);
         getView().hideProgressDialog();
