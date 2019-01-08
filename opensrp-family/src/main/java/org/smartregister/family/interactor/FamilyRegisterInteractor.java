@@ -12,7 +12,6 @@ import org.smartregister.domain.UniqueId;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.domain.FamilyEventClient;
-import org.smartregister.family.sync.FamilyClientProcessorForJava;
 import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
@@ -21,6 +20,7 @@ import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.UniqueIdRepository;
+import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
 
 import java.util.Date;
@@ -177,7 +177,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
         return FamilyLibrary.getInstance().getEcSyncHelper();
     }
 
-    public FamilyClientProcessorForJava getClientProcessorForJava() {
+    public ClientProcessorForJava getClientProcessorForJava() {
         return FamilyLibrary.getInstance().getClientProcessorForJava();
     }
 }

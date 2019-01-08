@@ -107,10 +107,6 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         String dobString = Utils.getDuration(dob);
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
 
-        if (firstName.startsWith("S")) {
-            pc.getColumnmaps().put("dod", "2018-01-07T03:00:00.000+03:00");
-        }
-
         String dod = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOD, false);
         if (StringUtils.isNotBlank(dod)) {
 
