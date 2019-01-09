@@ -13,15 +13,16 @@ import java.util.TreeSet;
 
 public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileMemberContract.Presenter {
 
-    private WeakReference<FamilyProfileMemberContract.View> viewReference;
+    protected WeakReference<FamilyProfileMemberContract.View> viewReference;
 
-    private FamilyProfileMemberContract.Model model;
+    protected FamilyProfileMemberContract.Model model;
 
-    private RegisterConfiguration config;
+    protected RegisterConfiguration config;
 
-    private String familyBaseEntityId;
+    protected String familyBaseEntityId;
     private String familyHead;
     private String primaryCaregiver;
+
 
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
 
