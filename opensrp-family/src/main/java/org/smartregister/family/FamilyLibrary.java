@@ -3,6 +3,7 @@ package org.smartregister.family;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.family.domain.FamilyMetadata;
+import org.smartregister.family.sync.FamilyClientProcessorForJava;
 import org.smartregister.repository.Repository;
 import org.smartregister.repository.UniqueIdRepository;
 import org.smartregister.sync.ClientProcessorForJava;
@@ -90,7 +91,7 @@ public class FamilyLibrary {
 
     public ClientProcessorForJava getClientProcessorForJava() {
         if (clientProcessorForJava == null) {
-            clientProcessorForJava = ClientProcessorForJava.getInstance(context().applicationContext());
+            clientProcessorForJava = FamilyClientProcessorForJava.getInstance(context().applicationContext());
         }
         return clientProcessorForJava;
     }

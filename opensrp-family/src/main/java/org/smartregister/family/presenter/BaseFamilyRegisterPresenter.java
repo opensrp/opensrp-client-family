@@ -3,13 +3,10 @@ package org.smartregister.family.presenter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.Pair;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyRegisterContract;

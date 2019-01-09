@@ -20,17 +20,22 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
     protected RegisterConfiguration config;
 
     protected String familyBaseEntityId;
+    private String familyHead;
+    private String primaryCaregiver;
+
 
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
 
     private String viewConfigurationIdentifier;
 
-    public BaseFamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, FamilyProfileMemberContract.Model model, String viewConfigurationIdentifier, String familyBaseEntityId) {
+    public BaseFamilyProfileMemberPresenter(FamilyProfileMemberContract.View view, FamilyProfileMemberContract.Model model, String viewConfigurationIdentifier, String familyBaseEntityId, String familyHead, String primaryCaregiver) {
         this.viewReference = new WeakReference<>(view);
         this.model = model;
         this.viewConfigurationIdentifier = viewConfigurationIdentifier;
         this.config = model.defaultRegisterConfiguration();
         this.familyBaseEntityId = familyBaseEntityId;
+        this.familyHead = familyHead;
+        this.primaryCaregiver = primaryCaregiver;
     }
 
     @Override
@@ -58,7 +63,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
         String mainSelect = model.mainSelect(tableName, mainCondition);
 
         getView().initializeQueryParams(tableName, countSelect, mainSelect);
-        getView().initializeAdapter(visibleColumns);
+        getView().initializeAdapter(visibleColumns, familyHead, primaryCaregiver);
 
         getView().countExecute();
         getView().filterandSortInInitializeQueries();
@@ -81,7 +86,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     @Override
     public String getDefaultSortQuery() {
-        return DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
+        return DBConstants.KEY.DOD + ", " + DBConstants.KEY.DOB + " ASC ";
     }
 
     protected FamilyProfileMemberContract.View getView() {
@@ -101,5 +106,13 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     public String getFamilyBaseEntityId() {
         return familyBaseEntityId;
+    }
+
+    public String getFamilyHead() {
+        return familyHead;
+    }
+
+    public String getPrimaryCaregiver() {
+        return primaryCaregiver;
     }
 }

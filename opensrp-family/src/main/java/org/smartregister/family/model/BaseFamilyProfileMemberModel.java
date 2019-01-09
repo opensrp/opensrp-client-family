@@ -49,10 +49,12 @@ public abstract class BaseFamilyProfileMemberModel implements FamilyProfileMembe
                 tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
                 tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
                 tableName + "." + DBConstants.KEY.FIRST_NAME,
+                tableName + "." + DBConstants.KEY.MIDDLE_NAME,
                 tableName + "." + DBConstants.KEY.LAST_NAME,
                 tableName + "." + DBConstants.KEY.UNIQUE_ID,
                 tableName + "." + DBConstants.KEY.GENDER,
                 tableName + "." + DBConstants.KEY.DOB,
+                tableName + "." + DBConstants.KEY.DOD,
         };
         return columns;
     }
