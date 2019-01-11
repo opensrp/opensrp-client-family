@@ -138,7 +138,6 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
 
 
         Form form = new Form();
-        form.setName(getString(R.string.add_fam_member));
         form.setActionBarBackground(R.color.family_actionbar);
         form.setWizard(false);
         intent.putExtra(JsonFormConstants.JSON_FORM_KEY.FORM, form);

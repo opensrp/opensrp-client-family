@@ -30,7 +30,6 @@
 
     <!-- form -->
     <string name="add_fam">Add Family</string>
-    <string name="add_fam_member">Add Family Member</string>
 
     <!-- register -->
     <string name="family_head">Family Head</string>
