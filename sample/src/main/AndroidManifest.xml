@@ -32,7 +32,7 @@
                 android:value=".activity.FamilyRegisterActivity" />
         </activity>
         <activity
-            android:name="com.vijay.jsonwizard.activities.JsonFormActivity"
+            android:name="com.vijay.jsonwizard.activities.JsonWizardFormActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/FamilyTheme.NoActionBar"

@@ -133,7 +133,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
 
     @Override
     public void startFormActivity(JSONObject jsonForm) {
-        Intent intent = new Intent(this, Utils.metadata().nativeWizardFormActivity);
+        Intent intent = new Intent(this, Utils.metadata().familyMemberFormActivity);
         intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, jsonForm.toString());
 
 
@@ -141,7 +141,6 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
         form.setName(getString(R.string.add_fam_member));
         form.setActionBarBackground(R.color.family_actionbar);
         form.setWizard(false);
-        form.setHomeAsUpIndicator(R.mipmap.ic_cross_white);
         intent.putExtra(JsonFormConstants.JSON_FORM_KEY.FORM, form);
 
 
