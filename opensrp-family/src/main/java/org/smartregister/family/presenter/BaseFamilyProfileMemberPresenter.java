@@ -81,7 +81,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     @Override
     public String getMainCondition() {
-        return DBConstants.KEY.RELATIONAL_ID + " = '" + familyBaseEntityId + "' ";
+        return DBConstants.KEY.OBJECT_RELATIONAL_ID + " = '" + familyBaseEntityId + "' ";
     }
 
     @Override

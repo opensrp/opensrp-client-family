@@ -90,24 +90,36 @@ public class SampleApplication extends DrishtiApplication {
         if (commonFtsObject == null) {
             commonFtsObject = new CommonFtsObject(getFtsTables());
             for (String ftsTable : commonFtsObject.getTables()) {
-                commonFtsObject.updateSearchFields(ftsTable, getFtsSearchFields());
-                commonFtsObject.updateSortFields(ftsTable, getFtsSortFields());
+                commonFtsObject.updateSearchFields(ftsTable, getFtsSearchFields(ftsTable));
+                commonFtsObject.updateSortFields(ftsTable, getFtsSortFields(ftsTable));
             }
         }
         return commonFtsObject;
     }
 
     private static String[] getFtsTables() {
-        return new String[]{SampleConstants.TABLE_NAME.FAMILY};
+        return new String[]{SampleConstants.TABLE_NAME.FAMILY, SampleConstants.TABLE_NAME.FAMILY_MEMBER};
     }
 
-    private static String[] getFtsSearchFields() {
-        return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.UNIQUE_ID};
+    private static String[] getFtsSearchFields(String tableName) {
+        if (tableName.equals(SampleConstants.TABLE_NAME.FAMILY)) {
+            return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.VILLAGE_TOWN, DBConstants.KEY.FIRST_NAME,
+                    DBConstants.KEY.LAST_NAME, DBConstants.KEY.UNIQUE_ID};
+        } else if (tableName.equals(SampleConstants.TABLE_NAME.FAMILY_MEMBER)) {
+            return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.MIDDLE_NAME,
+                    DBConstants.KEY.LAST_NAME, DBConstants.KEY.UNIQUE_ID};
+        }
+        return null;
     }
 
-    private static String[] getFtsSortFields() {
-        return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY
-                .LAST_INTERACTED_WITH};
+    private static String[] getFtsSortFields(String tableName) {
+        if (tableName.equals(SampleConstants.TABLE_NAME.FAMILY)) {
+            return new String[]{DBConstants.KEY.LAST_INTERACTED_WITH};
+        } else if (tableName.equals(SampleConstants.TABLE_NAME.FAMILY_MEMBER)) {
+            return new String[]{DBConstants.KEY.DOB, DBConstants.KEY.DOD, DBConstants.KEY
+                    .LAST_INTERACTED_WITH};
+        }
+        return null;
     }
 
     private FamilyMetadata getMetadata() {
