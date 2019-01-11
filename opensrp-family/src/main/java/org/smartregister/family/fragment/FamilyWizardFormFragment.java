@@ -53,13 +53,13 @@ public class FamilyWizardFormFragment extends JsonWizardFormFragment {
 
         if (validationStatus != null && validationStatus.isValid()) {
             if (getPresenter().intermediatePage()) {
-                getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(true);
+                //getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(true);
             } else {
                 getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(true);
             }
         } else {
             if (getPresenter().intermediatePage()) {
-                getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(false);
+                //getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(false);
             } else {
                 getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(false);
             }

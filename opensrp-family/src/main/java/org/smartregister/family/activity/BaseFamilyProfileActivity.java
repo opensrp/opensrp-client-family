@@ -12,6 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.vijay.jsonwizard.constants.JsonFormConstants;
+import com.vijay.jsonwizard.domain.Form;
+
 import org.json.JSONObject;
 import org.smartregister.AllConstants;
 import org.smartregister.domain.FetchStatus;
@@ -129,9 +132,19 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
     }
 
     @Override
-    public void startFormActivity(JSONObject form) {
-        Intent intent = new Intent(this, Utils.metadata().nativeFormActivity);
-        intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, form.toString());
+    public void startFormActivity(JSONObject jsonForm) {
+        Intent intent = new Intent(this, Utils.metadata().nativeWizardFormActivity);
+        intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, jsonForm.toString());
+
+
+        Form form = new Form();
+        form.setName(getString(R.string.add_fam_member));
+        form.setActionBarBackground(R.color.family_actionbar);
+        form.setWizard(false);
+        form.setHomeAsUpIndicator(R.mipmap.ic_cross_white);
+        intent.putExtra(JsonFormConstants.JSON_FORM_KEY.FORM, form);
+
+
         startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
     }
 
