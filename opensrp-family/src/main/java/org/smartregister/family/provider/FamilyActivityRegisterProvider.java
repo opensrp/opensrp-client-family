@@ -39,7 +39,7 @@ import static org.smartregister.family.util.Utils.getName;
  * Created by keyman on 14/01/2019.
  */
 
-public class FamilyMemberRegisterProvider implements RecyclerViewProvider<FamilyMemberRegisterProvider.RegisterViewHolder> {
+public class FamilyActivityRegisterProvider implements RecyclerViewProvider<FamilyActivityRegisterProvider.RegisterViewHolder> {
 
     private final LayoutInflater inflater;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
@@ -54,7 +54,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     private String familyHead;
     private String primaryCaregiver;
 
-    public FamilyMemberRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener, String familyHead, String primaryCaregiver) {
+    public FamilyActivityRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener, String familyHead, String primaryCaregiver) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
