@@ -234,7 +234,7 @@
         "options": [
           {
             "key": "same_as_fam_name",
-            "text": "Same as family name",
+            "text": "Surname same as family name",
             "text_size": "18px",
             "value": "false"
           }

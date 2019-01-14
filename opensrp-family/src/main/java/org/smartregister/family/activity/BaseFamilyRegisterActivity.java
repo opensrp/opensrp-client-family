@@ -45,7 +45,7 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
 
     @Override
     public void startFormActivity(JSONObject jsonForm) {
-        Intent intent = new Intent(this, Utils.metadata().nativeWizardFormActivity);
+        Intent intent = new Intent(this, Utils.metadata().familyFormActivity);
         intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, jsonForm.toString());
 
         Form form = new Form();
