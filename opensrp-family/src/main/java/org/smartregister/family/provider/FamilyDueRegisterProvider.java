@@ -20,7 +20,6 @@ import org.smartregister.family.R;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
-import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.customcontrols.CustomFontTextView;
@@ -49,12 +48,8 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
 
     private Context context;
     private CommonRepository commonRepository;
-    private ImageRenderHelper imageRenderHelper;
 
-    private String familyHead;
-    private String primaryCaregiver;
-
-    public FamilyDueRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener, String familyHead, String primaryCaregiver) {
+    public FamilyDueRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
@@ -64,10 +59,6 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
 
         this.context = context;
         this.commonRepository = commonRepository;
-        this.imageRenderHelper = new ImageRenderHelper(context);
-
-        this.familyHead = familyHead;
-        this.primaryCaregiver = primaryCaregiver;
     }
 
     @Override
@@ -95,7 +86,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
         footerViewHolder.previousPageView.setOnClickListener(paginationClickListener);
     }
 
-    private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
+    private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, final RegisterViewHolder viewHolder) {
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String middleName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.MIDDLE_NAME, true);
@@ -117,49 +108,35 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
-            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier());
             viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
             patientName = patientName + ", " + dobString;
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
-            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIDentifier());
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
         fillValue(viewHolder.patientNameAge, patientName);
 
-        String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
-        fillValue(viewHolder.gender, gender);
+        //String lastVisit = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
+        //fillValue(viewHolder.lastVisit, lastVisit);
 
-        View patient = viewHolder.patientColumn;
-        attachPatientOnclickListener(patient, client);
+        viewHolder.nextArrowColumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.nextArrow.performClick();
+            }
+        });
 
-        View nextArrow = viewHolder.nextArrow;
-        attachNextArrowOnclickListener(nextArrow, client);
+        attachPatientOnclickListener(viewHolder.patientColumn, client);
 
+        attachNextArrowOnclickListener(viewHolder.nextArrow, client);
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
         //fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
-
-        String baseEntityId = pc.getCaseId();
-        if (StringUtils.isNotBlank(baseEntityId)) {
-            if (baseEntityId.equals(familyHead)) {
-                viewHolder.familyHead.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.familyHead.setVisibility(View.GONE);
-            }
-
-
-            if (baseEntityId.equals(primaryCaregiver)) {
-                viewHolder.primaryCaregiver.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.primaryCaregiver.setVisibility(View.GONE);
-            }
-        }
     }
 
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {
@@ -195,7 +172,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
 
     @Override
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.family_member_register_list_row, parent, false);
+        View view = inflater.inflate(R.layout.family_due_register_list_row, parent, false);
 
         /*
         ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
@@ -235,27 +212,27 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
-        public ImageView profile;
+        public ImageView status;
         public CustomFontTextView patientNameAge;
-        public TextView gender;
-        public TextView familyHead;
-        public TextView primaryCaregiver;
+        public TextView lastVisit;
         public ImageView nextArrow;
 
         public View patientColumn;
 
+        public View nextArrowColumn;
+
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
-            profile = itemView.findViewById(R.id.profile);
+            status = itemView.findViewById(R.id.status);
 
             patientNameAge = itemView.findViewById(R.id.patient_name_age);
-            gender = itemView.findViewById(R.id.gender);
-            familyHead = itemView.findViewById(R.id.family_head);
-            primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
+            lastVisit = itemView.findViewById(R.id.last_visit);
+
             nextArrow = itemView.findViewById(R.id.next_arrow);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
+            nextArrowColumn = itemView.findViewById(R.id.next_arrow_column);
         }
     }
 

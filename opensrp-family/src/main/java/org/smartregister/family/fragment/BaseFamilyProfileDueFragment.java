@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
+import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.contract.FamilyProfileDueContract;
 import org.smartregister.family.provider.FamilyDueRegisterProvider;
-import org.smartregister.family.provider.FamilyMemberRegisterProvider;
+import org.smartregister.family.util.Utils;
+import org.smartregister.view.activity.BaseRegisterActivity;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.Set;
@@ -32,8 +34,8 @@ public abstract class BaseFamilyProfileDueFragment extends BaseRegisterFragment 
 
 
     @Override
-    public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns, String familyHead, String primaryCaregiver) {
-        FamilyDueRegisterProvider familyDueRegisterProvider = new FamilyDueRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler, familyHead, primaryCaregiver);
+    public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
+        FamilyDueRegisterProvider familyDueRegisterProvider = new FamilyDueRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
         clientAdapter = new RecyclerViewPaginatedAdapter(null, familyDueRegisterProvider, context().commonrepository(this.tablename));
         clientAdapter.setCurrentlimit(20);
         clientsView.setAdapter(clientAdapter);
@@ -44,5 +46,40 @@ public abstract class BaseFamilyProfileDueFragment extends BaseRegisterFragment 
         if (getActivity() == null) {
             return;
         }
+    }
+
+    @Override
+    protected String getMainCondition() {
+        return presenter().getMainCondition();
+    }
+
+    @Override
+    protected String getDefaultSortQuery() {
+        return presenter().getDefaultSortQuery();
+    }
+
+    @Override
+    protected void startRegistration() {
+        ((BaseFamilyProfileActivity) getActivity()).startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
+    }
+
+    @Override
+    public void setUniqueID(String s) {
+        if (getSearchView() != null) {
+            getSearchView().setText(s);
+        }
+    }
+
+    @Override
+    public void showNotFoundPopup(String uniqueId) {
+        if (getActivity() == null) {
+            return;
+        }
+        NoMatchDialogFragment.launchDialog((BaseRegisterActivity) getActivity(), DIALOG_TAG, uniqueId);
+    }
+
+    @Override
+    public FamilyProfileDueContract.Presenter presenter() {
+        return (FamilyProfileDueContract.Presenter) presenter;
     }
 }

@@ -1,9 +1,11 @@
 package org.smartregister.family.sample.fragment;
 
 import android.os.Bundle;
-import android.view.View;
 
 import org.smartregister.family.fragment.BaseFamilyProfileDueFragment;
+import org.smartregister.family.sample.model.FamilyProfileDueModel;
+import org.smartregister.family.sample.presenter.FamilyProfileDuePresenter;
+import org.smartregister.family.util.Constants;
 
 public class FamilyProfileDueFragment extends BaseFamilyProfileDueFragment {
 
@@ -19,36 +21,7 @@ public class FamilyProfileDueFragment extends BaseFamilyProfileDueFragment {
 
     @Override
     protected void initializePresenter() {
-
-    }
-
-    @Override
-    public void setUniqueID(String s) {
-
-    }
-
-    @Override
-    protected String getMainCondition() {
-        return null;
-    }
-
-    @Override
-    protected String getDefaultSortQuery() {
-        return null;
-    }
-
-    @Override
-    protected void startRegistration() {
-
-    }
-
-    @Override
-    protected void onViewClicked(View view) {
-        super.onViewClicked(view);
-    }
-
-    @Override
-    public void showNotFoundPopup(String s) {
-
+        String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.BASE_ENTITY_ID);
+        presenter = new FamilyProfileDuePresenter(this, new FamilyProfileDueModel(), null, familyBaseEntityId);
     }
 }

@@ -10,7 +10,7 @@ public interface FamilyProfileDueContract {
 
     interface View extends BaseRegisterFragmentContract.View {
 
-        void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns, String familyHead, String primaryCaregiver);
+        void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns);
 
         FamilyProfileDueContract.Presenter presenter();
     }

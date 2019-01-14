@@ -35,6 +35,10 @@ public class Utils extends org.smartregister.util.Utils {
         return R.mipmap.ic_member;
     }
 
+    public static int getDueProfileImageResourceIDentifier() {
+        return R.color.primary;
+    }
+
     public static int getChildProfileImageResourceIDentifier() {
         return R.mipmap.ic_child;
     }

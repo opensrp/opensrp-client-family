@@ -95,7 +95,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         footerViewHolder.previousPageView.setOnClickListener(paginationClickListener);
     }
 
-    private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
+    private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, final RegisterViewHolder viewHolder) {
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String middleName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.MIDDLE_NAME, true);
@@ -133,6 +133,13 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);
 
+        viewHolder.nextArrowColumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.nextArrow.performClick();
+            }
+        });
+        
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
 
@@ -243,6 +250,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         public ImageView nextArrow;
 
         public View patientColumn;
+        public View nextArrowColumn;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
@@ -256,6 +264,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             nextArrow = itemView.findViewById(R.id.next_arrow);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
+            nextArrowColumn = itemView.findViewById(R.id.next_arrow_column);
         }
     }
 

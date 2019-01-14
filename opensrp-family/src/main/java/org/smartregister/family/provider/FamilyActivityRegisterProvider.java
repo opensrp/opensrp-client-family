@@ -51,10 +51,7 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
     private CommonRepository commonRepository;
     private ImageRenderHelper imageRenderHelper;
 
-    private String familyHead;
-    private String primaryCaregiver;
-
-    public FamilyActivityRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener, String familyHead, String primaryCaregiver) {
+    public FamilyActivityRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
@@ -65,9 +62,6 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
         this.context = context;
         this.commonRepository = commonRepository;
         this.imageRenderHelper = new ImageRenderHelper(context);
-
-        this.familyHead = familyHead;
-        this.primaryCaregiver = primaryCaregiver;
     }
 
     @Override
@@ -144,22 +138,6 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
         //fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
-
-        String baseEntityId = pc.getCaseId();
-        if (StringUtils.isNotBlank(baseEntityId)) {
-            if (baseEntityId.equals(familyHead)) {
-                viewHolder.familyHead.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.familyHead.setVisibility(View.GONE);
-            }
-
-
-            if (baseEntityId.equals(primaryCaregiver)) {
-                viewHolder.primaryCaregiver.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.primaryCaregiver.setVisibility(View.GONE);
-            }
-        }
     }
 
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {
