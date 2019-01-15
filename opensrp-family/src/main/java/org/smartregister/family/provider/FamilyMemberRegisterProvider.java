@@ -139,7 +139,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
                 viewHolder.nextArrow.performClick();
             }
         });
-        
+
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
 

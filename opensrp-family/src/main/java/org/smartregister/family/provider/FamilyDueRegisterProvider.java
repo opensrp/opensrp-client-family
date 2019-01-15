@@ -117,7 +117,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
-        fillValue(viewHolder.patientNameAge, patientName);
+        //fillValue(viewHolder.patientNameAge, patientName);
 
         //String lastVisit = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         //fillValue(viewHolder.lastVisit, lastVisit);
@@ -192,6 +192,11 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
     @Override
     public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.smart_register_pagination, parent, false);
+        if (Utils.metadata().familyDueRegister.showPagination) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
         return new FooterViewHolder(view);
     }
 

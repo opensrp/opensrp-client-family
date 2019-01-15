@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
+import org.smartregister.family.adapter.FamilyRecyclerViewCustomAdapter;
 import org.smartregister.family.contract.FamilyProfileDueContract;
 import org.smartregister.family.provider.FamilyDueRegisterProvider;
 import org.smartregister.family.util.Utils;
@@ -36,8 +36,8 @@ public abstract class BaseFamilyProfileDueFragment extends BaseRegisterFragment 
     @Override
     public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
         FamilyDueRegisterProvider familyDueRegisterProvider = new FamilyDueRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
-        clientAdapter = new RecyclerViewPaginatedAdapter(null, familyDueRegisterProvider, context().commonrepository(this.tablename));
-        clientAdapter.setCurrentlimit(20);
+        clientAdapter = new FamilyRecyclerViewCustomAdapter(null, familyDueRegisterProvider, context().commonrepository(this.tablename), Utils.metadata().familyDueRegister.showPagination);
+        clientAdapter.setCurrentlimit(Utils.metadata().familyDueRegister.currentLimit);
         clientsView.setAdapter(clientAdapter);
     }
 

@@ -20,7 +20,6 @@ import org.smartregister.family.R;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
-import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.customcontrols.CustomFontTextView;
@@ -49,7 +48,6 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
     private Context context;
     private CommonRepository commonRepository;
-    private ImageRenderHelper imageRenderHelper;
 
     public FamilyActivityRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
@@ -61,7 +59,6 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
         this.context = context;
         this.commonRepository = commonRepository;
-        this.imageRenderHelper = new ImageRenderHelper(context);
     }
 
     @Override
@@ -111,28 +108,22 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
-            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier());
-            viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
             patientName = patientName + ", " + dobString;
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
-            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIDentifier());
-            viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
         fillValue(viewHolder.patientNameAge, patientName);
+
+        viewHolder.status.setImageResource(Utils.getActivityProfileImageResourceIDentifier());
 
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);
 
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
-
-        View nextArrow = viewHolder.nextArrow;
-        attachNextArrowOnclickListener(nextArrow, client);
-
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
@@ -173,7 +164,7 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
     @Override
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.family_member_register_list_row, parent, false);
+        View view = inflater.inflate(R.layout.family_activity_register_list_row, parent, false);
 
         /*
         ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
@@ -192,7 +183,12 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
     @Override
     public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.smart_register_pagination, parent, false);
+        View view = inflater.inflate(R.layout.family_custom_pagination, parent, false);
+        if (Utils.metadata().familyActivityRegister.showPagination) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
         return new FooterViewHolder(view);
     }
 
@@ -213,25 +209,23 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
-        public ImageView profile;
+        public ImageView status;
         public CustomFontTextView patientNameAge;
         public TextView gender;
         public TextView familyHead;
         public TextView primaryCaregiver;
-        public ImageView nextArrow;
 
         public View patientColumn;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
-            profile = itemView.findViewById(R.id.profile);
+            status = itemView.findViewById(R.id.status);
 
             patientNameAge = itemView.findViewById(R.id.patient_name_age);
             gender = itemView.findViewById(R.id.gender);
             familyHead = itemView.findViewById(R.id.family_head);
             primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
-            nextArrow = itemView.findViewById(R.id.next_arrow);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
         }
