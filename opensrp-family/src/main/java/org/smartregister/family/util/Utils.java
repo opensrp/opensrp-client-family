@@ -44,7 +44,7 @@ public class Utils extends org.smartregister.util.Utils {
     }
 
     public static int getDueProfileImageResourceIDentifier() {
-        return R.color.primary;
+        return R.color.due_profile_blue;
     }
 
     public static int getChildProfileImageResourceIDentifier() {

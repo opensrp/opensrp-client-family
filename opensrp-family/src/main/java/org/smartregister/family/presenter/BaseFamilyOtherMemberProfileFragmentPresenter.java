@@ -52,7 +52,7 @@ public abstract class BaseFamilyOtherMemberProfileFragmentPresenter implements F
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = Utils.metadata().familyActivityRegister.tableName;
+        String tableName = Utils.metadata().familyOtherMemberRegister.tableName;
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);

@@ -200,7 +200,7 @@ public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<F
     @Override
     public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.family_custom_pagination, parent, false);
-        if (Utils.metadata().familyActivityRegister.showPagination) {
+        if (Utils.metadata().familyOtherMemberRegister.showPagination) {
             view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.GONE);

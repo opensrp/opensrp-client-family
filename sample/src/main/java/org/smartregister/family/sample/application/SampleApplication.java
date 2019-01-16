@@ -128,6 +128,7 @@ public class SampleApplication extends DrishtiApplication {
         metadata.updateFamilyMemberRegister(SampleConstants.JSON_FORM.FAMILY_MEMBER_REGISTER, SampleConstants.TABLE_NAME.FAMILY_MEMBER, SampleConstants.EventType.FAMILY_MEMBER_REGISTRATION, SampleConstants.EventType.UPDATE_FAMILY_MEMBER_REGISTRATION, SampleConstants.CONFIGURATION.FAMILY_MEMBER_REGISTER, SampleConstants.RELATIONSHIP.FAMILY);
         metadata.updateFamilyDueRegister(SampleConstants.TABLE_NAME.FAMILY_MEMBER, 20, true);
         metadata.updateFamilyActivityRegister(SampleConstants.TABLE_NAME.FAMILY_MEMBER, Integer.MAX_VALUE, false);
+        metadata.updateFamilyOtherMemberRegister(SampleConstants.TABLE_NAME.FAMILY_MEMBER, Integer.MAX_VALUE, false);
         return metadata;
     }
 

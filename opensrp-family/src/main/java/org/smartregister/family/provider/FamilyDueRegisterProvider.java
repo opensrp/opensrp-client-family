@@ -117,6 +117,8 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
+        viewHolder.status.setImageResource(Utils.getDueProfileImageResourceIDentifier());
+
         //fillValue(viewHolder.patientNameAge, patientName);
 
         //String lastVisit = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);

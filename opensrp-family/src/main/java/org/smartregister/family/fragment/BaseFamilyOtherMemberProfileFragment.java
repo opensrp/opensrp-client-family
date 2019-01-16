@@ -38,8 +38,8 @@ public abstract class BaseFamilyOtherMemberProfileFragment extends BaseRegisterF
     @Override
     public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
         FamilyOtherMemberRegisterProvider familyOtherMemberRegisterProvider = new FamilyOtherMemberRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
-        clientAdapter = new FamilyRecyclerViewCustomAdapter(null, familyOtherMemberRegisterProvider, context().commonrepository(this.tablename), Utils.metadata().familyActivityRegister.showPagination);
-        clientAdapter.setCurrentlimit(Utils.metadata().familyActivityRegister.currentLimit);
+        clientAdapter = new FamilyRecyclerViewCustomAdapter(null, familyOtherMemberRegisterProvider, context().commonrepository(this.tablename), Utils.metadata().familyOtherMemberRegister.showPagination);
+        clientAdapter.setCurrentlimit(Utils.metadata().familyOtherMemberRegister.currentLimit);
         clientsView.setAdapter(clientAdapter);
     }
 
