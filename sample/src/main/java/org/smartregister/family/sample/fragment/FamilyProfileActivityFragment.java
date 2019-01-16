@@ -20,7 +20,7 @@ public class FamilyProfileActivityFragment extends BaseFamilyProfileActivityFrag
 
     @Override
     protected void initializePresenter() {
-        String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.BASE_ENTITY_ID);
+        String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID);
         presenter = new FamilyProfileActivityPresenter(this, new FamilyProfileActivityModel(), null, familyBaseEntityId);
     }
 }

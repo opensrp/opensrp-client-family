@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.adapter.FamilyRecyclerViewCustomAdapter;
-import org.smartregister.family.contract.FamilyProfileActivityContract;
-import org.smartregister.family.provider.FamilyActivityRegisterProvider;
+import org.smartregister.family.contract.FamilyOtherMemberProfileFragmentContract;
+import org.smartregister.family.provider.FamilyOtherMemberRegisterProvider;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
 import org.smartregister.view.fragment.BaseRegisterFragment;
@@ -20,11 +20,11 @@ import java.util.Set;
 /**
  * Created by ndegwamartin on 12/07/2018.
  */
-public abstract class BaseFamilyProfileActivityFragment extends BaseRegisterFragment implements FamilyProfileActivityContract.View {
+public abstract class BaseFamilyOtherMemberProfileFragment extends BaseRegisterFragment implements FamilyOtherMemberProfileFragmentContract.View {
 
     public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     public static final String CLICK_VIEW_NEXT_ARROW = "click_next_arrow";
-    
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public abstract class BaseFamilyProfileActivityFragment extends BaseRegisterFrag
 
     @Override
     public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
-        FamilyActivityRegisterProvider familyActivityRegisterProvider = new FamilyActivityRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
-        clientAdapter = new FamilyRecyclerViewCustomAdapter(null, familyActivityRegisterProvider, context().commonrepository(this.tablename), Utils.metadata().familyActivityRegister.showPagination);
+        FamilyOtherMemberRegisterProvider familyOtherMemberRegisterProvider = new FamilyOtherMemberRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
+        clientAdapter = new FamilyRecyclerViewCustomAdapter(null, familyOtherMemberRegisterProvider, context().commonrepository(this.tablename), Utils.metadata().familyActivityRegister.showPagination);
         clientAdapter.setCurrentlimit(Utils.metadata().familyActivityRegister.currentLimit);
         clientsView.setAdapter(clientAdapter);
     }
@@ -81,7 +81,7 @@ public abstract class BaseFamilyProfileActivityFragment extends BaseRegisterFrag
     }
 
     @Override
-    public FamilyProfileActivityContract.Presenter presenter() {
-        return (FamilyProfileActivityContract.Presenter) presenter;
+    public FamilyOtherMemberProfileFragmentContract.Presenter presenter() {
+        return (FamilyOtherMemberProfileFragmentContract.Presenter) presenter;
     }
 }

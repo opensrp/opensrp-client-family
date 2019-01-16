@@ -43,8 +43,10 @@ public abstract class Constants {
 
     public static final class INTENT_KEY {
         public static final String BASE_ENTITY_ID = "base_entity_id";
+        public static final String FAMILY_BASE_ENTITY_ID = "family_base_entity_id";
         public static final String FAMILY_HEAD = "family_head";
         public static final String PRIMARY_CAREGIVER = "primary_caregiver";
+        public static final String VILLAGE_TOWN = "village_town";
         public static final String JSON = "json";
         public static final String TO_RESCHEDULE = "to_reschedule";
         public static final String IS_REMOTE_LOGIN = "is_remote_login";

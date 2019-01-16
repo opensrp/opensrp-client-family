@@ -37,6 +37,8 @@
 
     <!-- member -->
     <string name="return_to_all_families">Return to all families</string>
+    <string name="return_to_family_profile">Return to family profile</string>
     <string name="deceased_brackets">(deceased)</string>
+    <string name="id_with_value">ID: %1$s</string>
 
 </resources>

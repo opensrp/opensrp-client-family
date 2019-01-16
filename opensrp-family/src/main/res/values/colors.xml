@@ -15,4 +15,6 @@
 
     <color name="family_actionbar">#30383C</color>
     <color name="family_navigation">#596468</color>
+
+    <color name="other_member_profile_bg">#FAFAFA</color>
 </resources>

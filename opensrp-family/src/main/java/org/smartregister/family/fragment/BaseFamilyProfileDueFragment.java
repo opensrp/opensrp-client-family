@@ -22,6 +22,9 @@ import java.util.Set;
  */
 public abstract class BaseFamilyProfileDueFragment extends BaseRegisterFragment implements FamilyProfileDueContract.View {
 
+    public static final String CLICK_VIEW_NORMAL = "click_view_normal";
+    public static final String CLICK_VIEW_NEXT_ARROW = "click_next_arrow";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

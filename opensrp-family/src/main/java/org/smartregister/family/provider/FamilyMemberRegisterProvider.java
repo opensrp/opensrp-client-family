@@ -140,6 +140,12 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             }
         });
 
+        viewHolder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
 

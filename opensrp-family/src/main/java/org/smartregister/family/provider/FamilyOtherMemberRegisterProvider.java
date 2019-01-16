@@ -38,7 +38,7 @@ import static org.smartregister.family.util.Utils.getName;
  * Created by keyman on 14/01/2019.
  */
 
-public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDueRegisterProvider.RegisterViewHolder> {
+public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<FamilyOtherMemberRegisterProvider.RegisterViewHolder> {
 
     private final LayoutInflater inflater;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
@@ -49,7 +49,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
     private Context context;
     private CommonRepository commonRepository;
 
-    public FamilyDueRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
+    public FamilyOtherMemberRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
@@ -108,19 +108,26 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
-            viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
             patientName = patientName + ", " + dobString;
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
-            viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
-        //fillValue(viewHolder.patientNameAge, patientName);
+        fillValue(viewHolder.patientNameAge, patientName);
 
-        //String lastVisit = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
-        //fillValue(viewHolder.lastVisit, lastVisit);
+        viewHolder.profile.setImageResource(Utils.getProfileImageTwoResourceIDentifier());
+
+        String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
+        fillValue(viewHolder.gender, gender);
+
+        viewHolder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
 
         viewHolder.nextArrowColumn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,14 +136,8 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             }
         });
 
-        viewHolder.statusColumn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewHolder.patientColumn.performClick();
-            }
-        });
-
-        attachPatientOnclickListener(viewHolder.patientColumn, client);
+        View patient = viewHolder.patientColumn;
+        attachPatientOnclickListener(patient, client);
 
         attachNextArrowOnclickListener(viewHolder.nextArrow, client);
     }
@@ -179,7 +180,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
 
     @Override
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.family_due_register_list_row, parent, false);
+        View view = inflater.inflate(R.layout.family_other_member_register_list_row, parent, false);
 
         /*
         ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
@@ -198,8 +199,8 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
 
     @Override
     public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.smart_register_pagination, parent, false);
-        if (Utils.metadata().familyDueRegister.showPagination) {
+        View view = inflater.inflate(R.layout.family_custom_pagination, parent, false);
+        if (Utils.metadata().familyActivityRegister.showPagination) {
             view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.GONE);
@@ -224,28 +225,30 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
-        public ImageView status;
+        public ImageView profile;
         public CustomFontTextView patientNameAge;
-        public TextView lastVisit;
-        public ImageView nextArrow;
+        public TextView gender;
+        public TextView familyHead;
+        public TextView primaryCaregiver;
 
+        public ImageView nextArrow;
         public View patientColumn;
         public View nextArrowColumn;
-        public View statusColumn;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
-            status = itemView.findViewById(R.id.status);
+            profile = itemView.findViewById(R.id.profile);
 
             patientNameAge = itemView.findViewById(R.id.patient_name_age);
-            lastVisit = itemView.findViewById(R.id.last_visit);
+            gender = itemView.findViewById(R.id.gender);
+            familyHead = itemView.findViewById(R.id.family_head);
+            primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
 
             nextArrow = itemView.findViewById(R.id.next_arrow);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
             nextArrowColumn = itemView.findViewById(R.id.next_arrow_column);
-            statusColumn = itemView.findViewById(R.id.status_layout);
         }
     }
 
