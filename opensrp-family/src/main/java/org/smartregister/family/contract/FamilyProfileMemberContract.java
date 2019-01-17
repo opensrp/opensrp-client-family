@@ -13,6 +13,10 @@ public interface FamilyProfileMemberContract {
         void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns, String familyHead, String primaryCaregiver);
 
         FamilyProfileMemberContract.Presenter presenter();
+
+        void setFamilyHead(String familyHead);
+
+        void setPrimaryCaregiver(String primaryCaregiver);
     }
 
     interface Presenter extends BaseRegisterFragmentContract.Presenter {
@@ -20,6 +24,10 @@ public interface FamilyProfileMemberContract {
         String getMainCondition();
 
         String getDefaultSortQuery();
+
+        void setFamilyHead(String familyHead);
+
+        void setPrimaryCaregiver(String primaryCaregiver);
 
     }
 

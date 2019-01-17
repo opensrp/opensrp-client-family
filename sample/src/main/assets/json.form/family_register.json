@@ -73,19 +73,18 @@
         }
       },
       {
-        "key": "num_fam_members",
+        "key": "unique_id",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "num_fam_members",
-        "type": "edit_text",
-        "hint": "Number of family members *",
-        "v_required": {
+        "openmrs_entity": "person_identifier",
+        "openmrs_entity_id": "opensrp_id",
+        "hidden":"true",
+        "type": "barcode",
+        "barcode_type": "qrcode",
+        "hint": "ID *",
+        "scanButtonText": "Scan QR Code",
+        "v_numeric": {
           "value": "true",
-          "err": "Please enter the Number of family members"
-        },
-        "v_numeric_integer": {
-          "value": "true",
-          "err": "Enter a valid number"
+          "err": "Please enter a valid ID"
         }
       },
       {
@@ -124,23 +123,23 @@
         "key": "landmark",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_address",
-        "openmrs_entity_id": "slandmark",
+        "openmrs_entity_id": "landmark",
         "type": "edit_text",
         "hint": "Landmark"
       },
       {
         "key": "gps",
-        "openmrs_entity_parent": "usual_residence",
-        "openmrs_entity": "person_address",
-        "openmrs_entity_id": "geopoint",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "163277AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "text",
         "type": "gps"
       },
       {
         "key": "fam_source_income",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "fam_source_income",
         "openmrs_data_type": "",
         "type": "spinner",
         "hint": "Family source of income",
@@ -175,10 +174,9 @@
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "opensrp_id",
-        "type": "barcode",
-        "barcode_type": "qrcode",
+        "type": "edit_text",
         "hint": "ID *",
-        "scanButtonText": "Scan QR Code",
+        "value": "0",
         "v_numeric": {
           "value": "true",
           "err": "Please enter a valid ID"
@@ -191,36 +189,34 @@
       {
         "key": "national_id",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "national_id",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "label_info_text": "What is their national identity number or their voter registration number?",
+        "label_info_title": "National ID number",
         "type": "edit_text",
         "hint": "National ID number"
       },
       {
         "key": "surname",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "last_name",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "Surname *",
         "edit_type": "name",
         "v_required": {
           "value": "true",
-          "err": "Please enter the date of birth"
+          "err": "Please enter the surname"
         },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please enter a valid name"
         },
         "relevance": {
-          "step2:same_as_fam_name": {
-            "ex-checkbox": [
-              {
-                "not": [
-                  "same_as_fam_name"
-                ]
-              }
-            ]
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "family-register-relevance.yml"
+            }
           }
         }
       },
@@ -239,6 +235,22 @@
             "value": "false"
           }
         ]
+      },
+      {
+        "key": "surname_calculation",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "last_name",
+        "type": "edit_text",
+        "hidden": true,
+        "hint": "Surname as Family name",
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "family-register-calculation.yml"
+            }
+          }
+        }
       },
       {
         "key": "first_name",
@@ -292,14 +304,10 @@
           "err": "Please enter the date of birth"
         },
         "relevance": {
-          "step1:dob_unknown": {
-            "ex-checkbox": [
-              {
-                "not": [
-                  "dob_unknown"
-                ]
-              }
-            ]
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "family-register-relevance.yml"
+            }
           }
         }
       },
@@ -323,7 +331,7 @@
         "key": "age",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "age",
+        "openmrs_entity_id": "age_entered",
         "type": "edit_text",
         "hint": "Age *",
         "v_numeric": {
@@ -331,22 +339,18 @@
           "err": "Number must begin with 0 and must be a total of 10 digits in length"
         },
         "v_min": {
-          "value": "15",
-          "err": "Age must be equal or greater than 15"
+          "value": "5",
+          "err": "Age must be equal or greater than 5"
         },
         "v_max": {
-          "value": "49",
-          "err": "Age must be equal or less than 49"
+          "value": "120",
+          "err": "Age must be equal or less than 120"
         },
         "relevance": {
-          "step1:dob_unknown": {
-            "ex-checkbox": [
-              {
-                "and": [
-                  "dob_unknown"
-                ]
-              }
-            ]
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "family-register-relevance.yml"
+            }
           }
         },
         "v_required": {
@@ -373,8 +377,8 @@
       {
         "key": "phone_number",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "phone_number",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "type": "edit_text",
         "hint": "Phone number *",
         "v_numeric": {
@@ -382,8 +386,8 @@
           "err": "Number must be a total of 10 digits in length"
         },
         "v_regex": {
-          "value": "([0-9]{10})|\s*",
-          "err": "Number must be a total of 10 digits in length"
+          "value": "(0[0-9]{9})|\s*",
+          "err": "Number must be 10 digits and must start with 0."
         },
         "v_required": {
           "value": true,
@@ -392,9 +396,9 @@
       },
       {
         "key": "other_phone_number",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "phone_number",
+        "openmrs_entity_parent": "159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "type": "edit_text",
         "hint": "Other phone number",
         "v_numeric": {
@@ -402,15 +406,15 @@
           "err": "Number must be a total of 10 digits in length"
         },
         "v_regex": {
-          "value": "([0-9]{10})|\s*",
-          "err": "Number must be a total of 10 digits in length"
+          "value": "(0[0-9]{9})|\s*",
+          "err": "Number must be 10 digits and must start with 0."
         }
       },
       {
         "key": "highest_edu_level",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "highest_edu_level",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "1712AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "select one",
         "type": "spinner",
         "hint": "Highest education level",
@@ -419,7 +423,13 @@
           "Primary",
           "Secondary",
           "Post-secondary"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "None": "1107AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "Primary": "1713AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "Secondary": "1714AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "Post-secondary": "159785AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
       }
     ]
   }

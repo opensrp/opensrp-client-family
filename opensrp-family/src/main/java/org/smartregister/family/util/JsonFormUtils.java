@@ -97,6 +97,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return form;
     }
 
+    public static void updateJsonForm(JSONObject form, String familyName) throws Exception {
+        if (form == null) {
+            return;
+        }
+
+        JSONArray field = fields(form, STEP1);
+        JSONObject familyNameField = getFieldJSONObject(field, Constants.JSON_FORM_KEY.FAMILY_NAME);
+        if (familyNameField != null) {
+            familyNameField.put(JsonFormUtils.VALUE, familyName);
+        }
+    }
+
 
     public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString) {
 

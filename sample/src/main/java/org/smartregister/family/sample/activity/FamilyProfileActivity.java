@@ -19,7 +19,10 @@ public class FamilyProfileActivity extends BaseFamilyProfileActivity {
     @Override
     protected void initializePresenter() {
         String familyBaseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID);
-        presenter = new FamilyProfilePresenter(this, new FamilyProfileModel(), familyBaseEntityId);
+        String familyHead = getIntent().getStringExtra(Constants.INTENT_KEY.FAMILY_HEAD);
+        String primaryCaregiver = getIntent().getStringExtra(Constants.INTENT_KEY.PRIMARY_CAREGIVER);
+        String familyName = getIntent().getStringExtra(Constants.INTENT_KEY.FAMILY_NAME);
+        presenter = new FamilyProfilePresenter(this, new FamilyProfileModel(familyName), familyBaseEntityId, familyHead, primaryCaregiver, familyName);
     }
 
     @Override
