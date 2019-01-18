@@ -58,6 +58,13 @@
           "json_mapping": {
             "field": "version"
           }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
         }
       ]
     },
@@ -132,6 +139,13 @@
           "type": "Event",
           "json_mapping": {
             "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
           }
         }
       ]

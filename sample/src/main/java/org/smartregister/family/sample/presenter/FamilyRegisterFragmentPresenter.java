@@ -12,7 +12,7 @@ public class FamilyRegisterFragmentPresenter extends BaseFamilyRegisterFragmentP
 
     @Override
     public String getMainCondition() {
-        return "";
+        return String.format(" %s is null ", DBConstants.KEY.DATE_REMOVED);
     }
 
     @Override
