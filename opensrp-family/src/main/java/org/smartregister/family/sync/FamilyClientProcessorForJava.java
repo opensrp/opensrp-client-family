@@ -7,8 +7,6 @@ import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.Event;
 import org.smartregister.sync.ClientProcessorForJava;
 
-import java.util.Map;
-
 public class FamilyClientProcessorForJava extends ClientProcessorForJava {
 
     public FamilyClientProcessorForJava(Context context) {

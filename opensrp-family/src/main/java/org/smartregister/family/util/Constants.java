@@ -14,6 +14,7 @@ public abstract class Constants {
         public static final String DEATH_DATE = "deathdate";
         public static final String DEATH_DATE_APPROX = "deathdateApprox";
         public static final String UNIQUE_ID = "unique_id";
+        public static final String FAMILY_NAME = "fam_name";
         public static final String LAST_INTERACTED_WITH = "last_interacted_with";
         public static final String DOB = "dob";
         public static final String DOB_UNKNOWN = "dob_unknown";
@@ -43,8 +44,11 @@ public abstract class Constants {
 
     public static final class INTENT_KEY {
         public static final String BASE_ENTITY_ID = "base_entity_id";
+        public static final String FAMILY_BASE_ENTITY_ID = "family_base_entity_id";
         public static final String FAMILY_HEAD = "family_head";
         public static final String PRIMARY_CAREGIVER = "primary_caregiver";
+        public static final String VILLAGE_TOWN = "village_town";
+        public static final String FAMILY_NAME = "family_name";
         public static final String JSON = "json";
         public static final String TO_RESCHEDULE = "to_reschedule";
         public static final String IS_REMOTE_LOGIN = "is_remote_login";

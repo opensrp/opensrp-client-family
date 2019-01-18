@@ -32,6 +32,15 @@
                 android:value=".activity.FamilyRegisterActivity" />
         </activity>
         <activity
+            android:name=".activity.FamilyOtherMemberProfileActivity"
+            android:label="@string/title_family_detail"
+            android:parentActivityName=".activity.FamilyRegisterActivity"
+            android:theme="@style/FamilyTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.FamilyProfileActivity" />
+        </activity>
+        <activity
             android:name="com.vijay.jsonwizard.activities.JsonWizardFormActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -43,6 +52,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/FamilyTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

@@ -81,6 +81,16 @@ public abstract class BaseFamilyProfileMemberFragment extends BaseRegisterFragme
     }
 
     @Override
+    public void setFamilyHead(String familyHead) {
+        presenter().setFamilyHead(familyHead);
+    }
+
+    @Override
+    public void setPrimaryCaregiver(String primaryCaregiver) {
+        presenter().setPrimaryCaregiver(primaryCaregiver);
+    }
+
+    @Override
     public FamilyProfileMemberContract.Presenter presenter() {
         return (FamilyProfileMemberContract.Presenter) presenter;
     }

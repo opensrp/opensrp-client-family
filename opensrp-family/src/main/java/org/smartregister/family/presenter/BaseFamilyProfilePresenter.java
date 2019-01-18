@@ -34,12 +34,18 @@ public abstract class BaseFamilyProfilePresenter implements FamilyProfileContrac
     protected FamilyProfileContract.Model model;
 
     protected String familyBaseEntityId;
+    protected String familyHead;
+    protected String primaryCaregiver;
+    protected String familyName;
 
-    public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, FamilyProfileContract.Model model, String familyBaseEntityId) {
+    public BaseFamilyProfilePresenter(FamilyProfileContract.View loginView, FamilyProfileContract.Model model, String familyBaseEntityId, String familyHead, String primaryCaregiver, String familyName) {
         this.view = new WeakReference<>(loginView);
         this.interactor = new FamilyProfileInteractor();
         this.model = model;
         this.familyBaseEntityId = familyBaseEntityId;
+        this.familyHead = familyHead;
+        this.primaryCaregiver = primaryCaregiver;
+        this.familyName = familyName;
     }
 
     @Override

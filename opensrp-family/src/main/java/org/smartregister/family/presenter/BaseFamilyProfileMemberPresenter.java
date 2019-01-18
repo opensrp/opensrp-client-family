@@ -20,8 +20,8 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
     protected RegisterConfiguration config;
 
     protected String familyBaseEntityId;
-    private String familyHead;
-    private String primaryCaregiver;
+    protected String familyHead;
+    protected String primaryCaregiver;
 
 
     protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
@@ -81,7 +81,7 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     @Override
     public String getMainCondition() {
-        return DBConstants.KEY.OBJECT_RELATIONAL_ID + " = '" + familyBaseEntityId + "' ";
+        return String.format(" %s = '%s' and %s is null ", DBConstants.KEY.OBJECT_RELATIONAL_ID, familyBaseEntityId, DBConstants.KEY.DATE_REMOVED);
     }
 
     @Override
@@ -114,5 +114,13 @@ public abstract class BaseFamilyProfileMemberPresenter implements FamilyProfileM
 
     public String getPrimaryCaregiver() {
         return primaryCaregiver;
+    }
+
+    public void setFamilyHead(String familyHead) {
+        this.familyHead = familyHead;
+    }
+
+    public void setPrimaryCaregiver(String primaryCaregiver) {
+        this.primaryCaregiver = primaryCaregiver;
     }
 }

@@ -14,7 +14,7 @@
           "column_name": "unique_id",
           "type": "Client",
           "json_mapping": {
-            "field": "identifiers.UNIQUE_ID"
+            "field": "identifiers.opensrp_id"
           }
         },
         {
@@ -58,6 +58,13 @@
           "json_mapping": {
             "field": "version"
           }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
         }
       ]
     },
@@ -75,7 +82,7 @@
           "column_name": "unique_id",
           "type": "Client",
           "json_mapping": {
-            "field": "identifiers.UNIQUE_ID"
+            "field": "identifiers.opensrp_id"
           }
         },
         {
@@ -132,6 +139,13 @@
           "type": "Event",
           "json_mapping": {
             "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
           }
         }
       ]

@@ -27,6 +27,9 @@ public class DBConstants {
         public static final String GPS = "gps";
         public static final String FAMILY_SOURCE_INCOME = "fam_source_income";
         public static final String PHONE_NUMBER = "phone_number";
+        public static final String OTHER_PHONE_NUMBER = "other_phone_number";
+        public static final String HIGHEST_EDU_LEVEL = "highest_edu_level";
+        public static final String DATE_REMOVED = "date_removed";
 
         public static final String OBJECT_ID = "object_id";
         public static final String OBJECT_RELATIONAL_ID = "object_relational_id";

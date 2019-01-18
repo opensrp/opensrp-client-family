@@ -5,6 +5,7 @@ import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
+import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
 import java.lang.ref.WeakReference;
@@ -94,4 +95,8 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
         this.model = model;
     }
 
+    @Override
+    public String getMainCondition() {
+        return String.format(" %s is null ", DBConstants.KEY.DATE_REMOVED);
+    }
 }

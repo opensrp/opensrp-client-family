@@ -12,6 +12,9 @@ public class FamilyMetadata {
 
     public FamilyRegister familyRegister;
     public FamilyMemberRegister familyMemberRegister;
+    public FamilyDueRegister familyDueRegister;
+    public FamilyActivityRegister familyActivityRegister;
+    public FamilyOtherMemberRegister familyOtherMemberRegister;
 
     public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity) {
         this.familyFormActivity = familyFormActivity;
@@ -25,6 +28,18 @@ public class FamilyMetadata {
 
     public void updateFamilyMemberRegister(String formName, String tableName, String registerEventType, String updateEventType, String config, String familyRelationKey) {
         this.familyMemberRegister = new FamilyMemberRegister(formName, tableName, registerEventType, updateEventType, config, familyRelationKey);
+    }
+
+    public void updateFamilyDueRegister(String tableName, int currentLimit, boolean showPagination) {
+        this.familyDueRegister = new FamilyDueRegister(tableName, currentLimit, showPagination);
+    }
+
+    public void updateFamilyActivityRegister(String tableName, int currentLimit, boolean showPagination) {
+        this.familyActivityRegister = new FamilyActivityRegister(tableName, currentLimit, showPagination);
+    }
+
+    public void updateFamilyOtherMemberRegister(String tableName, int currentLimit, boolean showPagination) {
+        this.familyOtherMemberRegister = new FamilyOtherMemberRegister(tableName, currentLimit, showPagination);
     }
 
     public class FamilyRegister {
@@ -78,6 +93,56 @@ public class FamilyMetadata {
             this.config = config;
             this.familyRelationKey = familyRelationKey;
         }
+    }
 
+    public class FamilyDueRegister {
+
+        public final String tableName;
+        public final int currentLimit;
+        public final boolean showPagination;
+
+        public FamilyDueRegister(String tableName, int currentLimit, boolean showPagination) {
+            this.tableName = tableName;
+            if (currentLimit <= 0) {
+                this.currentLimit = 20;
+            } else {
+                this.currentLimit = currentLimit;
+            }
+            this.showPagination = showPagination;
+        }
+    }
+
+    public class FamilyActivityRegister {
+
+        public final String tableName;
+        public final int currentLimit;
+        public final boolean showPagination;
+
+        public FamilyActivityRegister(String tableName, int currentLimit, boolean showPagination) {
+            this.tableName = tableName;
+            if (currentLimit <= 0) {
+                this.currentLimit = 20;
+            } else {
+                this.currentLimit = currentLimit;
+            }
+            this.showPagination = showPagination;
+        }
+    }
+
+    public class FamilyOtherMemberRegister {
+
+        public final String tableName;
+        public final int currentLimit;
+        public final boolean showPagination;
+
+        public FamilyOtherMemberRegister(String tableName, int currentLimit, boolean showPagination) {
+            this.tableName = tableName;
+            if (currentLimit <= 0) {
+                this.currentLimit = 20;
+            } else {
+                this.currentLimit = currentLimit;
+            }
+            this.showPagination = showPagination;
+        }
     }
 }

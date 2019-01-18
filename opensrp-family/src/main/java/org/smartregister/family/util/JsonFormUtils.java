@@ -69,17 +69,25 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONArray field = fields(form, STEP1);
             JSONObject uniqueId = getFieldJSONObject(field, Constants.JSON_FORM_KEY.UNIQUE_ID);
-            if (uniqueId != null) {
-                uniqueId.remove(JsonFormUtils.VALUE);
-                uniqueId.put(JsonFormUtils.VALUE, entityId+"_Family");
-            }
 
-            // Inject opensrp id into the form
-            field = fields(form, STEP2);
-            uniqueId = getFieldJSONObject(field, Constants.JSON_FORM_KEY.UNIQUE_ID);
-            if (uniqueId != null) {
-                uniqueId.remove(JsonFormUtils.VALUE);
-                uniqueId.put(JsonFormUtils.VALUE, entityId);
+            if (formName.equals(Utils.metadata().familyRegister.formName)) {
+                if (uniqueId != null) {
+                    uniqueId.remove(JsonFormUtils.VALUE);
+                    uniqueId.put(JsonFormUtils.VALUE, entityId + "_Family");
+                }
+
+                // Inject opensrp id into the form
+                field = fields(form, STEP2);
+                uniqueId = getFieldJSONObject(field, Constants.JSON_FORM_KEY.UNIQUE_ID);
+                if (uniqueId != null) {
+                    uniqueId.remove(JsonFormUtils.VALUE);
+                    uniqueId.put(JsonFormUtils.VALUE, entityId);
+                }
+            } else {
+                if (uniqueId != null) {
+                    uniqueId.remove(JsonFormUtils.VALUE);
+                    uniqueId.put(JsonFormUtils.VALUE, entityId);
+                }
             }
 
         } else {
@@ -87,6 +95,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         Log.d(TAG, "form is " + form.toString());
         return form;
+    }
+
+    public static void updateJsonForm(JSONObject form, String familyName) throws Exception {
+        if (form == null) {
+            return;
+        }
+
+        JSONArray field = fields(form, STEP1);
+        JSONObject familyNameField = getFieldJSONObject(field, Constants.JSON_FORM_KEY.FAMILY_NAME);
+        if (familyNameField != null) {
+            familyNameField.put(JsonFormUtils.VALUE, familyName);
+        }
     }
 
 
@@ -240,14 +260,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
-        return processFamilyForm(allSharedPreferences,jsonString,familyBaseEntityId,Utils.metadata().familyMemberRegister.updateEventType);
+        return processFamilyForm(allSharedPreferences, jsonString, familyBaseEntityId, Utils.metadata().familyMemberRegister.updateEventType);
     }
 
     public static FamilyEventClient processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
-        return processFamilyForm(allSharedPreferences,jsonString,familyBaseEntityId,Utils.metadata().familyMemberRegister.registerEventType);
+        return processFamilyForm(allSharedPreferences, jsonString, familyBaseEntityId, Utils.metadata().familyMemberRegister.registerEventType);
     }
 
-    private static FamilyEventClient processFamilyForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId, String encounterType){
+    private static FamilyEventClient processFamilyForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId, String encounterType) {
         try {
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
 
