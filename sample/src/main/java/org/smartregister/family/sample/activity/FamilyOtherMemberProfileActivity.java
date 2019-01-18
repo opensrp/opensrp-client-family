@@ -1,10 +1,13 @@
 package org.smartregister.family.sample.activity;
 
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.smartregister.family.activity.BaseFamilyOtherMemberProfileActivity;
 import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.fragment.BaseFamilyOtherMemberProfileFragment;
+import org.smartregister.family.sample.R;
 import org.smartregister.family.sample.fragment.FamilyOtherMemberProfileFragment;
 import org.smartregister.family.sample.model.FamilyOtherMemberProfileActivityModel;
 import org.smartregister.family.sample.presenter.FamilyOtherMemberActivityPresenter;
@@ -29,5 +32,30 @@ public class FamilyOtherMemberProfileActivity extends BaseFamilyOtherMemberProfi
         viewPager.setAdapter(adapter);
 
         return viewPager;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuItem addMember = menu.findItem(R.id.add_member);
+        if (addMember != null) {
+            addMember.setVisible(false);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
