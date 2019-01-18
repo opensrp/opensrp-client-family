@@ -97,6 +97,6 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
 
     @Override
     public String getMainCondition() {
-        return String.format(" %s is null " , DBConstants.KEY.DATE_REMOVED);
+        return String.format(" %s is null ", DBConstants.KEY.DATE_REMOVED);
     }
 }

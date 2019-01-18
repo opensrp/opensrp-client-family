@@ -77,7 +77,7 @@ public abstract class BaseFamilyProfileDuePresenter implements FamilyProfileDueC
 
     @Override
     public String getMainCondition() {
-        return String.format(" %s = '%s' and %s is null " , DBConstants.KEY.OBJECT_RELATIONAL_ID , familyBaseEntityId , DBConstants.KEY.DATE_REMOVED);
+        return String.format(" %s = '%s' and %s is null ", DBConstants.KEY.OBJECT_RELATIONAL_ID, familyBaseEntityId, DBConstants.KEY.DATE_REMOVED);
     }
 
     @Override
