@@ -103,6 +103,8 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
         String patientName = getName(firstName, middleName, lastName);
 
+        String entityType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.ENTITY_TYPE, false);
+
         String dob = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false);
         String dobString = Utils.getDuration(dob);
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
@@ -117,14 +119,14 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
-            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier());
+            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier(entityType));
             viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
             patientName = patientName + ", " + dobString;
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
-            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIDentifier());
+            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIDentifier(entityType));
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 

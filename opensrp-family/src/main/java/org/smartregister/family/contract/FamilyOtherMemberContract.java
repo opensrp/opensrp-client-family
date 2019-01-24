@@ -14,7 +14,7 @@ public interface FamilyOtherMemberContract {
 
         FamilyOtherMemberContract.Presenter presenter();
 
-        void setProfileImage(String baseEntityId);
+        void setProfileImage(String baseEntityId, String entityType);
 
         void setProfileName(String fullName);
 

@@ -113,8 +113,8 @@ public abstract class BaseFamilyOtherMemberProfileActivity extends BaseProfileAc
     }
 
     @Override
-    public void setProfileImage(String baseEntityId) {
-        imageRenderHelper.refreshProfileImage(baseEntityId, imageView, Utils.getMemberProfileImageResourceIDentifier());
+    public void setProfileImage(String baseEntityId, String entityType) {
+        imageRenderHelper.refreshProfileImage(baseEntityId, imageView, Utils.getMemberProfileImageResourceIDentifier(entityType));
     }
 
     @Override

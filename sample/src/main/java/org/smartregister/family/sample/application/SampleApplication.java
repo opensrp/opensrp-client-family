@@ -114,10 +114,10 @@ public class SampleApplication extends DrishtiApplication {
 
     private static String[] getFtsSortFields(String tableName) {
         if (tableName.equals(SampleConstants.TABLE_NAME.FAMILY)) {
-            return new String[]{DBConstants.KEY.LAST_INTERACTED_WITH};
+            return new String[]{DBConstants.KEY.LAST_INTERACTED_WITH, DBConstants.KEY.DATE_REMOVED};
         } else if (tableName.equals(SampleConstants.TABLE_NAME.FAMILY_MEMBER)) {
             return new String[]{DBConstants.KEY.DOB, DBConstants.KEY.DOD, DBConstants.KEY
-                    .LAST_INTERACTED_WITH};
+                    .LAST_INTERACTED_WITH, DBConstants.KEY.DATE_REMOVED};
         }
         return null;
     }
