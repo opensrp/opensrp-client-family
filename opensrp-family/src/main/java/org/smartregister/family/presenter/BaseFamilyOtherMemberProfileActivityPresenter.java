@@ -113,6 +113,8 @@ public abstract class BaseFamilyOtherMemberProfileActivityPresenter implements F
         String uniqueId = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
         getView().setProfileDetailThree(String.format(getView().getString(R.string.id_with_value), uniqueId));
 
+        String entityType = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.ENTITY_TYPE, false);
+
         if (baseEntityId.equals(familyHead)) {
             getView().toggleFamilyHead(true);
         } else {
@@ -133,6 +135,6 @@ public abstract class BaseFamilyOtherMemberProfileActivityPresenter implements F
         String phoneNumber = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
         getView().setProfileDetailThree(phoneNumber);*/
 
-        getView().setProfileImage(client.getCaseId());
+        getView().setProfileImage(client.getCaseId(), entityType);
     }
 }

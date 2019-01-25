@@ -35,8 +35,16 @@ public class Utils extends org.smartregister.util.Utils {
         return R.mipmap.ic_family;
     }
 
-    public static int getMemberProfileImageResourceIDentifier() {
-        return R.mipmap.ic_member;
+    public static int getMemberProfileImageResourceIDentifier(String entityType) {
+        if (StringUtils.isBlank(entityType)) {
+            return R.mipmap.ic_member;
+        }
+
+        if (Utils.metadata().familyMemberRegister.tableName.equals(entityType)) {
+            return R.mipmap.ic_member;
+        } else {
+            return R.mipmap.ic_child;
+        }
     }
 
     public static int getActivityProfileImageResourceIDentifier() {

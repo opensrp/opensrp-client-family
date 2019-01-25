@@ -25,15 +25,16 @@
 
     <LinearLayout
         android:id="@+id/patient_column"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/register_list_item_margin"
         android:layout_marginLeft="@dimen/register_list_item_margin"
         android:layout_marginRight="@dimen/register_list_item_margin"
         android:layout_marginStart="@dimen/register_list_item_margin"
         android:layout_toEndOf="@+id/profile"
         android:layout_toRightOf="@+id/profile"
+        android:layout_toLeftOf="@+id/next_arrow_column"
+        android:layout_toStartOf="@+id/next_arrow_column"
         android:orientation="vertical">
 
         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -44,6 +45,7 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="0dp"
             android:text="Patient Name, Age"
+            android:maxLines="5"
             android:textColor="@color/text_black"
             android:textSize="@dimen/register_list_title_size" />
 

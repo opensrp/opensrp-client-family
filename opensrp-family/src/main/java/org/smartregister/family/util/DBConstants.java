@@ -33,5 +33,7 @@ public class DBConstants {
 
         public static final String OBJECT_ID = "object_id";
         public static final String OBJECT_RELATIONAL_ID = "object_relational_id";
+
+        public static final String ENTITY_TYPE = "entity_type";
     }
 }
