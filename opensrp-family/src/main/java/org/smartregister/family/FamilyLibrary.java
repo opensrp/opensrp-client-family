@@ -96,6 +96,10 @@ public class FamilyLibrary {
         return clientProcessorForJava;
     }
 
+    public void setClientProcessorForJava(ClientProcessorForJava clientProcessorForJava) {
+        this.clientProcessorForJava = clientProcessorForJava;
+    }
+
     public Compressor getCompressor() {
         if (compressor == null) {
             compressor = Compressor.getDefault(context().applicationContext());

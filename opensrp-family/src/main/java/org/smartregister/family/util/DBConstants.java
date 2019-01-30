@@ -30,6 +30,8 @@ public class DBConstants {
         public static final String OTHER_PHONE_NUMBER = "other_phone_number";
         public static final String HIGHEST_EDU_LEVEL = "highest_edu_level";
         public static final String DATE_REMOVED = "date_removed";
+        public static final String DATE_LAST_HOME_VISIT = "last_home_visit";
+        public static final String DATE_VISIT_NOT_DONE = "visit_not_done";
 
         public static final String OBJECT_ID = "object_id";
         public static final String OBJECT_RELATIONAL_ID = "object_relational_id";
