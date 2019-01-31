@@ -122,6 +122,9 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);
 
+        View patient = viewHolder.patientColumn;
+        attachPatientOnclickListener(patient, client);
+
         viewHolder.status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,8 +132,13 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
             }
         });
 
-        View patient = viewHolder.patientColumn;
-        attachPatientOnclickListener(patient, client);
+        viewHolder.registerColumns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
+
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
@@ -224,6 +232,7 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
         public TextView lastVisit;
 
         public View patientColumn;
+        public View registerColumns;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
@@ -237,6 +246,7 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
             patientColumn = itemView.findViewById(R.id.patient_column);
             lastVisit = itemView.findViewById(R.id.last_visit);
+            registerColumns = itemView.findViewById(R.id.register_columns);
         }
     }
 

@@ -86,10 +86,11 @@
     <LinearLayout
         android:id="@+id/member_icon_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/register_list_member_icon_margin"
         android:layout_marginRight="@dimen/register_list_member_icon_margin"
+        android:layout_toEndOf="@+id/due_button_wrapper"
         android:layout_toLeftOf="@+id/due_button_wrapper"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/register_list_top_bottom_padding">
