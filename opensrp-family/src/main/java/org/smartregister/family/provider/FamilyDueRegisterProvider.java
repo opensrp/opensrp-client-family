@@ -119,10 +119,9 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
 
         viewHolder.status.setImageResource(Utils.getDueProfileImageResourceIDentifier());
 
-        //fillValue(viewHolder.patientNameAge, patientName);
+        attachPatientOnclickListener(viewHolder.patientColumn, client);
 
-        //String lastVisit = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
-        //fillValue(viewHolder.lastVisit, lastVisit);
+        attachNextArrowOnclickListener(viewHolder.nextArrow, client);
 
         viewHolder.nextArrowColumn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,9 +137,12 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             }
         });
 
-        attachPatientOnclickListener(viewHolder.patientColumn, client);
-
-        attachNextArrowOnclickListener(viewHolder.nextArrow, client);
+        viewHolder.registerColumns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
@@ -234,6 +236,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
         public View patientColumn;
         public View nextArrowColumn;
         public View statusColumn;
+        public View registerColumns;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
@@ -248,6 +251,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             patientColumn = itemView.findViewById(R.id.patient_column);
             nextArrowColumn = itemView.findViewById(R.id.next_arrow_column);
             statusColumn = itemView.findViewById(R.id.status_layout);
+            registerColumns = itemView.findViewById(R.id.register_columns);
         }
     }
 

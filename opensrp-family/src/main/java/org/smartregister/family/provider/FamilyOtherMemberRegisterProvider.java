@@ -122,7 +122,19 @@ public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<F
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);
 
+        View patient = viewHolder.patientColumn;
+        attachPatientOnclickListener(patient, client);
+
+        attachNextArrowOnclickListener(viewHolder.nextArrow, client);
+
         viewHolder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
+
+        viewHolder.registerColumns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewHolder.patientColumn.performClick();
@@ -135,11 +147,6 @@ public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<F
                 viewHolder.nextArrow.performClick();
             }
         });
-
-        View patient = viewHolder.patientColumn;
-        attachPatientOnclickListener(patient, client);
-
-        attachNextArrowOnclickListener(viewHolder.nextArrow, client);
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
@@ -233,7 +240,10 @@ public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<F
 
         public ImageView nextArrow;
         public View patientColumn;
+
         public View nextArrowColumn;
+        public View registerColumns;
+
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
@@ -249,6 +259,7 @@ public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<F
 
             patientColumn = itemView.findViewById(R.id.patient_column);
             nextArrowColumn = itemView.findViewById(R.id.next_arrow_column);
+            registerColumns = itemView.findViewById(R.id.register_columns);
         }
     }
 

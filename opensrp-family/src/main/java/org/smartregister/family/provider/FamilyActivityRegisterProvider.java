@@ -40,14 +40,14 @@ import static org.smartregister.family.util.Utils.getName;
 
 public class FamilyActivityRegisterProvider implements RecyclerViewProvider<FamilyActivityRegisterProvider.RegisterViewHolder> {
 
-    private final LayoutInflater inflater;
-    private Set<org.smartregister.configurableviews.model.View> visibleColumns;
+    protected final LayoutInflater inflater;
+    protected Set<org.smartregister.configurableviews.model.View> visibleColumns;
 
-    private View.OnClickListener onClickListener;
-    private View.OnClickListener paginationClickListener;
+    protected View.OnClickListener onClickListener;
+    protected View.OnClickListener paginationClickListener;
 
-    private Context context;
-    private CommonRepository commonRepository;
+    protected Context context;
+    protected CommonRepository commonRepository;
 
     public FamilyActivityRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
@@ -117,10 +117,13 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
         fillValue(viewHolder.patientNameAge, patientName);
 
-        viewHolder.status.setImageResource(Utils.getActivityProfileImageResourceIDentifier());
+        viewHolder.status.setImageResource(Utils.getActivityProfileImageResourceVistedIDentifier());
 
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);
+
+        View patient = viewHolder.patientColumn;
+        attachPatientOnclickListener(patient, client);
 
         viewHolder.status.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +132,13 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
             }
         });
 
-        View patient = viewHolder.patientColumn;
-        attachPatientOnclickListener(patient, client);
+        viewHolder.registerColumns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
+
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
@@ -221,8 +229,10 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
         public TextView gender;
         public TextView familyHead;
         public TextView primaryCaregiver;
+        public TextView lastVisit;
 
         public View patientColumn;
+        public View registerColumns;
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
@@ -235,6 +245,8 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
             primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
+            lastVisit = itemView.findViewById(R.id.last_visit);
+            registerColumns = itemView.findViewById(R.id.register_columns);
         }
     }
 

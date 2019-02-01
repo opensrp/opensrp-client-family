@@ -260,7 +260,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
-        return processFamilyForm(allSharedPreferences, jsonString, familyBaseEntityId, Utils.metadata().familyMemberRegister.updateEventType);
+        return processFamilyForm(allSharedPreferences, jsonString, familyBaseEntityId, Utils.metadata().familyRegister.updateEventType);
     }
 
     public static FamilyEventClient processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
@@ -511,13 +511,26 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return registrationFormParams;
     }
 
-    private static Event tagSyncMetadata(AllSharedPreferences allSharedPreferences, Event event) {
+    protected static Event tagSyncMetadata(AllSharedPreferences allSharedPreferences, Event event) {
         String providerId = allSharedPreferences.fetchRegisteredANM();
         event.setProviderId(providerId);
-        event.setLocationId(allSharedPreferences.fetchDefaultLocalityId(providerId));
+        event.setLocationId(locationId(allSharedPreferences));
+        event.setChildLocationId(allSharedPreferences.fetchCurrentLocality());
         event.setTeam(allSharedPreferences.fetchDefaultTeam(providerId));
         event.setTeamId(allSharedPreferences.fetchDefaultTeamId(providerId));
+
+        event.setClientDatabaseVersion(FamilyLibrary.getInstance().getDatabaseVersion());
+        event.setClientApplicationVersion(FamilyLibrary.getInstance().getApplicationVersion());
         return event;
+    }
+
+    protected static String locationId(AllSharedPreferences allSharedPreferences) {
+        String providerId = allSharedPreferences.fetchRegisteredANM();
+        String userLocationId = allSharedPreferences.fetchUserLocalityId(providerId);
+        if (StringUtils.isBlank(userLocationId)) {
+            userLocationId = allSharedPreferences.fetchDefaultLocalityId(providerId);
+        }
+        return userLocationId;
     }
 
     public static JSONArray fields(JSONObject jsonForm, String step) {

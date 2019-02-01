@@ -49,7 +49,7 @@
 
     <LinearLayout
         android:id="@+id/due_button_wrapper"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/register_list_item_width"
         android:layout_height="@dimen/register_list_item_height"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -64,7 +64,7 @@
 
         <Button
             android:id="@+id/due_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
@@ -91,6 +91,7 @@
         android:layout_marginEnd="@dimen/register_list_member_icon_margin"
         android:layout_marginRight="@dimen/register_list_member_icon_margin"
         android:layout_toLeftOf="@+id/due_button_wrapper"
+        android:layout_toStartOf="@+id/due_button_wrapper"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/register_list_top_bottom_padding">
 

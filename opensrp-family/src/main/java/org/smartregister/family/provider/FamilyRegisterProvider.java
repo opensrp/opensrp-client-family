@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -83,7 +82,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
         footerViewHolder.previousPageView.setOnClickListener(paginationClickListener);
     }
 
-    private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
+    private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, final RegisterViewHolder viewHolder) {
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
@@ -100,29 +99,30 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
         View dueButton = viewHolder.dueButton;
         attachDosageOnclickListener(dueButton, client);
 
+        viewHolder.registerColumns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.patientColumn.performClick();
+            }
+        });
+
+        viewHolder.dueWrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.dueButton.performClick();
+            }
+        });
     }
 
     private void populateLastColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-
         if (commonRepository != null) {
             CommonPersonObject commonPersonObject = commonRepository.findByBaseEntityId(pc.entityId());
             if (commonPersonObject != null) {
                 viewHolder.dueButton.setVisibility(View.VISIBLE);
                 viewHolder.dueButton.setText("Visit Due");
                 viewHolder.dueButton.setAllCaps(true);
-
-                String ga = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONTACT_STATUS, false);
-
-                if (StringUtils.isNotBlank(ga)) {
-
-                    viewHolder.dueButton.setBackgroundColor(context.getResources().getColor(R.color.progress_orange));
-                    viewHolder.dueButton.setTextColor(context.getResources().getColor(R.color.white));
-                }
-
-                //updateDoseButton();
             } else {
                 viewHolder.dueButton.setVisibility(View.GONE);
-                //attachSyncOnclickListener(viewHolder.sync, pc);
             }
         }
     }
@@ -206,6 +206,9 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
         public View patientColumn;
         public View memberIcon;
 
+        public View registerColumns;
+        public View dueWrapper;
+
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
@@ -217,6 +220,9 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
             patientColumn = itemView.findViewById(R.id.patient_column);
 
             memberIcon = itemView.findViewById(R.id.member_icon_layout);
+
+            registerColumns = itemView.findViewById(R.id.register_columns);
+            dueWrapper = itemView.findViewById(R.id.due_button_wrapper);
         }
     }
 
