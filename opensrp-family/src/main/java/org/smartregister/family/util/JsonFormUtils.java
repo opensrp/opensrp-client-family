@@ -260,7 +260,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
-        return processFamilyForm(allSharedPreferences, jsonString, familyBaseEntityId, Utils.metadata().familyMemberRegister.updateEventType);
+        return processFamilyForm(allSharedPreferences, jsonString, familyBaseEntityId, Utils.metadata().familyRegister.updateEventType);
     }
 
     public static FamilyEventClient processFamilyMemberRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString, String familyBaseEntityId) {
