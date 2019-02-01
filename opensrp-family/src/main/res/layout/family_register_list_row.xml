@@ -91,6 +91,7 @@
         android:layout_marginEnd="@dimen/register_list_member_icon_margin"
         android:layout_marginRight="@dimen/register_list_member_icon_margin"
         android:layout_toLeftOf="@+id/due_button_wrapper"
+        android:layout_toStartOf="@+id/due_button_wrapper"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/register_list_top_bottom_padding">
 
