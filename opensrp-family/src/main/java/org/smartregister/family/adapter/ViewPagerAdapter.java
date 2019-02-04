@@ -3,6 +3,7 @@ package org.smartregister.family.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
+    private Pair<Integer, Integer> mPositionCountPair;
 
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
@@ -35,6 +37,17 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mFragmentTitleList.get(position);
+        String title = this.mFragmentTitleList.get(position);
+        if (mPositionCountPair != null && mPositionCountPair.first == position) {
+            title = title + " (" + mPositionCountPair.second + ")";
+        }
+        return title;
+    }
+
+    public void updateCount(Pair<Integer, Integer> positionCountPair) {
+        if (positionCountPair.first != null && positionCountPair.second != null) {
+            this.mPositionCountPair = positionCountPair;
+            notifyDataSetChanged();
+        }
     }
 }

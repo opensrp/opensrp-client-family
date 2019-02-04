@@ -32,8 +32,8 @@
         android:layout_marginRight="@dimen/register_list_item_margin"
         android:layout_marginStart="@dimen/register_list_item_margin"
         android:layout_toEndOf="@+id/profile"
-        android:layout_toRightOf="@+id/profile"
         android:layout_toLeftOf="@+id/next_arrow_column"
+        android:layout_toRightOf="@+id/profile"
         android:layout_toStartOf="@+id/next_arrow_column"
         android:orientation="vertical">
 
@@ -43,9 +43,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingLeft="0dp"
+            android:paddingStart="0dp"
+            android:singleLine="true"
             android:text="Patient Name, Age"
-            android:maxLines="5"
             android:textColor="@color/text_black"
             android:textSize="@dimen/register_list_title_size" />
 
