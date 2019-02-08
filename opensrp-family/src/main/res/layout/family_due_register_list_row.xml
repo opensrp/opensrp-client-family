@@ -36,12 +36,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="@dimen/register_list_item_margin"
+        android:layout_marginEnd="@dimen/register_list_item_end_margin"
         android:layout_marginLeft="@dimen/register_list_item_margin"
-        android:layout_marginRight="@dimen/register_list_item_margin"
+        android:layout_marginRight="@dimen/register_list_item_end_margin"
         android:layout_marginStart="@dimen/register_list_item_margin"
         android:layout_toEndOf="@+id/status_layout"
+        android:layout_toLeftOf="@+id/next_arrow_column"
         android:layout_toRightOf="@+id/status_layout"
+        android:layout_toStartOf="@+id/next_arrow_column"
         android:orientation="vertical">
 
         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -49,9 +51,12 @@
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingLeft="0dp"
-            android:text="Boby Smith, 3y &#183; Home Visit"
+            android:paddingStart="0dp"
+            android:singleLine="true"
+            android:text="Boby Smith , 3y &#183; Home Visit"
             android:textColor="@color/text_black"
             android:textSize="@dimen/register_list_title_size" />
 
@@ -72,8 +77,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:paddingEnd="@dimen/register_list_item_padding"
-        android:paddingRight="@dimen/register_list_item_padding">
+        android:paddingEnd="@dimen/register_list_next_arrow_padding"
+        android:paddingRight="@dimen/register_list_next_arrow_padding">
 
         <ImageView
             android:id="@+id/next_arrow"
