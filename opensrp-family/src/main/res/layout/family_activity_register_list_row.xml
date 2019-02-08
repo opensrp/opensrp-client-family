@@ -16,6 +16,8 @@
         android:layout_marginLeft="@dimen/register_list_item_margin"
         android:layout_marginStart="@dimen/register_list_item_margin"
         android:adjustViewBounds="true"
+        android:maxHeight="@dimen/client_profile_pic_height"
+        android:maxWidth="@dimen/client_profile_pic_width"
         android:paddingBottom="@dimen/register_list_top_bottom_min_padding"
         android:paddingLeft="@dimen/register_list_top_bottom_min_padding"
         android:paddingStart="@dimen/register_list_top_bottom_min_padding"
