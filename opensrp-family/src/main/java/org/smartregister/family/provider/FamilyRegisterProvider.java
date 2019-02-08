@@ -119,7 +119,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
             CommonPersonObject commonPersonObject = commonRepository.findByBaseEntityId(pc.entityId());
             if (commonPersonObject != null) {
                 viewHolder.dueButton.setVisibility(View.VISIBLE);
-                viewHolder.dueButton.setText("Visit Due");
+                viewHolder.dueButton.setText("Home Visit");
                 viewHolder.dueButton.setAllCaps(true);
             } else {
                 viewHolder.dueButton.setVisibility(View.GONE);
