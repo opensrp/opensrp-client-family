@@ -7,11 +7,11 @@ import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.fragment.BaseFamilyProfileActivityFragment;
 import org.smartregister.family.fragment.BaseFamilyProfileDueFragment;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
+import org.smartregister.family.model.BaseFamilyProfileModel;
+import org.smartregister.family.presenter.BaseFamilyProfilePresenter;
 import org.smartregister.family.sample.fragment.FamilyProfileActivityFragment;
 import org.smartregister.family.sample.fragment.FamilyProfileDueFragment;
 import org.smartregister.family.sample.fragment.FamilyProfileMemberFragment;
-import org.smartregister.family.sample.model.FamilyProfileModel;
-import org.smartregister.family.sample.presenter.FamilyProfilePresenter;
 import org.smartregister.family.util.Constants;
 
 public class FamilyProfileActivity extends BaseFamilyProfileActivity {
@@ -22,7 +22,7 @@ public class FamilyProfileActivity extends BaseFamilyProfileActivity {
         String familyHead = getIntent().getStringExtra(Constants.INTENT_KEY.FAMILY_HEAD);
         String primaryCaregiver = getIntent().getStringExtra(Constants.INTENT_KEY.PRIMARY_CAREGIVER);
         String familyName = getIntent().getStringExtra(Constants.INTENT_KEY.FAMILY_NAME);
-        presenter = new FamilyProfilePresenter(this, new FamilyProfileModel(familyName), familyBaseEntityId, familyHead, primaryCaregiver, familyName);
+        presenter = new BaseFamilyProfilePresenter(this, new BaseFamilyProfileModel(familyName), familyBaseEntityId, familyHead, primaryCaregiver, familyName);
     }
 
     @Override

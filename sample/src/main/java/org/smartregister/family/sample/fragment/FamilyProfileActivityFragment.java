@@ -3,8 +3,8 @@ package org.smartregister.family.sample.fragment;
 import android.os.Bundle;
 
 import org.smartregister.family.fragment.BaseFamilyProfileActivityFragment;
-import org.smartregister.family.sample.model.FamilyProfileActivityModel;
-import org.smartregister.family.sample.presenter.FamilyProfileActivityPresenter;
+import org.smartregister.family.model.BaseFamilyProfileActivityModel;
+import org.smartregister.family.presenter.BaseFamilyProfileActivityPresenter;
 import org.smartregister.family.util.Constants;
 
 public class FamilyProfileActivityFragment extends BaseFamilyProfileActivityFragment {
@@ -21,6 +21,6 @@ public class FamilyProfileActivityFragment extends BaseFamilyProfileActivityFrag
     @Override
     protected void initializePresenter() {
         String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID);
-        presenter = new FamilyProfileActivityPresenter(this, new FamilyProfileActivityModel(), null, familyBaseEntityId);
+        presenter = new BaseFamilyProfileActivityPresenter(this, new BaseFamilyProfileActivityModel(), null, familyBaseEntityId);
     }
 }

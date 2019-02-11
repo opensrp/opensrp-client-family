@@ -10,7 +10,7 @@ import org.smartregister.family.util.Utils;
 
 import java.util.Set;
 
-public abstract class BaseFamilyOtherMemberProfileActivityModel implements FamilyOtherMemberContract.Model {
+public class BaseFamilyOtherMemberProfileActivityModel implements FamilyOtherMemberContract.Model {
 
     @Override
     public RegisterConfiguration defaultRegisterConfiguration() {

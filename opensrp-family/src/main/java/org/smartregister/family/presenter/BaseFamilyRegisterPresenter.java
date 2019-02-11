@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by keyman on 12/11/2018.
  */
-public abstract class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
+public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
 
     public static final String TAG = BaseFamilyRegisterPresenter.class.getName();
 

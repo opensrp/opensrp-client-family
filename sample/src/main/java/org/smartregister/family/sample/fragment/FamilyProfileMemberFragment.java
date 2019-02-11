@@ -6,10 +6,10 @@ import android.view.View;
 
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
+import org.smartregister.family.model.BaseFamilyProfileMemberModel;
+import org.smartregister.family.presenter.BaseFamilyProfileMemberPresenter;
 import org.smartregister.family.sample.R;
 import org.smartregister.family.sample.activity.FamilyOtherMemberProfileActivity;
-import org.smartregister.family.sample.model.FamilyProfileMemberModel;
-import org.smartregister.family.sample.presenter.FamilyProfileMemberPresenter;
 import org.smartregister.family.util.Constants;
 
 public class FamilyProfileMemberFragment extends BaseFamilyProfileMemberFragment {
@@ -29,7 +29,7 @@ public class FamilyProfileMemberFragment extends BaseFamilyProfileMemberFragment
         String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID);
         String familyHead = getArguments().getString(Constants.INTENT_KEY.FAMILY_HEAD);
         String primaryCareGiver = getArguments().getString(Constants.INTENT_KEY.PRIMARY_CAREGIVER);
-        presenter = new FamilyProfileMemberPresenter(this, new FamilyProfileMemberModel(), null, familyBaseEntityId, familyHead, primaryCareGiver);
+        presenter = new BaseFamilyProfileMemberPresenter(this, new BaseFamilyProfileMemberModel(), null, familyBaseEntityId, familyHead, primaryCareGiver);
     }
 
     @Override

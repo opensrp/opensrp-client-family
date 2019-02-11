@@ -15,7 +15,7 @@ import org.smartregister.util.FormUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
+public class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils formUtils;
 
     @Override
