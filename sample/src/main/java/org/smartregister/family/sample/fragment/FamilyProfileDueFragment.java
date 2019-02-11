@@ -7,6 +7,8 @@ import org.smartregister.family.model.BaseFamilyProfileDueModel;
 import org.smartregister.family.presenter.BaseFamilyProfileDuePresenter;
 import org.smartregister.family.util.Constants;
 
+import java.util.HashMap;
+
 public class FamilyProfileDueFragment extends BaseFamilyProfileDueFragment {
 
     public static BaseFamilyProfileDueFragment newInstance(Bundle bundle) {
@@ -23,5 +25,10 @@ public class FamilyProfileDueFragment extends BaseFamilyProfileDueFragment {
     protected void initializePresenter() {
         String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID);
         presenter = new BaseFamilyProfileDuePresenter(this, new BaseFamilyProfileDueModel(), null, familyBaseEntityId);
+    }
+
+    @Override
+    public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
+        //do nothing
     }
 }
