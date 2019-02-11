@@ -5,6 +5,8 @@ import org.smartregister.family.sample.model.FamilyRegisterFramentModel;
 import org.smartregister.family.sample.presenter.FamilyRegisterFragmentPresenter;
 import org.smartregister.view.activity.BaseRegisterActivity;
 
+import java.util.HashMap;
+
 public class FamilyRegisterFragment extends BaseFamilyRegisterFragment {
 
     @Override
@@ -27,4 +29,8 @@ public class FamilyRegisterFragment extends BaseFamilyRegisterFragment {
         return presenter().getDefaultSortQuery();
     }
 
+    @Override
+    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
+
+    }
 }

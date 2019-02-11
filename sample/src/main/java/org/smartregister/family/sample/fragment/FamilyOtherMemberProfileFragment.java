@@ -9,6 +9,8 @@ import org.smartregister.family.sample.model.FamilyOtherMemberProfileFragmentMod
 import org.smartregister.family.sample.presenter.FamilyOtherMemberProfileFragmentPresenter;
 import org.smartregister.family.util.Constants;
 
+import java.util.HashMap;
+
 public class FamilyOtherMemberProfileFragment extends BaseFamilyOtherMemberProfileFragment {
     public static BaseFamilyOtherMemberProfileFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -38,5 +40,10 @@ public class FamilyOtherMemberProfileFragment extends BaseFamilyOtherMemberProfi
             default:
                 break;
         }
+    }
+
+    @Override
+    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
+
     }
 }

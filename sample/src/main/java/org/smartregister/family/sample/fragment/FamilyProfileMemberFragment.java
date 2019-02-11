@@ -12,6 +12,8 @@ import org.smartregister.family.sample.model.FamilyProfileMemberModel;
 import org.smartregister.family.sample.presenter.FamilyProfileMemberPresenter;
 import org.smartregister.family.util.Constants;
 
+import java.util.HashMap;
+
 public class FamilyProfileMemberFragment extends BaseFamilyProfileMemberFragment {
 
     public static BaseFamilyProfileMemberFragment newInstance(Bundle bundle) {
@@ -51,5 +53,10 @@ public class FamilyProfileMemberFragment extends BaseFamilyProfileMemberFragment
         intent.putExtras(getArguments());
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
         startActivity(intent);
+    }
+
+    @Override
+    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
+
     }
 }
