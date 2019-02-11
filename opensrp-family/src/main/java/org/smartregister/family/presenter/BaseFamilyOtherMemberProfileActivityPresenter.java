@@ -14,7 +14,7 @@ import java.util.TreeSet;
 
 import static org.smartregister.util.Utils.getName;
 
-public abstract class BaseFamilyOtherMemberProfileActivityPresenter implements FamilyOtherMemberContract.Presenter, FamilyOtherMemberContract.InteractorCallBack {
+public class BaseFamilyOtherMemberProfileActivityPresenter implements FamilyOtherMemberContract.Presenter, FamilyOtherMemberContract.InteractorCallBack {
 
     protected WeakReference<FamilyOtherMemberContract.View> viewReference;
 

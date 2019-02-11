@@ -25,7 +25,7 @@ import static org.smartregister.util.Utils.getName;
 /**
  * Created by keyman on 19/11/2018.
  */
-public abstract class BaseFamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
+public class BaseFamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
 
     protected static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
 

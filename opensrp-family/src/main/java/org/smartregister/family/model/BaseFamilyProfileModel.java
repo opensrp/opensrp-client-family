@@ -19,7 +19,7 @@ import org.smartregister.util.FormUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseFamilyProfileModel implements FamilyProfileContract.Model {
+public class BaseFamilyProfileModel implements FamilyProfileContract.Model {
 
     private FormUtils formUtils;
 
@@ -27,13 +27,23 @@ public abstract class BaseFamilyProfileModel implements FamilyProfileContract.Mo
     private boolean familyHead;
     private boolean primaryCaregiver;
 
+    public BaseFamilyProfileModel(String familyName) {
+        this.familyName = familyName;
+    }
+
     @Override
     public JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception {
         JSONObject form = getFormUtils().getFormJson(formName);
         if (form == null) {
             return null;
         }
-        return JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId);
+        form = JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId);
+
+        if (formName.equals(Utils.metadata().familyMemberRegister.formName)) {
+            JsonFormUtils.updateJsonForm(form, familyName);
+        }
+
+        return form;
     }
 
     @Override

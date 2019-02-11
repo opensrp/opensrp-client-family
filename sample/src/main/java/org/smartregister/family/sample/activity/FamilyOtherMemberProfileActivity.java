@@ -7,10 +7,10 @@ import android.view.MenuItem;
 import org.smartregister.family.activity.BaseFamilyOtherMemberProfileActivity;
 import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.fragment.BaseFamilyOtherMemberProfileFragment;
+import org.smartregister.family.model.BaseFamilyOtherMemberProfileActivityModel;
+import org.smartregister.family.presenter.BaseFamilyOtherMemberProfileActivityPresenter;
 import org.smartregister.family.sample.R;
 import org.smartregister.family.sample.fragment.FamilyOtherMemberProfileFragment;
-import org.smartregister.family.sample.model.FamilyOtherMemberProfileActivityModel;
-import org.smartregister.family.sample.presenter.FamilyOtherMemberActivityPresenter;
 import org.smartregister.family.util.Constants;
 
 public class FamilyOtherMemberProfileActivity extends BaseFamilyOtherMemberProfileActivity {
@@ -20,7 +20,7 @@ public class FamilyOtherMemberProfileActivity extends BaseFamilyOtherMemberProfi
         String familyHead = getIntent().getStringExtra(Constants.INTENT_KEY.FAMILY_HEAD);
         String primaryCaregiver = getIntent().getStringExtra(Constants.INTENT_KEY.PRIMARY_CAREGIVER);
         String villageTown = getIntent().getStringExtra(Constants.INTENT_KEY.VILLAGE_TOWN);
-        presenter = new FamilyOtherMemberActivityPresenter(this, new FamilyOtherMemberProfileActivityModel(), null, baseEntityId, familyHead, primaryCaregiver, villageTown);
+        presenter = new BaseFamilyOtherMemberProfileActivityPresenter(this, new BaseFamilyOtherMemberProfileActivityModel(), null, baseEntityId, familyHead, primaryCaregiver, villageTown);
     }
 
     @Override

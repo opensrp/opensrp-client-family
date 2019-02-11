@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.smartregister.family.fragment.BaseFamilyOtherMemberProfileFragment;
+import org.smartregister.family.model.BaseFamilyOtherMemberProfileFragmentModel;
+import org.smartregister.family.presenter.BaseFamilyOtherMemberProfileFragmentPresenter;
 import org.smartregister.family.sample.R;
-import org.smartregister.family.sample.model.FamilyOtherMemberProfileFragmentModel;
-import org.smartregister.family.sample.presenter.FamilyOtherMemberProfileFragmentPresenter;
 import org.smartregister.family.util.Constants;
+
+import java.util.HashMap;
 
 public class FamilyOtherMemberProfileFragment extends BaseFamilyOtherMemberProfileFragment {
     public static BaseFamilyOtherMemberProfileFragment newInstance(Bundle bundle) {
@@ -23,7 +25,7 @@ public class FamilyOtherMemberProfileFragment extends BaseFamilyOtherMemberProfi
     @Override
     protected void initializePresenter() {
         String familyBaseEntityId = getArguments().getString(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID);
-        presenter = new FamilyOtherMemberProfileFragmentPresenter(this, new FamilyOtherMemberProfileFragmentModel(), null, familyBaseEntityId);
+        presenter = new BaseFamilyOtherMemberProfileFragmentPresenter(this, new BaseFamilyOtherMemberProfileFragmentModel(), null, familyBaseEntityId);
     }
 
     @Override
@@ -38,5 +40,10 @@ public class FamilyOtherMemberProfileFragment extends BaseFamilyOtherMemberProfi
             default:
                 break;
         }
+    }
+
+    @Override
+    public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
+        //do nothing
     }
 }
