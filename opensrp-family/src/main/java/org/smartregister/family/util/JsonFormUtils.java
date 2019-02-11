@@ -548,4 +548,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         return null;
     }
+
+
+    public static String getFieldValue(String jsonString, String step, String key) {
+        JSONObject jsonForm = toJSONObject(jsonString);
+        if (jsonForm == null) {
+            return null;
+        }
+
+        JSONArray fields = fields(jsonForm, step);
+        if (fields == null) {
+            return null;
+        }
+
+        return getFieldValue(fields, key);
+
+    }
 }

@@ -106,7 +106,8 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
 
         try {
 
-            for (FamilyEventClient familyEventClient : familyEventClientList) {
+            for (int i = 0; i < familyEventClientList.size(); i++) {
+                FamilyEventClient familyEventClient = familyEventClientList.get(i);
                 Client baseClient = familyEventClient.getClient();
                 Event baseEvent = familyEventClient.getEvent();
 
@@ -145,8 +146,16 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                 }
 
                 if (baseClient != null || baseEvent != null) {
-                    String imageLocation = JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO);
-                    JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
+                    String imageLocation = null;
+                    if (i == 0) {
+                        imageLocation = JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO);
+                    } else if (i == 1) {
+                        imageLocation = JsonFormUtils.getFieldValue(jsonString, JsonFormUtils.STEP2, Constants.KEY.PHOTO);
+                    }
+
+                    if (StringUtils.isNotBlank(imageLocation)) {
+                        JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
+                    }
                 }
             }
 
