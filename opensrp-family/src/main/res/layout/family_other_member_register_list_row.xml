@@ -16,6 +16,8 @@
         android:layout_marginLeft="@dimen/register_list_item_margin"
         android:layout_marginStart="@dimen/register_list_item_margin"
         android:adjustViewBounds="true"
+        android:maxHeight="@dimen/client_profile_pic_height"
+        android:maxWidth="@dimen/client_profile_pic_width"
         android:paddingBottom="@dimen/register_list_top_bottom_min_padding"
         android:paddingLeft="@dimen/register_list_top_bottom_min_padding"
         android:paddingStart="@dimen/register_list_top_bottom_min_padding"
@@ -39,7 +41,7 @@
 
         <org.smartregister.view.customcontrols.CustomFontTextView
             android:id="@+id/patient_name_age"
-            style="@style/CustomFontTextViewStyle.ClientList.Medium"
+            style="@style/CustomFontTextViewStyle.ClientList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
