@@ -12,7 +12,7 @@ import org.smartregister.family.util.Utils;
 
 import java.util.Set;
 
-public abstract class BaseFamilyProfileMemberModel implements FamilyProfileMemberContract.Model {
+public class BaseFamilyProfileMemberModel implements FamilyProfileMemberContract.Model {
 
     @Override
     public RegisterConfiguration defaultRegisterConfiguration() {

@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class BaseFamilyProfileDuePresenter implements FamilyProfileDueContract.Presenter {
+public class BaseFamilyProfileDuePresenter implements FamilyProfileDueContract.Presenter {
 
     protected WeakReference<FamilyProfileDueContract.View> viewReference;
 

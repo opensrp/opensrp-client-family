@@ -1,7 +1,7 @@
 package org.smartregister.family.sample.fragment;
 
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
-import org.smartregister.family.sample.model.FamilyRegisterFramentModel;
+import org.smartregister.family.model.BaseFamilyRegisterFramentModel;
 import org.smartregister.family.sample.presenter.FamilyRegisterFragmentPresenter;
 import org.smartregister.view.activity.BaseRegisterActivity;
 
@@ -16,7 +16,7 @@ public class FamilyRegisterFragment extends BaseFamilyRegisterFragment {
         }
 
         String viewConfigurationIdentifier = ((BaseRegisterActivity) getActivity()).getViewIdentifiers().get(0);
-        presenter = new FamilyRegisterFragmentPresenter(this, new FamilyRegisterFramentModel(), viewConfigurationIdentifier);
+        presenter = new FamilyRegisterFragmentPresenter(this, new BaseFamilyRegisterFramentModel(), viewConfigurationIdentifier);
     }
 
     @Override
@@ -30,7 +30,8 @@ public class FamilyRegisterFragment extends BaseFamilyRegisterFragment {
     }
 
     @Override
-    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
-
+    public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
+        //do nothing
     }
+
 }

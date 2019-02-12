@@ -4,16 +4,16 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
+import org.smartregister.family.model.BaseFamilyRegisterModel;
+import org.smartregister.family.presenter.BaseFamilyRegisterPresenter;
 import org.smartregister.family.sample.fragment.FamilyRegisterFragment;
-import org.smartregister.family.sample.model.FamilyRegisterModel;
-import org.smartregister.family.sample.presenter.FamilyRegisterPresenter;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
 public class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
 
     @Override
     protected void initializePresenter() {
-        presenter = new FamilyRegisterPresenter(this, new FamilyRegisterModel());
+        presenter = new BaseFamilyRegisterPresenter(this, new BaseFamilyRegisterModel());
     }
 
     @Override

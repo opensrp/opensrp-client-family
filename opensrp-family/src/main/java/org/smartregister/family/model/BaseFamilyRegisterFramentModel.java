@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Created by keyman on 12/07/2018.
  */
-public abstract class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentContract.Model {
+public class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentContract.Model {
 
     @Override
     public RegisterConfiguration defaultRegisterConfiguration() {
