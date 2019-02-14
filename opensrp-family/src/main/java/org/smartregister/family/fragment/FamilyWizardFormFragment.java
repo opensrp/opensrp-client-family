@@ -9,6 +9,7 @@ import com.vijay.jsonwizard.interactors.JsonFormInteractor;
 import com.vijay.jsonwizard.utils.ValidationStatus;
 import com.vijay.jsonwizard.viewstates.JsonFormFragmentViewState;
 
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.presenter.FamilyWizardFormFragmentPresenter;
 
 public class FamilyWizardFormFragment extends JsonWizardFormFragment {
@@ -36,6 +37,9 @@ public class FamilyWizardFormFragment extends JsonWizardFormFragment {
     @Override
     public void updateVisibilityOfNextAndSave(boolean next, boolean save) {
         super.updateVisibilityOfNextAndSave(next, save);
+        if (!FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+            this.getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(save);
+        }
     }
 
     public void validateActivateNext() {

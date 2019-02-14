@@ -6,6 +6,7 @@ import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.json.JSONException;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.fragment.FamilyWizardFormFragment;
 
 import java.util.List;
@@ -26,25 +27,33 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     @Override
     public void writeValue(String stepName, String parentKey, String childObjectKey, String childKey, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, boolean popup) throws JSONException {
         super.writeValue(stepName, parentKey, childObjectKey, childKey, value, openMrsEntityParent, openMrsEntity, openMrsEntityId, popup);
-        validateActivateNext();
+        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+            validateActivateNext();
+        }
     }
 
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, boolean popup) throws JSONException {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId, popup);
-        validateActivateNext();
+        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+            validateActivateNext();
+        }
     }
 
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
-        validateActivateNext();
+        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+            validateActivateNext();
+        }
     }
 
     @Override
     public void writeValue(String stepName, String parentKey, String childObjectKey, String childKey, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         super.writeValue(stepName, parentKey, childObjectKey, childKey, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
-        validateActivateNext();
+        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+            validateActivateNext();
+        }
     }
 
     public void validateActivateNext() {

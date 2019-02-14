@@ -32,8 +32,4 @@ public class FamilyProfileDueFragment extends BaseFamilyProfileDueFragment {
         //do nothing
     }
 
-    @Override
-    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
-
-    }
 }

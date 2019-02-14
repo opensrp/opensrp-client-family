@@ -31,8 +31,4 @@ public class FamilyProfileActivityFragment extends BaseFamilyProfileActivityFrag
         //do nothing
     }
 
-    @Override
-    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
-
-    }
 }
