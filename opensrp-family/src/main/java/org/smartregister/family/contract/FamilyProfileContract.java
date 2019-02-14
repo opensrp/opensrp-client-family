@@ -93,6 +93,8 @@ public interface FamilyProfileContract {
 
         FamilyEventClient processFamilyRegistrationForm(String jsonString, String familyBaseEntityId);
 
+        FamilyEventClient processUpdateMemberRegistration(String jsonString, String familyBaseEntityId);
+
     }
 
 }
