@@ -29,7 +29,6 @@ public class FamilyRegisterFragment extends BaseFamilyRegisterFragment {
         return presenter().getDefaultSortQuery();
     }
 
-
     @Override
     public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
         //do nothing

@@ -258,6 +258,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
+        public ImageView status;
         public ImageView profile;
         public CustomFontTextView patientNameAge;
         public TextView gender;
@@ -265,6 +266,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         public TextView primaryCaregiver;
         public ImageView nextArrow;
 
+        public View statusLayout;
         public View patientColumn;
         public View nextArrowColumn;
         public View registerColumns;
@@ -272,6 +274,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         public RegisterViewHolder(View itemView) {
             super(itemView);
 
+            status = itemView.findViewById(R.id.status);
             profile = itemView.findViewById(R.id.profile);
 
             patientNameAge = itemView.findViewById(R.id.patient_name_age);
@@ -280,6 +283,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
             nextArrow = itemView.findViewById(R.id.next_arrow);
 
+            statusLayout = itemView.findViewById(R.id.status_layout);
             patientColumn = itemView.findViewById(R.id.patient_column);
             nextArrowColumn = itemView.findViewById(R.id.next_arrow_column);
             registerColumns = itemView.findViewById(R.id.register_columns);

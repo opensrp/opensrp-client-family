@@ -52,6 +52,7 @@ public abstract class Constants {
         public static final String JSON = "json";
         public static final String TO_RESCHEDULE = "to_reschedule";
         public static final String IS_REMOTE_LOGIN = "is_remote_login";
+        public static final String GO_TO_DUE_PAGE = "go_to_due_page";
     }
 
     public static class ENTITY {

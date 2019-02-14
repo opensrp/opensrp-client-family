@@ -55,9 +55,9 @@ public class FamilyProfileMemberFragment extends BaseFamilyProfileMemberFragment
         startActivity(intent);
     }
 
-
     @Override
     public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
         //do nothing
     }
+  
 }

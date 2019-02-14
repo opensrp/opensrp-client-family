@@ -53,6 +53,22 @@ public class BaseFamilyProfileModel implements FamilyProfileContract.Model {
             return null;
         }
 
+        updateWra(familyEventClient);
+        return familyEventClient;
+    }
+
+    @Override
+    public FamilyEventClient processUpdateMemberRegistration(String jsonString, String familyBaseEntityId) {
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyMemberUpdateRegistrationForm(FamilyLibrary.getInstance().context().allSharedPreferences(), jsonString, familyBaseEntityId);
+        if (familyEventClient == null) {
+            return null;
+        }
+
+        updateWra(familyEventClient);
+        return familyEventClient;
+    }
+
+    public void updateWra(FamilyEventClient familyEventClient) {
         // Add WRA
         Client client = familyEventClient.getClient();
         Event event = familyEventClient.getEvent();
@@ -68,9 +84,8 @@ public class BaseFamilyProfileModel implements FamilyProfileContract.Model {
             }
 
         }
-
-        return familyEventClient;
     }
+
 
     @Override
     public FamilyEventClient processFamilyRegistrationForm(String jsonString, String familyBaseEntityId) {

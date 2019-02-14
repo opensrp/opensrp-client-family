@@ -30,4 +30,5 @@ public class FamilyProfileActivityFragment extends BaseFamilyProfileActivityFrag
     public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
         //do nothing
     }
+
 }
