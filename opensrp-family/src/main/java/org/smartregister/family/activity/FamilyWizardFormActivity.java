@@ -1,19 +1,40 @@
 package org.smartregister.family.activity;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.R;
 import org.smartregister.family.fragment.FamilyWizardFormFragment;
+import org.smartregister.family.util.JsonFormUtils;
 
 import java.util.List;
 
 public class FamilyWizardFormActivity extends JsonWizardFormActivity {
+    private String TAG = FamilyWizardFormActivity.class.getCanonicalName();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        try {
+            JSONObject form = new JSONObject(currentJsonState());
+            String et = form.getString(JsonFormUtils.ENCOUNTER_TYPE);
+            if(et.trim().toLowerCase().contains("update")){
+                setConfirmCloseMessage(getString(R.string.any_changes_you_make));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+    }
 
     @Override
     public void initializeFormFragment() {
