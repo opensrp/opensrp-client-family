@@ -1,12 +1,10 @@
 package org.smartregister.family.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.R;
@@ -114,20 +112,12 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
         if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_NORMAL) {
             goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), false);
         } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_DOSAGE_STATUS) {
-            CommonPersonObjectClient pc = (CommonPersonObjectClient) view.getTag();
-            String baseEntityId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.BASE_ENTITY_ID, false);
-
-            if (StringUtils.isNotBlank(baseEntityId)) {
-                // TODO Proceed to dose status
-            }
+            goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), true);
         }
     }
 
     private void goToPatientDetailActivity(CommonPersonObjectClient patient,
-                                           boolean launchDialog) {
-        if (launchDialog) {
-            Log.i(BaseFamilyRegisterFragment.TAG, patient.name);
-        }
+                                           boolean goToDuePage) {
 
         Intent intent = new Intent(getActivity(), Utils.metadata().profileActivity);
         intent.putExtra(Constants.INTENT_KEY.FAMILY_BASE_ENTITY_ID, patient.getCaseId());
@@ -135,6 +125,8 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
         intent.putExtra(Constants.INTENT_KEY.PRIMARY_CAREGIVER, Utils.getValue(patient.getColumnmaps(), DBConstants.KEY.PRIMARY_CAREGIVER, false));
         intent.putExtra(Constants.INTENT_KEY.VILLAGE_TOWN, Utils.getValue(patient.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, false));
         intent.putExtra(Constants.INTENT_KEY.FAMILY_NAME, Utils.getValue(patient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, false));
+        intent.putExtra(Constants.INTENT_KEY.GO_TO_DUE_PAGE, goToDuePage);
+
         startActivity(intent);
     }
 

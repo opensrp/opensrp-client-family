@@ -39,6 +39,10 @@ public class FamilyProfileActivity extends BaseFamilyProfileActivity {
 
         viewPager.setAdapter(adapter);
 
+        if (getIntent().getBooleanExtra(Constants.INTENT_KEY.GO_TO_DUE_PAGE, false)) {
+            viewPager.setCurrentItem(1);
+        }
+
         return viewPager;
     }
 
