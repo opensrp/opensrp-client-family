@@ -9,7 +9,7 @@ public class FamilyMetadata {
     public final Class familyFormActivity;
     public final Class familyMemberFormActivity;
     public final Class profileActivity;
-    public final boolean formValidateRequiredFieldsBefore;
+    public final boolean formWizardValidateRequiredFieldsBefore;
 
     public FamilyRegister familyRegister;
     public FamilyMemberRegister familyMemberRegister;
@@ -17,11 +17,11 @@ public class FamilyMetadata {
     public FamilyActivityRegister familyActivityRegister;
     public FamilyOtherMemberRegister familyOtherMemberRegister;
 
-    public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity, boolean formValidateRequiredFieldsBefore) {
+    public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity, boolean formWizardValidateRequiredFieldsBefore) {
         this.familyFormActivity = familyFormActivity;
         this.familyMemberFormActivity = familyMemberFormActivity;
         this.profileActivity = profileActivity;
-        this.formValidateRequiredFieldsBefore = formValidateRequiredFieldsBefore;
+        this.formWizardValidateRequiredFieldsBefore = formWizardValidateRequiredFieldsBefore;
     }
 
     public void updateFamilyRegister(String formName, String tableName, String registerEventType, String updateEventType, String config, String familyHeadRelationKey, String familyCareGiverRelationKey) {

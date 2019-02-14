@@ -1,6 +1,8 @@
 package org.smartregister.family.activity;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -18,6 +20,14 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
         initializeFormFragmentCore();
     }
 
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        if (toolbar != null) {
+            toolbar.setContentInsetStartWithNavigation(0);
+        }
+        super.setSupportActionBar(toolbar);
+    }
+
     protected void initializeFormFragmentCore() {
         FamilyWizardFormFragment familyWizardFormFragment = FamilyWizardFormFragment.getFormFragment(JsonFormConstants.FIRST_STEP_NAME);
         getSupportFragmentManager().beginTransaction()
@@ -27,7 +37,7 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     @Override
     public void writeValue(String stepName, String parentKey, String childObjectKey, String childKey, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, boolean popup) throws JSONException {
         super.writeValue(stepName, parentKey, childObjectKey, childKey, value, openMrsEntityParent, openMrsEntity, openMrsEntityId, popup);
-        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+        if (FamilyLibrary.getInstance().metadata().formWizardValidateRequiredFieldsBefore) {
             validateActivateNext();
         }
     }
@@ -35,7 +45,7 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId, boolean popup) throws JSONException {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId, popup);
-        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+        if (FamilyLibrary.getInstance().metadata().formWizardValidateRequiredFieldsBefore) {
             validateActivateNext();
         }
     }
@@ -43,7 +53,7 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
-        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+        if (FamilyLibrary.getInstance().metadata().formWizardValidateRequiredFieldsBefore) {
             validateActivateNext();
         }
     }
@@ -51,7 +61,7 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     @Override
     public void writeValue(String stepName, String parentKey, String childObjectKey, String childKey, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         super.writeValue(stepName, parentKey, childObjectKey, childKey, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
-        if (FamilyLibrary.getInstance().metadata().formValidateRequiredFieldsBefore) {
+        if (FamilyLibrary.getInstance().metadata().formWizardValidateRequiredFieldsBefore) {
             validateActivateNext();
         }
     }
