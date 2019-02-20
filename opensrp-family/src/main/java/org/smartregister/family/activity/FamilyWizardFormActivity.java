@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.fragment.FamilyWizardFormFragment;
+import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 
 import java.util.List;
@@ -21,14 +22,18 @@ import java.util.List;
 public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     private String TAG = FamilyWizardFormActivity.class.getCanonicalName();
 
+    private boolean enableOnCloseDialog = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        enableOnCloseDialog = getIntent().getBooleanExtra(Constants.WizardFormActivity.EnableOnCloseDialog, true);
+
         try {
             JSONObject form = new JSONObject(currentJsonState());
             String et = form.getString(JsonFormUtils.ENCOUNTER_TYPE);
-            if(et.trim().toLowerCase().contains("update")){
+            if (et.trim().toLowerCase().contains("update")) {
                 setConfirmCloseMessage(getString(R.string.any_changes_you_make));
             }
         } catch (Exception e) {
@@ -103,6 +108,18 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
             }
         }
         return null;
+    }
+
+    /**
+     * Conditionaly display the confirmation dialog
+     */
+    @Override
+    public void onBackPressed() {
+        if (enableOnCloseDialog) {
+            super.onBackPressed();
+        }else{
+            FamilyWizardFormActivity.this.finish();
+        }
     }
 }
 

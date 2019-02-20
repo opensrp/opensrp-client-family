@@ -62,4 +62,8 @@ public abstract class Constants {
     public static class BOOLEAN_INT {
         public static final int TRUE = 1;
     }
+
+    public static class WizardFormActivity {
+        public static final String EnableOnCloseDialog = "EnableOnCloseDialog";
+    }
 }
