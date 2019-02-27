@@ -63,6 +63,10 @@ public abstract class Constants {
         public static final int TRUE = 1;
     }
 
+    public static class IDENTIFIER {
+        public static final String FAMILY_SUFFIX = "_family";
+    }
+
     public static class WizardFormActivity {
         public static final String EnableOnCloseDialog = "EnableOnCloseDialog";
     }
