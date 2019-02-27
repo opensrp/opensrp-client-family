@@ -9,6 +9,7 @@ public class FamilyMetadata {
     public final Class familyFormActivity;
     public final Class familyMemberFormActivity;
     public final Class profileActivity;
+    public final String uniqueIdentifierKey;
     public final boolean formWizardValidateRequiredFieldsBefore;
 
     public FamilyRegister familyRegister;
@@ -17,10 +18,11 @@ public class FamilyMetadata {
     public FamilyActivityRegister familyActivityRegister;
     public FamilyOtherMemberRegister familyOtherMemberRegister;
 
-    public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity, boolean formWizardValidateRequiredFieldsBefore) {
+    public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity, String uniqueIdentifierKey, boolean formWizardValidateRequiredFieldsBefore) {
         this.familyFormActivity = familyFormActivity;
         this.familyMemberFormActivity = familyMemberFormActivity;
         this.profileActivity = profileActivity;
+        this.uniqueIdentifierKey = uniqueIdentifierKey;
         this.formWizardValidateRequiredFieldsBefore = formWizardValidateRequiredFieldsBefore;
     }
 

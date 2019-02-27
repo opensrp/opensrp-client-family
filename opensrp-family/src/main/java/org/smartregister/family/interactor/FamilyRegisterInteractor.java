@@ -14,7 +14,6 @@ import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
-import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
@@ -128,7 +127,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                 if (isEditMode) {
                     // Unassign current OPENSRP ID
                     if (baseClient != null) {
-                        String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.UNIQUE_ID).replace("-", "");
+                        String newOpenSRPId = baseClient.getIdentifier(Utils.metadata().uniqueIdentifierKey).replace("-", "");
                         String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
                         if (!newOpenSRPId.equals(currentOpenSRPId)) {
                             //OPENSRP ID was changed
@@ -138,10 +137,11 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
 
                 } else {
                     if (baseClient != null) {
-                        String opensrpId = baseClient.getIdentifier(DBConstants.KEY.UNIQUE_ID);
-
-                        //mark OPENSRP ID as used
-                        getUniqueIdRepository().close(opensrpId);
+                        String opensrpId = baseClient.getIdentifier(Utils.metadata().uniqueIdentifierKey);
+                        if (StringUtils.isNotBlank(opensrpId) && !opensrpId.contains(Constants.IDENTIFIER.FAMILY_SUFFIX)) {
+                            //mark OPENSRP ID as used
+                            getUniqueIdRepository().close(opensrpId);
+                        }
                     }
                 }
 

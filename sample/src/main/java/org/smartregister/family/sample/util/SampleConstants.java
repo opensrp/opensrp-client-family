@@ -34,4 +34,8 @@ public class SampleConstants {
         public static final String FAMILY_MEMBER = "ec_family_member";
     }
 
+    public static class IDENTIFIER {
+        public static final String UNIQUE_IDENTIFIER_KEY = "opensrp_id";
+    }
+
 }

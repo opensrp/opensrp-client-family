@@ -145,7 +145,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
             if (isEditMode) {
                 // Unassign current OPENSRP ID
                 if (baseClient != null) {
-                    String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.UNIQUE_ID);
+                    String newOpenSRPId = baseClient.getIdentifier(Utils.metadata().uniqueIdentifierKey);
                     if (newOpenSRPId != null) {
                         newOpenSRPId.replace("-", "");
                         String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
@@ -158,7 +158,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
 
             } else {
                 if (baseClient != null) {
-                    String opensrpId = baseClient.getIdentifier(DBConstants.KEY.UNIQUE_ID);
+                    String opensrpId = baseClient.getIdentifier(Utils.metadata().uniqueIdentifierKey);
 
                     //mark OPENSRP ID as used
                     getUniqueIdRepository().close(opensrpId);
