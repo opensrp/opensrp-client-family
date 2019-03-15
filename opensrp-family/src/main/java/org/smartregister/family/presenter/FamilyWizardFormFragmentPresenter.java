@@ -28,15 +28,23 @@ public class FamilyWizardFormFragmentPresenter extends JsonFormFragmentPresenter
 
     @Override
     public void onNextClick(LinearLayout mainView) {
-        ValidationStatus validationStatus = this.writeValuesAndValidate(mainView);
-        if (validationStatus.isValid()) {
-            JsonFormFragment next = FamilyWizardFormFragment.getFormFragment(mStepDetails.optString(Constants.JSON_FORM_EXTRA.NEXT));
-            getView().hideKeyBoard();
-            getView().transactThis(next);
+
+        validateAndWriteValues();
+        boolean validateOnSubmit = validateOnSubmit();
+        if (validateOnSubmit && getIncorrectlyFormattedFields().isEmpty()) {
+            moveToNextWizardStep();
+        } else if (isFormValid()) {
+            moveToNextWizardStep();
         } else {
-            validationStatus.requestAttention();
-            getView().showToast(validationStatus.getErrorMessage());
+            getView().showSnackBar(getView().getContext().getResources()
+                    .getString(com.vijay.jsonwizard.R.string.json_form_on_next_error_msg));
         }
+    }
+
+    private void moveToNextWizardStep() {
+        JsonFormFragment next = FamilyWizardFormFragment.getFormFragment(mStepDetails.optString(Constants.JSON_FORM_EXTRA.NEXT));
+        getView().hideKeyBoard();
+        getView().transactThis(next);
     }
 
     public boolean intermediatePage() {
