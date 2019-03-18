@@ -53,6 +53,7 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
         form.setActionBarBackground(R.color.family_actionbar);
         form.setNavigationBackground(R.color.family_navigation);
         form.setHomeAsUpIndicator(R.mipmap.ic_cross_white);
+        form.setPreviousLabel(getResources().getString(R.string.back));
         intent.putExtra(JsonFormConstants.JSON_FORM_KEY.FORM, form);
 
         startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
