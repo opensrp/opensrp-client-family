@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.google.common.reflect.TypeToken;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -16,6 +18,7 @@ import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
+import org.smartregister.domain.form.FormLocation;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.domain.FamilyEventClient;
@@ -23,6 +26,7 @@ import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.sync.helper.ECSyncHelper;
+import org.smartregister.util.AssetHandler;
 import org.smartregister.util.FormUtils;
 import org.smartregister.util.ImageUtils;
 import org.smartregister.view.LocationPickerView;
@@ -33,8 +37,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -89,6 +95,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     uniqueId.put(JsonFormUtils.VALUE, entityId);
                 }
             }
+
+            JsonFormUtils.addLocHierarchyQuestions(form);
 
         } else {
             Log.w(TAG, "Unsupported form requested for launch " + formName);
@@ -287,6 +295,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     processPopulatableFields(client, jsonObject);
 
                 }
+
+                JsonFormUtils.addLocHierarchyQuestions(form);
 
                 return form;
             }
@@ -492,7 +502,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return null;
     }
 
-
     public static String getFieldValue(String jsonString, String step, String key) {
         JSONObject jsonForm = toJSONObject(jsonString);
         if (jsonForm == null) {
@@ -506,5 +515,51 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return getFieldValue(fields, key);
 
+    }
+
+    public static void addLocHierarchyQuestions(JSONObject form) {
+        try {
+            JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
+            ArrayList<String> allLevels = new ArrayList<>();
+            allLevels.add("Country");
+            allLevels.add("District");
+            allLevels.add("Region");
+            allLevels.add("Village");
+            allLevels.add("Ward");
+            allLevels.add("MOH Jhpiego Facility Name");
+
+            ArrayList<String> healthFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("District");
+            healthFacilities.add("Region");
+            healthFacilities.add("Village");
+            healthFacilities.add("Ward");
+            healthFacilities.add("MOH Jhpiego Facility Name");
+
+            List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
+
+            List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
+
+            String defaultFacilityString = AssetHandler.javaToJsonString(defaultFacility,
+                    new TypeToken<List<String>>() {
+                    }.getType());
+
+            String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities,
+                    new TypeToken<List<FormLocation>>() {
+                    }.getType());
+
+            for (int i = 0; i < questions.length(); i++) {
+                if (questions.getJSONObject(i).getString("key").equals("nearest_facility")) {
+                    if (StringUtils.isNotBlank(upToFacilitiesString)) {
+                        questions.getJSONObject(i).put("tree", new JSONArray(upToFacilitiesString));
+                    }
+                    if (StringUtils.isNotBlank(defaultFacilityString)) {
+                        questions.getJSONObject(i).put("default", defaultFacilityString);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 }
