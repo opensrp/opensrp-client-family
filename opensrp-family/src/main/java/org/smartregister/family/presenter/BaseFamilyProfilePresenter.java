@@ -221,4 +221,8 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
     public String familyBaseEntityId() {
         return familyBaseEntityId;
     }
+
+    public void setInteractor(FamilyProfileContract.Interactor interactor) {
+        this.interactor = interactor;
+    }
 }
