@@ -33,7 +33,7 @@
 
     <!-- register -->
     <string name="family_head">Chef de famille</string>
-    <string name="primary_care_giver">Personne qui s\'occupe principalement de l\'enfant</string>
+    <string name="primary_care_giver">Responsable de l\'enfant</string>
 
     <!-- member -->
     <string name="return_to_all_families">Retourner à Toutes familles</string>
@@ -43,5 +43,5 @@
 
     <!-- warning -->
     <string name="any_changes_you_make">Toutes les modifications que vous avez apporté seront perdues</string>
-
+    <string name="family">Family</string>
 </resources>
