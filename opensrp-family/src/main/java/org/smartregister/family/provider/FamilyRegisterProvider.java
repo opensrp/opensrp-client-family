@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
@@ -27,8 +26,6 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.text.MessageFormat;
 import java.util.Set;
-
-import static org.smartregister.family.util.Utils.getName;
 
 /**
  * Created by keyman on 13/11/2018.
@@ -85,10 +82,10 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, final RegisterViewHolder viewHolder) {
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
-        String lastName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        String patientName = getName(firstName, lastName);
 
-        fillValue(viewHolder.patientName, WordUtils.capitalize(patientName));
+        String famName = MessageFormat.format(context.getString(R.string.family_title), firstName);
+
+        fillValue(viewHolder.patientName, famName);
 
         String villageTown = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, true);
         fillValue((viewHolder.villageTown), villageTown);

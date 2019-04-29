@@ -46,5 +46,5 @@
 
     <string name="back">BACK</string>
 
-    <string name="family">Family</string>
+    <string name="family_title">{0} Family</string>
 </resources>

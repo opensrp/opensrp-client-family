@@ -19,8 +19,7 @@ import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.lang.ref.WeakReference;
-
-import static org.smartregister.util.Utils.getName;
+import java.text.MessageFormat;
 
 /**
  * Created by keyman on 19/11/2018.
@@ -117,9 +116,9 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
         }
 
         String firstName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
-        String lastName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
 
-        getView().setProfileName(getName(firstName, lastName));
+        String famName = MessageFormat.format(getView().getString(R.string.family_title), firstName);
+        getView().setProfileName(famName);
 
         String villageTown = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, false);
         getView().setProfileDetailOne(villageTown);
