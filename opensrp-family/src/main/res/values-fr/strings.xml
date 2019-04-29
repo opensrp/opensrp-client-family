@@ -46,5 +46,5 @@
 
     <string name="back">RETOUR</string>
 
-    <string name="family">Famille</string>
+    <string name="family_title">Famille {0}</string>
 </resources>
