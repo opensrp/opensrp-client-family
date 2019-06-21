@@ -16,6 +16,7 @@ import org.smartregister.family.R;
 import org.smartregister.family.fragment.FamilyWizardFormFragment;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
+import org.smartregister.util.LangUtils;
 
 import java.util.List;
 
@@ -29,6 +30,18 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
         super.onCreate(savedInstanceState);
 
         enableOnCloseDialog = getIntent().getBooleanExtra(Constants.WizardFormActivity.EnableOnCloseDialog, true);
+    }
+
+    @Override
+    public void initializeFormFragment() {
+        initializeFormFragmentCore();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setConfirmCloseTitle(getString(R.string.confirm_form_close));
+        setConfirmCloseMessage(getString(R.string.confirm_form_close_explanation));
 
         try {
             JSONObject form = new JSONObject(currentJsonState());
@@ -39,11 +52,6 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
-    }
-
-    @Override
-    public void initializeFormFragment() {
-        initializeFormFragmentCore();
     }
 
     @Override
@@ -117,9 +125,16 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     public void onBackPressed() {
         if (enableOnCloseDialog) {
             super.onBackPressed();
-        }else{
+        } else {
             FamilyWizardFormActivity.this.finish();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        // get language from prefs
+        String lang = LangUtils.getLanguage(base.getApplicationContext());
+        super.attachBaseContext(LangUtils.setAppLocale(base, lang));
     }
 }
 
