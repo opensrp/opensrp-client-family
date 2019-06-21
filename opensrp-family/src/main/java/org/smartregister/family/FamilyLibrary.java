@@ -18,7 +18,7 @@ public class FamilyLibrary {
 
     private final Context context;
     private final Repository repository;
-    private final FamilyMetadata metadata;
+    private FamilyMetadata metadata;
 
     private int applicationVersion;
     private int databaseVersion;
@@ -51,6 +51,10 @@ public class FamilyLibrary {
         this.metadata = metadataArg;
         this.applicationVersion = applicationVersion;
         this.databaseVersion = databaseVersion;
+    }
+
+    public void setMetadata(FamilyMetadata metadata) {
+        this.metadata = metadata;
     }
 
     public Context context() {
