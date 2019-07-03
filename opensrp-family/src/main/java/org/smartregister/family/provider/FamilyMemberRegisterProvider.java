@@ -115,14 +115,14 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             dobString = Utils.getDuration(dod, dob);
             dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
 
-            patientName = patientName + ", " + dobString + " " + context.getString(R.string.deceased_brackets);
+            patientName = patientName + ", " + Utils.getTranslatedDate(dobString, context) + " " + context.getString(R.string.deceased_brackets);
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
             viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier(entityType));
             viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
-            patientName = patientName + ", " + dobString;
+            patientName = patientName + ", " + Utils.getTranslatedDate(dobString, context);
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
@@ -132,7 +132,13 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
         fillValue(viewHolder.patientNameAge, patientName);
 
-        String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
+        String gender_key = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
+        String gender = "";
+        if (gender_key.equalsIgnoreCase("Male")) {
+            gender = context.getString(R.string.male);
+        } else if (gender_key.equalsIgnoreCase("Female")) {
+            gender = context.getString(R.string.female);
+        }
         fillValue(viewHolder.gender, gender);
 
         viewHolder.nextArrowColumn.setOnClickListener(new View.OnClickListener() {
