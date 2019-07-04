@@ -104,13 +104,13 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             dobString = Utils.getDuration(dod, dob);
             dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
 
-            patientName = patientName + ", " + dobString + " " + context.getString(R.string.deceased_brackets);
+            patientName = patientName + ", " + Utils.getTranslatedDate(dobString, context) + " " + context.getString(R.string.deceased_brackets);
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
             viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
-            patientName = patientName + ", " + dobString;
+            patientName = patientName + ", " + Utils.getTranslatedDate(dobString, context);
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);

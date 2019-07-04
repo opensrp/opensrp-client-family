@@ -135,6 +135,14 @@ public class Utils extends org.smartregister.util.Utils {
         return "";
     }
 
+    public static String getTranslatedDate(String str_date, android.content.Context context) {
+        return str_date
+                .replace("d", context.getString(R.string.abbrv_days))
+                .replace("w", context.getString(R.string.abbrv_weeks))
+                .replace("m", context.getString(R.string.abbrv_months))
+                .replace("y", context.getString(R.string.abbrv_years));
+    }
+
     public static Context context() {
         return FamilyLibrary.getInstance().context();
     }

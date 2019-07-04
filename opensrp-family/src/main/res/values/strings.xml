@@ -47,4 +47,10 @@
     <string name="back">BACK</string>
 
     <string name="family_title">{0} Family</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="abbrv_days">d</string>
+    <string name="abbrv_weeks">w</string>
+    <string name="abbrv_months">m</string>
+    <string name="abbrv_years">y</string>
 </resources>

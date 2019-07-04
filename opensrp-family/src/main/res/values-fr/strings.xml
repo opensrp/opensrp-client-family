@@ -33,10 +33,10 @@
 
     <!-- register -->
     <string name="family_head">Chef de famille</string>
-    <string name="primary_care_giver">Personne qui s\'occupe principalement de l\'enfant</string>
+    <string name="primary_care_giver">Gardienne</string>
 
     <!-- member -->
-    <string name="return_to_all_families">Retourner à Toutes familles</string>
+    <string name="return_to_all_families">Retourner à toutes familles</string>
     <string name="return_to_family_profile">Retourner au profil de la famille</string>
     <string name="deceased_brackets">(décédé)</string>
     <string name="id_with_value">ID: %1$s</string>
@@ -46,5 +46,12 @@
 
     <string name="back">RETOUR</string>
 
-    <string name="family_title">Famille {0}</string>
+    <string name="family_title">{0} Famille</string>
+    <string name="male">Mâle</string>
+    <string name="female">Femelle</string>
+    <string name="abbrv_days">j</string>
+    <string name="abbrv_weeks">s</string>
+    <string name="abbrv_months">m</string>
+    <string name="abbrv_years">a</string>
+
 </resources>
