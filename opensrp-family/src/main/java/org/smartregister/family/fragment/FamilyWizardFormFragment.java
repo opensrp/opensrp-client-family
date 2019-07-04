@@ -1,17 +1,13 @@
 package org.smartregister.family.fragment;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.domain.Form;
 import com.vijay.jsonwizard.fragments.JsonWizardFormFragment;
 import com.vijay.jsonwizard.interactors.JsonFormInteractor;
-import com.vijay.jsonwizard.utils.ValidationStatus;
-import com.vijay.jsonwizard.viewstates.JsonFormFragmentViewState;
 
-import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.presenter.FamilyWizardFormFragmentPresenter;
 
 public class FamilyWizardFormFragment extends JsonWizardFormFragment {
@@ -27,11 +23,6 @@ public class FamilyWizardFormFragment extends JsonWizardFormFragment {
     }
 
     @Override
-    protected JsonFormFragmentViewState createViewState() {
-        return new JsonFormFragmentViewState();
-    }
-
-    @Override
     protected FamilyWizardFormFragmentPresenter createPresenter() {
         return new FamilyWizardFormFragmentPresenter(this, JsonFormInteractor.getInstance());
     }
@@ -40,50 +31,19 @@ public class FamilyWizardFormFragment extends JsonWizardFormFragment {
     public void updateVisibilityOfNextAndSave(boolean next, boolean save) {
         super.updateVisibilityOfNextAndSave(next, save);
         Form form = getForm();
-        if (form != null && form.isWizard() && !FamilyLibrary.getInstance().metadata().formWizardValidateRequiredFieldsBefore) {
-            this.getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(save);
-        }
-    }
-
-    public void validateActivateNext() {
-        if (!isVisible()) { //form fragment is initializing or not the last page
-            return;
-        }
-
-        Form form = getForm();
-        if (form == null || !form.isWizard()) {
-            return;
-        }
-
-        ValidationStatus validationStatus = null;
-        for (View dataView : getJsonApi().getFormDataViews()) {
-
-            validationStatus = getPresenter().validate(this, dataView, false);
-            if (!validationStatus.isValid()) {
-                break;
-            }
-        }
-
-        if (validationStatus != null && validationStatus.isValid()) {
-            if (getPresenter().intermediatePage()) {
-                //getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(true);
-            } else {
-                getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(true);
-            }
+        if (form != null && form.isWizard()) {
+            getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(false);
+            getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(save);
         } else {
-            if (getPresenter().intermediatePage()) {
-                //getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(false);
-            } else {
-                getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(false);
-            }
+            getMenu().findItem(com.vijay.jsonwizard.R.id.action_next).setVisible(next);
+            getMenu().findItem(com.vijay.jsonwizard.R.id.action_save).setVisible(save);
         }
-    }
-
-    public FamilyWizardFormFragmentPresenter getPresenter() {
-        return (FamilyWizardFormFragmentPresenter) presenter;
     }
 
     private Form getForm() {
-        return this.getActivity() != null && this.getActivity() instanceof JsonFormActivity ? ((JsonFormActivity) this.getActivity()).getForm() : null;
+        if (getActivity() != null && getActivity() instanceof JsonFormActivity) {
+            return ((JsonFormActivity) getActivity()).getForm();
+        }
+        return null;
     }
 }
