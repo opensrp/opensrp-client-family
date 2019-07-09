@@ -6,11 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
-import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.json.JSONObject;
 import org.smartregister.family.R;
-import org.smartregister.family.fragment.FamilyWizardFormFragment;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.util.LangUtils;
@@ -25,11 +23,6 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
         super.onCreate(savedInstanceState);
 
         enableOnCloseDialog = getIntent().getBooleanExtra(Constants.WizardFormActivity.EnableOnCloseDialog, true);
-    }
-
-    @Override
-    public void initializeFormFragment() {
-        initializeFormFragmentCore();
     }
 
     @Override
@@ -55,12 +48,6 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
             toolbar.setContentInsetStartWithNavigation(0);
         }
         super.setSupportActionBar(toolbar);
-    }
-
-    protected void initializeFormFragmentCore() {
-        FamilyWizardFormFragment familyWizardFormFragment = FamilyWizardFormFragment.getFormFragment(JsonFormConstants.FIRST_STEP_NAME);
-        getSupportFragmentManager().beginTransaction()
-                .add(com.vijay.jsonwizard.R.id.container, familyWizardFormFragment).commit();
     }
 
     /**
