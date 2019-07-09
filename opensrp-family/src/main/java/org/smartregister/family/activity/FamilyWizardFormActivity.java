@@ -3,7 +3,6 @@ package org.smartregister.family.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
@@ -12,6 +11,8 @@ import org.smartregister.family.R;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.util.LangUtils;
+
+import timber.log.Timber;
 
 public class FamilyWizardFormActivity extends JsonWizardFormActivity {
     private String TAG = FamilyWizardFormActivity.class.getCanonicalName();
@@ -38,7 +39,7 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
                 setConfirmCloseMessage(getString(R.string.any_changes_you_make));
             }
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            Timber.e(e.toString());
         }
     }
 
