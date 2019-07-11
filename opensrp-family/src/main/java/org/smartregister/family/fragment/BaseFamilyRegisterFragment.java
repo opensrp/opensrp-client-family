@@ -22,7 +22,6 @@ import org.smartregister.view.fragment.BaseRegisterFragment;
 import java.util.Set;
 
 public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment implements FamilyRegisterFragmentContract.View {
-    private static final String TAG = BaseFamilyRegisterFragment.class.getCanonicalName();
     public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     public static final String CLICK_VIEW_DOSAGE_STATUS = "click_view_dosage_status";
 

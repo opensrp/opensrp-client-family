@@ -17,12 +17,12 @@ import org.smartregister.repository.AllSharedPreferences;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman on 12/11/2018.
  */
 public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Presenter, FamilyRegisterContract.InteractorCallBack {
-
-    public static final String TAG = BaseFamilyRegisterPresenter.class.getName();
 
     protected WeakReference<FamilyRegisterContract.View> viewReference;
     protected FamilyRegisterContract.Interactor interactor;
@@ -79,13 +79,13 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
             AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
-            Log.d("JSONResult", jsonString);
+            Timber.d(jsonString);
             //getView().showProgressDialog(jsonString.contains(Constants.EventType.CLOSE) ? R.string.removing_dialog_title : R.string.saving_dialog_title);
 
             interactor.removeFamilyFromRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
 
         }
     }
@@ -105,7 +105,7 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
             interactor.saveRegistration(familyEventClientList, jsonString, isEditMode, this);
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 
@@ -119,7 +119,7 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
         try {
             startForm(triple.getLeft(), entityId, triple.getMiddle(), triple.getRight());
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(Log.getStackTraceString(e));
             if (getView() != null)
                 getView().displayToast(R.string.error_unable_to_start_form);
         }

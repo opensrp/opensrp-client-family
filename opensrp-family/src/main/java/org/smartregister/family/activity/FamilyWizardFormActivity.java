@@ -15,7 +15,6 @@ import org.smartregister.util.LangUtils;
 import timber.log.Timber;
 
 public class FamilyWizardFormActivity extends JsonWizardFormActivity {
-    private String TAG = FamilyWizardFormActivity.class.getCanonicalName();
 
     private boolean enableOnCloseDialog = true;
 

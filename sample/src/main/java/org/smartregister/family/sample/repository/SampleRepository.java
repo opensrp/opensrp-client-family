@@ -14,13 +14,13 @@ import org.smartregister.repository.Repository;
 import org.smartregister.repository.SettingsRepository;
 import org.smartregister.repository.UniqueIdRepository;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman on 28/07/2017.
  */
 public class SampleRepository extends Repository {
 
-
-    private static final String TAG = SampleRepository.class.getCanonicalName();
     protected SQLiteDatabase readableDatabase;
     protected SQLiteDatabase writableDatabase;
     private Context context;
@@ -47,7 +47,7 @@ public class SampleRepository extends Repository {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(SampleRepository.class.getName(),
+        Timber.w(SampleRepository.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
 
@@ -86,7 +86,7 @@ public class SampleRepository extends Repository {
             }
             return readableDatabase;
         } catch (Exception e) {
-            Log.e(TAG, "Database Error. " + e.getMessage());
+            Timber.e(e, "Database Error. ");
             return null;
         }
 

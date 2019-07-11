@@ -1,7 +1,6 @@
 package org.smartregister.family.interactor;
 
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -17,7 +16,6 @@ import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
-import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
@@ -28,12 +26,12 @@ import org.smartregister.sync.helper.ECSyncHelper;
 
 import java.util.Date;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman on 19/11/2018.
  */
 public class FamilyProfileInteractor implements FamilyProfileContract.Interactor {
-
-    public static final String TAG = FamilyProfileInteractor.class.getName();
 
     private AppExecutors appExecutors;
 
@@ -175,7 +173,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
             getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 

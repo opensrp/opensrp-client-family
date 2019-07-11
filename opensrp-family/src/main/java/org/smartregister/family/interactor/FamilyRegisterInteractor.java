@@ -1,7 +1,6 @@
 package org.smartregister.family.interactor;
 
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -25,12 +24,12 @@ import org.smartregister.sync.helper.ECSyncHelper;
 import java.util.Date;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman 12/11/2018.
  */
 public class FamilyRegisterInteractor implements FamilyRegisterContract.Interactor {
-
-    public static final String TAG = FamilyRegisterInteractor.class.getName();
 
     public enum type {SAVED, UPDATED}
 
@@ -164,7 +163,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
             getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 
