@@ -86,7 +86,9 @@ public abstract class BaseFamilyOtherMemberProfileActivity extends BaseProfileAc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter().onDestroy(isChangingConfigurations());
+        if (presenter() != null) {
+            presenter().onDestroy(isChangingConfigurations());
+        }
     }
 
     @Override

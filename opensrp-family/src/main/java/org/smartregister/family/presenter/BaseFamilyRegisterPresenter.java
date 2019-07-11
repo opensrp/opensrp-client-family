@@ -120,7 +120,8 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
             startForm(triple.getLeft(), entityId, triple.getMiddle(), triple.getRight());
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            getView().displayToast(R.string.error_unable_to_start_form);
+            if (getView() != null)
+                getView().displayToast(R.string.error_unable_to_start_form);
         }
     }
 
@@ -135,7 +136,8 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
 
         viewReference = null;//set to null on destroy
         // Inform interactor
-        interactor.onDestroy(isChangingConfiguration);
+        if (interactor != null)
+            interactor.onDestroy(isChangingConfiguration);
         // Activity destroyed set interactor to null
         if (!isChangingConfiguration) {
             interactor = null;
