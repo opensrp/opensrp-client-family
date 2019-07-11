@@ -22,6 +22,8 @@ import org.smartregister.view.activity.BaseRegisterActivity;
 import java.util.Arrays;
 import java.util.List;
 
+import timber.log.Timber;
+
 public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity implements FamilyRegisterContract.View {
     public static final String TAG = BaseFamilyRegisterActivity.class.getCanonicalName();
 
@@ -110,4 +112,12 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
         return (FamilyRegisterContract.Presenter) presenter;
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            super.onDestroy();
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
 }
