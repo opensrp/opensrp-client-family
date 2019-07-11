@@ -19,6 +19,8 @@ import org.smartregister.util.FormUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class BaseFamilyProfileModel implements FamilyProfileContract.Model {
 
     private FormUtils formUtils;
@@ -98,7 +100,7 @@ public class BaseFamilyProfileModel implements FamilyProfileContract.Model {
             try {
                 formUtils = FormUtils.getInstance(Utils.context().applicationContext());
             } catch (Exception e) {
-                Log.e(BaseFamilyProfileModel.class.getCanonicalName(), e.getMessage(), e);
+                Timber.e( e);
             }
         }
         return formUtils;

@@ -1,7 +1,5 @@
 package org.smartregister.family.model;
 
-import android.util.Log;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
@@ -16,6 +14,8 @@ import org.smartregister.util.FormUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
     private FormUtils formUtils;
@@ -92,7 +92,7 @@ public class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
             try {
                 formUtils = FormUtils.getInstance(Utils.context().applicationContext());
             } catch (Exception e) {
-                Log.e(BaseFamilyRegisterModel.class.getCanonicalName(), e.getMessage(), e);
+                Timber.e(e);
             }
         }
         return formUtils;

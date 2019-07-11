@@ -5,12 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.ImageView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.domain.Photo;
 import org.smartregister.util.ImageUtils;
+
+import timber.log.Timber;
 
 /**
  * Created by ndegwamartin on 13/07/2018.
@@ -34,7 +35,7 @@ public class ImageRenderHelper {
                 Bitmap myBitmap = BitmapFactory.decodeFile(photo.getFilePath());
                 profileImageView.setImageBitmap(myBitmap);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Timber.e(e);
 
                 profileImageView.setImageDrawable(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? context.getDrawable(defaultProfileImage) : ContextCompat.getDrawable(context, defaultProfileImage));
 

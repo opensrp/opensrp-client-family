@@ -1,7 +1,6 @@
 package org.smartregister.family.presenter;
 
 import android.content.Intent;
-import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -21,12 +20,12 @@ import org.smartregister.repository.AllSharedPreferences;
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman on 19/11/2018.
  */
 public class BaseFamilyProfilePresenter implements FamilyProfileContract.Presenter, FamilyProfileContract.InteractorCallBack {
-
-    protected static final String TAG = BaseFamilyProfilePresenter.class.getCanonicalName();
 
     protected WeakReference<FamilyProfileContract.View> view;
     protected FamilyProfileContract.Interactor interactor;
@@ -85,7 +84,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
     public void processFormDetailsSave(Intent data, AllSharedPreferences allSharedPreferences) {
         try {
             String jsonString = data.getStringExtra(Constants.INTENT_KEY.JSON);
-            Log.d("JSONResult", jsonString);
+            Timber.d(jsonString);
 
            /*JSONObject form = new JSONObject(jsonString);
 
@@ -104,7 +103,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
                 getProfileView().hideProgressDialog();
             }*/
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 
@@ -142,7 +141,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
             getView().startFormActivity(form);
 
         } catch (Exception e) {
-            Log.e("TAG", e.getMessage());
+            Timber.e(e);
         }
     }
 
@@ -170,7 +169,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
         try {
             startForm(triple.getLeft(), entityId, triple.getMiddle(), triple.getRight());
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
             getView().displayToast(R.string.error_unable_to_start_form);
         }
     }
@@ -189,7 +188,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
             interactor.saveRegistration(familyEventClient, jsonString, false, this);
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 
@@ -207,7 +206,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
             interactor.saveRegistration(familyEventClient, jsonString, true, this);
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 

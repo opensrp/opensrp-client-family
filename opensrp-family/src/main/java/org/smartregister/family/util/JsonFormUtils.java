@@ -43,11 +43,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman on 13/11/2018.
  */
 public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
-    private static final String TAG = JsonFormUtils.class.getCanonicalName();
 
     public static final String METADATA = "metadata";
     public static final String ENCOUNTER_TYPE = "encounter_type";
@@ -99,9 +100,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JsonFormUtils.addLocHierarchyQuestions(form);
 
         } else {
-            Log.w(TAG, "Unsupported form requested for launch " + formName);
+            Timber.w("Unsupported form requested for launch " + formName);
         }
-        Log.d(TAG, "form is " + form.toString());
+        Timber.d("form is " + form.toString());
         return form;
     }
 
@@ -152,7 +153,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
             return null;
         }
     }
@@ -187,7 +188,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
             return null;
         }
     }
@@ -235,7 +236,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
             return null;
         }
     }
@@ -274,7 +275,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();
             // JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
-            Log.d(TAG, "Form is " + form.toString());
+            Timber.d( "Form is " + form.toString());
             if (form != null) {
                 form.put(JsonFormUtils.ENTITY_ID, client.getCaseId());
                 form.put(JsonFormUtils.ENCOUNTER_TYPE, Utils.metadata().familyRegister.updateEventType);
@@ -301,7 +302,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 return form;
             }
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
 
         return null;
@@ -349,7 +350,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             jsonObject.put(JsonFormUtils.VALUE, uniqueId.replace("-", ""));
 
         } else {
-            Log.e(TAG, "ERROR:: Unprocessed Form Object Key " + jsonObject.getString(JsonFormUtils.KEY));
+            Timber.e("ERROR:: Unprocessed Form Object Key " + jsonObject.getString(JsonFormUtils.KEY));
         }
     }
 
@@ -385,13 +386,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
         } catch (FileNotFoundException e) {
-            Log.e(TAG, "Failed to save static image to disk");
+            Timber.e("Failed to save static image to disk");
         } finally {
             if (os != null) {
                 try {
                     os.close();
                 } catch (IOException e) {
-                    Log.e(TAG, "Failed to close static images output stream after attempting to write image");
+                    Timber.e("Failed to close static images output stream after attempting to write image");
                 }
             }
         }
@@ -445,7 +446,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
         } catch (JSONException e) {
-            Log.e(TAG, "", e);
+            Timber.e(e);
         }
     }
 
@@ -474,7 +475,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(TAG, "", e);
+            Timber.e(e);
         }
     }
 
@@ -497,7 +498,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             return step1.has(FIELDS) ? step1.getJSONArray(FIELDS) : null;
 
         } catch (JSONException e) {
-            Log.e(TAG, "", e);
+            Timber.e(e);
         }
         return null;
     }
@@ -559,7 +560,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
         }
     }
 }

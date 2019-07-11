@@ -29,10 +29,9 @@ import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.activity.BaseProfileActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public abstract class BaseFamilyProfileActivity extends BaseProfileActivity implements FamilyProfileContract.View {
-
-    public static final String TAG = BaseFamilyProfileActivity.class.getName();
 
     private TextView nameView;
     private TextView detailOneView;
@@ -128,7 +127,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
             presenter().startForm(formName, entityId, metaData, locationId);
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
             displayToast(R.string.error_unable_to_start_form);
         }
     }
@@ -153,7 +152,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
-                Log.d("JSONResult", jsonString);
+                Timber.d(jsonString);
 
                 JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Utils.metadata().familyRegister.updateEventType)) {
@@ -162,7 +161,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
                     presenter().saveFamilyMember(jsonString);
                 }
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                Timber.e(e);
             }
         }
     }

@@ -1,7 +1,5 @@
 package org.smartregister.family.sample.application;
 
-import android.util.Log;
-
 import com.evernote.android.job.JobManager;
 
 import org.smartregister.Context;
@@ -27,14 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import timber.log.Timber;
+
 public class SampleApplication extends DrishtiApplication {
-    private static final String TAG = SampleApplication.class.getCanonicalName();
 
     private static CommonFtsObject commonFtsObject;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Timber.plant(new Timber.DebugTree());
 
         mInstance = this;
         context = Context.getInstance();
@@ -62,6 +63,7 @@ public class SampleApplication extends DrishtiApplication {
 
         sampleUniqueIds();
 
+
     }
 
     @Override
@@ -79,7 +81,7 @@ public class SampleApplication extends DrishtiApplication {
                 repository = new SampleRepository(getInstance().getApplicationContext(), context);
             }
         } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return repository;
     }

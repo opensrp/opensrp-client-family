@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import timber.log.Timber;
+
 /**
  * Created by keyman on 12/07/2018.
  */
@@ -104,7 +106,7 @@ public class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentCon
                 return new JSONArray(response.payload());
             }
         } catch (Exception e) {
-            Log.e(getClass().getName(), "", e);
+            Timber.e(e);
         }
         return null;
     }
