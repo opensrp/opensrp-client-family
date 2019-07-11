@@ -19,8 +19,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class BaseFamilyOtherMemberProfileActivity extends BaseProfileActivity implements FamilyOtherMemberContract.View {
 
-    public static final String TAG = BaseFamilyOtherMemberProfileActivity.class.getName();
-
     private TextView nameView;
     private TextView detailOneView;
     private TextView detailTwoView;

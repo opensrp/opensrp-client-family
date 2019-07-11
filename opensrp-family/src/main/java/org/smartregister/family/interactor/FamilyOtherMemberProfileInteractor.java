@@ -14,8 +14,6 @@ import org.smartregister.family.util.Utils;
  */
 public class FamilyOtherMemberProfileInteractor implements FamilyOtherMemberContract.Interactor {
 
-    public static final String TAG = FamilyOtherMemberProfileInteractor.class.getName();
-
     private AppExecutors appExecutors;
 
     @VisibleForTesting

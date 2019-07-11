@@ -18,8 +18,6 @@ import timber.log.Timber;
  */
 public class ImageRenderHelper {
 
-    private static final String TAG = org.smartregister.helper.ImageRenderHelper.class.getCanonicalName();
-
     private Context context;
 
     public ImageRenderHelper(Context context) {

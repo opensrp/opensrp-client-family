@@ -31,8 +31,6 @@ import timber.log.Timber;
  */
 public class FamilyRegisterInteractor implements FamilyRegisterContract.Interactor {
 
-    public static final String TAG = FamilyRegisterInteractor.class.getName();
-
     public enum type {SAVED, UPDATED}
 
 
