@@ -106,7 +106,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
 
         try {
 
-            List<org.smartregister.domain.db.EventClient> eventClientList = new ArrayList<>();
+            List<EventClient> eventClientList = new ArrayList<>();
             for (int i = 0; i < familyEventClientList.size(); i++) {
                 FamilyEventClient familyEventClient = familyEventClientList.get(i);
                 Client baseClient = familyEventClient.getClient();
