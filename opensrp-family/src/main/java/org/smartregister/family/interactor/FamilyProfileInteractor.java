@@ -11,6 +11,7 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.UniqueId;
+import org.smartregister.domain.db.EventClient;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
@@ -25,6 +26,7 @@ import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
 
 import java.util.Date;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -170,8 +172,16 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
 
             long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
-            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
+
+    protected  void processClient(List<EventClient> eventClientList) {
+        try {
+            getClientProcessorForJava().processClient(eventClientList);
         } catch (Exception e) {
             Timber.e(e);
         }
