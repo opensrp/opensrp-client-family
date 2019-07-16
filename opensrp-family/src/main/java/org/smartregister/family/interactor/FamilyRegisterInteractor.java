@@ -170,7 +170,6 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
             Date lastSyncDate = new Date(lastSyncTimeStamp);
 
             processClient(eventClientList);
-            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
         } catch (Exception e) {
             Timber.e(e);
