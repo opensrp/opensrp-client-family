@@ -40,6 +40,7 @@ public abstract class Constants {
         public static final String DEFAULT = "default";
         public static final String PHOTO = "photo";
         public static final String TYPE = "type";
+        public static final String FAMILY_HEAD_NAME = "family_head_name";
     }
 
     public static final class INTENT_KEY {

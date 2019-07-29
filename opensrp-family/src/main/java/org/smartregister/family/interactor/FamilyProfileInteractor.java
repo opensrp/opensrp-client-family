@@ -16,6 +16,7 @@ import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
+import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
@@ -57,6 +58,10 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
                 final CommonPersonObject personObject = getCommonRepository(Utils.metadata().familyRegister.tableName).findByBaseEntityId(baseEntityId);
                 final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personObject.getCaseId(),
                         personObject.getDetails(), "");
+                String familyHeadId = personObject.getColumnmaps().get(DBConstants.KEY.FAMILY_HEAD);
+                final CommonPersonObject familyHeadObject = getCommonRepository(Utils.metadata().familyMemberRegister.tableName).findByBaseEntityId(familyHeadId);
+
+                personObject.getColumnmaps().put(Constants.KEY.FAMILY_HEAD_NAME,familyHeadObject.getColumnmaps().get(DBConstants.KEY.FIRST_NAME));
                 pClient.setColumnmaps(personObject.getColumnmaps());
 
                 appExecutors.mainThread().execute(new Runnable() {
