@@ -115,8 +115,9 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
         }
 
         String firstName = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String familyHeadFirstName = Utils.getValue(client.getColumnmaps(), Constants.KEY.FAMILY_HEAD_NAME, true);
 
-        String famName = MessageFormat.format(getView().getString(R.string.family_title), firstName);
+        String famName = MessageFormat.format(getView().getString(R.string.family_profile_title),familyHeadFirstName, firstName);
         getView().setProfileName(famName);
 
         String villageTown = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, false);

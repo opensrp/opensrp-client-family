@@ -47,6 +47,7 @@
     <string name="back">RETOUR</string>
 
     <string name="family_title">{0} Famille</string>
+    <string name="family_profile_title">{0} {1} Famille</string>
     <string name="male">Mâle</string>
     <string name="female">Femelle</string>
     <string name="abbrv_days">j</string>
