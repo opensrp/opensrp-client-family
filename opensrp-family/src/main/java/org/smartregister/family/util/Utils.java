@@ -1,7 +1,5 @@
 package org.smartregister.family.util;
 
-import android.util.Log;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.Context;
@@ -13,9 +11,9 @@ import org.smartregister.util.DateUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Utils extends org.smartregister.util.Utils {
+import timber.log.Timber;
 
-    private static final String TAG = Utils.class.getCanonicalName();
+public class Utils extends org.smartregister.util.Utils {
 
     public static final ArrayList<String> ALLOWED_LEVELS;
     public static final String DEFAULT_LOCATION_LEVEL = "Health Facility";
@@ -91,7 +89,7 @@ public class Utils extends org.smartregister.util.Utils {
             return DateUtil.getDuration(timeDiff);
 
         } catch (Exception e) {
-            Log.e(TAG, e.toString(), e);
+            Timber.e(e);
         }
         return "";
     }
@@ -101,7 +99,7 @@ public class Utils extends org.smartregister.util.Utils {
             try {
                 return new DateTime(date);
             } catch (Exception e) {
-                Log.e(TAG, e.toString(), e);
+                Timber.e(e);
             }
         }
         return null;

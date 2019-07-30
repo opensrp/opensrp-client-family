@@ -2,7 +2,6 @@ package org.smartregister.family.activity;
 
 import android.content.Intent;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
-import android.util.Log;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.domain.Form;
@@ -22,8 +21,9 @@ import org.smartregister.view.activity.BaseRegisterActivity;
 import java.util.Arrays;
 import java.util.List;
 
+import timber.log.Timber;
+
 public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity implements FamilyRegisterContract.View {
-    public static final String TAG = BaseFamilyRegisterActivity.class.getCanonicalName();
 
     @Override
     public void startRegistration() {
@@ -38,7 +38,7 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
                 presenter().startForm(formName, entityId, metaData, locationId);
             }
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
             displayToast(getString(R.string.error_unable_to_start_form));
         }
     }
@@ -64,14 +64,14 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
-                Log.d("JSONResult", jsonString);
+                Timber.d(jsonString);
 
                 JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Utils.metadata().familyRegister.registerEventType)) {
                     presenter().saveForm(jsonString, false);
                 }
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                Timber.e(e);
             }
 
         }
@@ -110,4 +110,12 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
         return (FamilyRegisterContract.Presenter) presenter;
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            super.onDestroy();
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
 }

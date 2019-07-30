@@ -10,8 +10,9 @@
 
     <LinearLayout
         android:id="@id/status_layout"
+        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="@dimen/register_list_item_margin"
@@ -73,8 +74,9 @@
 
     <LinearLayout
         android:id="@+id/next_arrow_column"
+        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:paddingEnd="@dimen/register_list_next_arrow_padding"

@@ -161,12 +161,13 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
                 viewHolder.patientColumn.performClick();
             }
         });
+        if (StringUtils.isBlank(dod)) {
+            View patient = viewHolder.patientColumn;
+            attachPatientOnclickListener(patient, client);
 
-        View patient = viewHolder.patientColumn;
-        attachPatientOnclickListener(patient, client);
-
-        View nextArrow = viewHolder.nextArrow;
-        attachNextArrowOnclickListener(nextArrow, client);
+            View nextArrow = viewHolder.nextArrow;
+            attachNextArrowOnclickListener(nextArrow, client);
+        }
 
     }
 

@@ -7,7 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,10 @@ import android.widget.Button;
 import org.smartregister.family.R;
 import org.smartregister.view.activity.BaseRegisterActivity;
 
+import timber.log.Timber;
+
 @SuppressLint("ValidFragment")
 public class NoMatchDialogFragment extends DialogFragment {
-
-    public static final String TAG = NoMatchDialogFragment.class.getName();
 
     private final NoMatchDialogActionHandler noMatchDialogActionHandler = new NoMatchDialogActionHandler();
     private final BaseRegisterActivity baseRegisterActivity;
@@ -94,7 +93,7 @@ public class NoMatchDialogFragment extends DialogFragment {
         }
 
         private void goToAdvancedSearch(String uniqueId) {
-            Log.i(TAG, uniqueId);
+            Timber.i(uniqueId);
             // TODO Implement Advanced Search Page
         }
     }

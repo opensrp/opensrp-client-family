@@ -1,7 +1,6 @@
 package org.smartregister.family.interactor;
 
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -9,6 +8,7 @@ import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.UniqueId;
+import org.smartregister.domain.db.EventClient;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.domain.FamilyEventClient;
@@ -22,15 +22,16 @@ import org.smartregister.repository.UniqueIdRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by keyman 12/11/2018.
  */
 public class FamilyRegisterInteractor implements FamilyRegisterContract.Interactor {
-
-    public static final String TAG = FamilyRegisterInteractor.class.getName();
 
     public enum type {SAVED, UPDATED}
 
@@ -105,13 +106,16 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
 
         try {
 
+            List<EventClient> eventClientList = new ArrayList<>();
             for (int i = 0; i < familyEventClientList.size(); i++) {
                 FamilyEventClient familyEventClient = familyEventClientList.get(i);
                 Client baseClient = familyEventClient.getClient();
                 Event baseEvent = familyEventClient.getEvent();
+                JSONObject eventJson = null;
+                JSONObject clientJson = null;
 
                 if (baseClient != null) {
-                    JSONObject clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));
+                    clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));
                     if (isEditMode) {
                         JsonFormUtils.mergeAndSaveClient(getSyncHelper(), baseClient);
                     } else {
@@ -120,7 +124,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                 }
 
                 if (baseEvent != null) {
-                    JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(baseEvent));
+                    eventJson = new JSONObject(JsonFormUtils.gson.toJson(baseEvent));
                     getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
                 }
 
@@ -157,14 +161,26 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                         JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
                     }
                 }
+                org.smartregister.domain.db.Event domainEvent = JsonFormUtils.gson.fromJson(eventJson.toString(), org.smartregister.domain.db.Event.class);
+                org.smartregister.domain.db.Client domainClient = JsonFormUtils.gson.fromJson(clientJson.toString(), org.smartregister.domain.db.Client.class);
+                eventClientList.add(new EventClient(domainEvent, domainClient));
             }
 
             long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
-            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+
+            processClient(eventClientList);
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Timber.e(e);
+        }
+    }
+
+    protected  void processClient(List<EventClient> eventClientList) {
+        try {
+            getClientProcessorForJava().processClient(eventClientList);
+        } catch (Exception e) {
+            Timber.e(e);
         }
     }
 
