@@ -63,7 +63,11 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
                 String familyHeadId = personObject.getColumnmaps().get(DBConstants.KEY.FAMILY_HEAD);
                 final CommonPersonObject familyHeadObject = getCommonRepository(Utils.metadata().familyMemberRegister.tableName).findByBaseEntityId(familyHeadId);
 
-                personObject.getColumnmaps().put(Constants.KEY.FAMILY_HEAD_NAME,familyHeadObject.getColumnmaps().get(DBConstants.KEY.FIRST_NAME));
+                String familyHeadName = "";
+                if (familyHeadObject != null && familyHeadObject.getColumnmaps() != null)
+                    familyHeadName = familyHeadObject.getColumnmaps().get(DBConstants.KEY.FIRST_NAME);
+
+                personObject.getColumnmaps().put(Constants.KEY.FAMILY_HEAD_NAME, familyHeadName);
                 pClient.setColumnmaps(personObject.getColumnmaps());
 
                 appExecutors.mainThread().execute(new Runnable() {
@@ -189,7 +193,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
         }
     }
 
-    protected  void processClient(List<EventClient> eventClientList) {
+    protected void processClient(List<EventClient> eventClientList) {
         try {
             getClientProcessorForJava().processClient(eventClientList);
         } catch (Exception e) {
