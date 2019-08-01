@@ -55,7 +55,8 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
     @Override
     public void saveLanguage(String language) {
         model.saveLanguage(language);
-        getView().displayToast(language + " selected");
+        if (getView() != null)
+            getView().displayToast(language + " selected");
     }
 
     @Override
@@ -68,7 +69,8 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
         }
 
         JSONObject form = model.getFormAsJson(formName, entityId, currentLocationId);
-        getView().startFormActivity(form);
+        if (getView() != null)
+            getView().startFormActivity(form);
 
     }
 
@@ -76,14 +78,15 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
     public void closeFamilyRecord(String jsonString) {
 
         try {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
-            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+            if (getView() != null) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getView().getContext());
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
-            Timber.d(jsonString);
-            //getView().showProgressDialog(jsonString.contains(Constants.EventType.CLOSE) ? R.string.removing_dialog_title : R.string.saving_dialog_title);
+                Timber.d(jsonString);
+                //getView().showProgressDialog(jsonString.contains(Constants.EventType.CLOSE) ? R.string.removing_dialog_title : R.string.saving_dialog_title);
 
-            interactor.removeFamilyFromRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
-
+                interactor.removeFamilyFromRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
+            }
         } catch (Exception e) {
             Timber.e(e);
 
@@ -95,7 +98,8 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
 
         try {
 
-            getView().showProgressDialog(R.string.saving_dialog_title);
+            if (getView() != null)
+                getView().showProgressDialog(R.string.saving_dialog_title);
 
             List<FamilyEventClient> familyEventClientList = model.processRegistration(jsonString);
             if (familyEventClientList == null || familyEventClientList.isEmpty()) {
@@ -111,7 +115,8 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
 
     @Override
     public void onNoUniqueId() {
-        getView().displayShortToast(R.string.no_unique_id);
+        if (getView() != null)
+            getView().displayShortToast(R.string.no_unique_id);
     }
 
     @Override
@@ -127,8 +132,10 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
 
     @Override
     public void onRegistrationSaved(boolean isEdit) {
-        getView().refreshList(FetchStatus.fetched);
-        getView().hideProgressDialog();
+        if (getView() != null) {
+            getView().refreshList(FetchStatus.fetched);
+            getView().hideProgressDialog();
+        }
     }
 
     @Override
@@ -148,7 +155,7 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
     @Override
     public void updateInitials() {
         String initials = model.getInitials();
-        if (initials != null) {
+        if (initials != null && getView() != null) {
             getView().updateInitialsText(initials);
         }
     }
