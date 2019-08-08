@@ -48,7 +48,7 @@
   
     <string name="family_title">{0} Menage</string>
     <string name="family_profile_title">{0} {1} Ménage</string>
-    <string name="male">Masculine</string>
+    <string name="male">Masculin</string>
     <string name="female">Feminin</string>
     <string name="abbrv_days">j</string>
     <string name="abbrv_weeks">s</string>
