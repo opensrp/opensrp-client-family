@@ -15,6 +15,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.family.R;
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
+import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
@@ -58,6 +59,16 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         if (visibleColumns.isEmpty()) {
+
+            String familyHeadId = pc.getColumnmaps().get(DBConstants.KEY.FAMILY_HEAD);
+
+            final CommonPersonObject familyHeadObject =  Utils.context().commonrepository(Utils.metadata().familyMemberRegister.tableName).findByBaseEntityId(familyHeadId);
+
+            String familyHeadName = "";
+            if (familyHeadObject != null && familyHeadObject.getColumnmaps() != null)
+                familyHeadName = familyHeadObject.getColumnmaps().get(DBConstants.KEY.FIRST_NAME);
+
+            pc.getColumnmaps().put(Constants.KEY.FAMILY_HEAD_NAME, familyHeadName);
             populatePatientColumn(pc, client, viewHolder);
             populateLastColumn(pc, viewHolder);
 
@@ -83,7 +94,9 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
 
-        String famName = MessageFormat.format(context.getString(R.string.family_title), firstName);
+        String familyHeadFirstName = Utils.getValue(pc.getColumnmaps(), Constants.KEY.FAMILY_HEAD_NAME, true);
+
+        String famName = MessageFormat.format(context.getString(R.string.family_profile_title),familyHeadFirstName, firstName);
 
         fillValue(viewHolder.patientName, famName);
 
