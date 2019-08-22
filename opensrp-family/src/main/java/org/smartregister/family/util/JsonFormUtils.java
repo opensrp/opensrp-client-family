@@ -250,7 +250,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         JSONObject mergedJson = org.smartregister.util.JsonFormUtils.merge(originalClientJsonObject, updatedClientJson);
 
         //retain existing relationships, relationships are deleted on @Link org.smartregister.util.JsonFormUtils.createBaseClient
-        if (!mergedJson.has(RELATIONSHIPS) && originalClientJsonObject != null) {
+        if (mergedJson.optJSONObject(RELATIONSHIPS).length() == 0 && originalClientJsonObject != null) {
             mergedJson.put(RELATIONSHIPS, originalClientJsonObject.optJSONObject(RELATIONSHIPS));
         }
 
