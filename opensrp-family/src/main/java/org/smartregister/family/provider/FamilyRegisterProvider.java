@@ -96,7 +96,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
         String familyHeadFirstName = Utils.getValue(pc.getColumnmaps(), Constants.KEY.FAMILY_HEAD_NAME, true);
 
-        String famName = MessageFormat.format(context.getString(R.string.family_profile_title),familyHeadFirstName, firstName);
+        String famName =context.getString(R.string.family_profile_title,familyHeadFirstName, firstName);
 
         fillValue(viewHolder.patientName, famName);
 
