@@ -2,7 +2,6 @@ package org.smartregister.family.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.common.reflect.TypeToken;
 
@@ -58,6 +57,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String READ_ONLY = "read_only";
 
     public static final String STEP2 = "step2";
+
+    public static final String RELATIONSHIPS = "relationships";
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
@@ -248,7 +249,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         JSONObject mergedJson = org.smartregister.util.JsonFormUtils.merge(originalClientJsonObject, updatedClientJson);
 
-        //TODO Save edit log ?
+        //retain existing relationships, relationships are deleted on @Link org.smartregister.util.JsonFormUtils.createBaseClient
+        if (!mergedJson.has(RELATIONSHIPS) && originalClientJsonObject != null) {
+            mergedJson.put(RELATIONSHIPS, originalClientJsonObject.optJSONObject(RELATIONSHIPS));
+        }
 
         ecUpdater.addClient(baseClient.getBaseEntityId(), mergedJson);
     }
@@ -275,7 +279,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();
             // JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
-            Timber.d( "Form is " + form.toString());
+            Timber.d("Form is " + form.toString());
             if (form != null) {
                 form.put(JsonFormUtils.ENTITY_ID, client.getCaseId());
                 form.put(JsonFormUtils.ENCOUNTER_TYPE, Utils.metadata().familyRegister.updateEventType);
