@@ -95,7 +95,7 @@ public class BaseFamilyProfileModel implements FamilyProfileContract.Model {
     }
 
 
-    private FormUtils getFormUtils() {
+    protected FormUtils getFormUtils() {
         if (formUtils == null) {
             try {
                 formUtils = FormUtils.getInstance(Utils.context().applicationContext());
