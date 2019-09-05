@@ -35,7 +35,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
     public enum type {SAVED, UPDATED}
 
 
-    private AppExecutors appExecutors;
+    protected AppExecutors appExecutors;
 
     @VisibleForTesting
     FamilyRegisterInteractor(AppExecutors appExecutors) {
