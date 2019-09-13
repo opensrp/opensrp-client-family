@@ -24,15 +24,15 @@
     <string name="add_member">Ajouter membre</string>
     <string name="sort">Trier</string>
     <string name="home">Acceuil</string>
-    <string name="add_family">Ajouter Menage</string>
+    <string name="add_family">Ajouter ménage</string>
     <string name="scan_qr">Scanner code QR</string>
     <string name="job_aids">Boite a Outils</string>
 
     <!-- form -->
-    <string name="add_fam">Ajouter ménage</string>
+    <string name="add_fam">Ajouter Ménage</string>
 
     <!-- register -->
-    <string name="family_head">Chef de ménage</string>
+    <string name="family_head">Chef de Ménage</string>
     <string name="primary_care_giver">Gardienne</string>
 
     <!-- member -->
@@ -45,10 +45,10 @@
     <string name="any_changes_you_make">Toutes les modifications que vous avez apportées seront perdues</string>
 
     <string name="back">RETOUR</string>
-  
-    <string name="family_title">{0} Menage</string>
+
+    <string name="family_title">{0} Ménage</string>
     <string name="family_profile_title">%1$s %2$s Ménage</string>
-    <string name="male">Masculin</string>
+    <string name="male">Masculine</string>
     <string name="female">Feminin</string>
     <string name="abbrv_days">j</string>
     <string name="abbrv_weeks">s</string>
