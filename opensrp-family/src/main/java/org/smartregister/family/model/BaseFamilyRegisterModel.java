@@ -87,7 +87,7 @@ public class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
         return JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId);
     }
 
-    private FormUtils getFormUtils() {
+    protected FormUtils getFormUtils() {
         if (formUtils == null) {
             try {
                 formUtils = FormUtils.getInstance(Utils.context().applicationContext());
