@@ -17,8 +17,8 @@ Bonyeza kitufe cha sync kupata rekodi zaidi na kama bado hakipatikani, wasiliana
     <!-- profile -->
     <string name="unique_id_text">Kitambulisho %1$s</string>
     <string name="age_text">Umri: %1$s</string>
-    <string name="member">Wanafamilia</string>
-    <string name="due">Zilizofika muda</string>
+    <string name="member">Wahusika</string>
+    <string name="due">Tayari</string>
     <string name="activity">Shughuli</string>
 
     <!-- menu -->
