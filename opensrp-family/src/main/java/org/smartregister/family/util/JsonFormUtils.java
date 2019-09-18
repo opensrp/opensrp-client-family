@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.google.common.reflect.TypeToken;
+import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -543,29 +544,47 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             healthFacilities.add("MOH Jhpiego Facility Name");
 
             List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
-
             List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
 
-            String defaultFacilityString = AssetHandler.javaToJsonString(defaultFacility,
-                    new TypeToken<List<String>>() {
-                    }.getType());
-
-            String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities,
-                    new TypeToken<List<FormLocation>>() {
-                    }.getType());
-
-            for (int i = 0; i < questions.length(); i++) {
-                if (questions.getJSONObject(i).getString("key").equals("nearest_facility")) {
-                    if (StringUtils.isNotBlank(upToFacilitiesString)) {
-                        questions.getJSONObject(i).put("tree", new JSONArray(upToFacilitiesString));
-                    }
-                    if (StringUtils.isNotBlank(defaultFacilityString)) {
-                        questions.getJSONObject(i).put("default", defaultFacilityString);
-                    }
-                }
-            }
+            addTreeValues("nearest_facility", questions, defaultFacility, upToFacilities, "key", "tree", "default");
         } catch (Exception e) {
             Timber.e(e);
+        }
+    }
+
+    //
+    public static void populateLocationsTree(JSONObject form, String stepName,
+                                             ArrayList<String> healthFacilities, String locationTree) {
+        try {
+            JSONArray questions = form.getJSONObject(stepName).getJSONArray(JsonFormConstants.FIELDS);
+            List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
+            List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
+
+            addTreeValues(locationTree, questions, defaultFacility, upToFacilities, JsonFormConstants.KEY, JsonFormConstants.TREE, JsonFormConstants.DEFAULT);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
+
+    private static void addTreeValues(String locationTree, JSONArray questions, List<String> defaultFacility,
+                                      List<FormLocation> upToFacilities, String key, String tree, String aDefault) throws JSONException {
+        String defaultFacilityString = AssetHandler.javaToJsonString(defaultFacility,
+                new TypeToken<List<String>>() {
+                }.getType());
+
+        String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities,
+                new TypeToken<List<FormLocation>>() {
+                }.getType());
+
+        for (int i = 0; i < questions.length(); i++) {
+            if (questions.getJSONObject(i).getString(key).equals(locationTree)) {
+                if (StringUtils.isNotBlank(upToFacilitiesString)) {
+                    questions.getJSONObject(i).put(tree, new JSONArray(upToFacilitiesString));
+                }
+                if (StringUtils.isNotBlank(defaultFacilityString)) {
+                    questions.getJSONObject(i).put(aDefault, defaultFacilityString);
+                }
+            }
         }
     }
 }
