@@ -2,8 +2,10 @@ package org.smartregister.family.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Pair;
 
 import com.google.common.reflect.TypeToken;
+import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -525,16 +527,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     /**
      * Loops over all fields that are configured as location fields and injects the default location hierarchy
+     *
      * @param form
      */
     public static void addLocHierarchyQuestions(JSONObject form) {
         try {
-            JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
 
-            List<String> locationFields = FamilyLibrary.getInstance().metadata().getLocationFields();
+            List<Pair<String, String>> locationFields = FamilyLibrary.getInstance().metadata().getLocationFields();
             ArrayList<String> allowedLevels = FamilyLibrary.getInstance().metadata().getLocationHierarchy();
             if (locationFields != null && locationFields.size() > 0) {
-                for (String location : locationFields) {
+                for (Pair<String, String> locationPair : locationFields) {
                     List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(allowedLevels);
                     List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, allowedLevels);
 
@@ -543,13 +545,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities, new TypeToken<List<FormLocation>>() {
                     }.getType());
 
+
+                    JSONArray questions = form.getJSONObject(locationPair.first).getJSONArray(JsonFormConstants.FIELDS);
+
                     for (int i = 0; i < questions.length(); i++) {
-                        if (questions.getJSONObject(i).getString("key").equals(location)) {
+                        if (questions.getJSONObject(i).getString(JsonFormConstants.KEY).equals(locationPair.second)) {
                             if (StringUtils.isNotBlank(upToFacilitiesString)) {
-                                questions.getJSONObject(i).put("tree", new JSONArray(upToFacilitiesString));
+                                questions.getJSONObject(i).put(JsonFormConstants.TREE, new JSONArray(upToFacilitiesString));
                             }
                             if (StringUtils.isNotBlank(defaultFacilityString)) {
-                                questions.getJSONObject(i).put("default", defaultFacilityString);
+                                questions.getJSONObject(i).put(JsonFormConstants.DEFAULT, defaultFacilityString);
                             }
                         }
                     }

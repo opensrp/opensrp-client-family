@@ -1,5 +1,7 @@
 package org.smartregister.family.domain;
 
+import android.util.Pair;
+
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
 import org.smartregister.view.activity.BaseProfileActivity;
@@ -20,7 +22,9 @@ public class FamilyMetadata {
     public FamilyDueRegister familyDueRegister;
     public FamilyActivityRegister familyActivityRegister;
     public FamilyOtherMemberRegister familyOtherMemberRegister;
-    private ArrayList<String> locationFields = new ArrayList<>();
+
+    // contains the step name and the field name
+    private List<Pair<String, String>> locationFields = new ArrayList<>();
     private String defaultLocation = "";
     private ArrayList<String> locationHierarchy = new ArrayList<>();
 
@@ -156,11 +160,11 @@ public class FamilyMetadata {
         }
     }
 
-    public ArrayList<String> getLocationFields() {
+    public List<Pair<String, String>> getLocationFields() {
         return locationFields;
     }
 
-    public void setLocationFields(ArrayList<String> locationFields) {
+    public void setLocationFields(List<Pair<String, String>> locationFields) {
         this.locationFields = locationFields;
     }
 
