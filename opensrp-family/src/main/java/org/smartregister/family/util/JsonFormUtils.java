@@ -523,44 +523,35 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     }
 
+    /**
+     * Loops over all fields that are configured as location fields and injects the default location hierarchy
+     * @param form
+     */
     public static void addLocHierarchyQuestions(JSONObject form) {
         try {
             JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
-            ArrayList<String> allLevels = new ArrayList<>();
-            allLevels.add("Country");
-            allLevels.add("District");
-            allLevels.add("Region");
-            allLevels.add("Village");
-            allLevels.add("Ward");
-            allLevels.add("MOH Jhpiego Facility Name");
 
-            ArrayList<String> healthFacilities = new ArrayList<>();
-            healthFacilities.add("Country");
-            healthFacilities.add("District");
-            healthFacilities.add("Region");
-            healthFacilities.add("Village");
-            healthFacilities.add("Ward");
-            healthFacilities.add("MOH Jhpiego Facility Name");
+            List<String> locationFields = FamilyLibrary.getInstance().metadata().getLocationFields();
+            ArrayList<String> allowedLevels = FamilyLibrary.getInstance().metadata().getLocationHierarchy();
+            if (locationFields != null && locationFields.size() > 0) {
+                for (String location : locationFields) {
+                    List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(allowedLevels);
+                    List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, allowedLevels);
 
-            List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
-
-            List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
-
-            String defaultFacilityString = AssetHandler.javaToJsonString(defaultFacility,
-                    new TypeToken<List<String>>() {
+                    String defaultFacilityString = AssetHandler.javaToJsonString(defaultFacility, new TypeToken<List<String>>() {
+                    }.getType());
+                    String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities, new TypeToken<List<FormLocation>>() {
                     }.getType());
 
-            String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities,
-                    new TypeToken<List<FormLocation>>() {
-                    }.getType());
-
-            for (int i = 0; i < questions.length(); i++) {
-                if (questions.getJSONObject(i).getString("key").equals("nearest_facility")) {
-                    if (StringUtils.isNotBlank(upToFacilitiesString)) {
-                        questions.getJSONObject(i).put("tree", new JSONArray(upToFacilitiesString));
-                    }
-                    if (StringUtils.isNotBlank(defaultFacilityString)) {
-                        questions.getJSONObject(i).put("default", defaultFacilityString);
+                    for (int i = 0; i < questions.length(); i++) {
+                        if (questions.getJSONObject(i).getString("key").equals(location)) {
+                            if (StringUtils.isNotBlank(upToFacilitiesString)) {
+                                questions.getJSONObject(i).put("tree", new JSONArray(upToFacilitiesString));
+                            }
+                            if (StringUtils.isNotBlank(defaultFacilityString)) {
+                                questions.getJSONObject(i).put("default", defaultFacilityString);
+                            }
+                        }
                     }
                 }
             }

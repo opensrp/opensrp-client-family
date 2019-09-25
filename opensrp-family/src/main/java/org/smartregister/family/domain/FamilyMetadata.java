@@ -4,6 +4,9 @@ import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
 import org.smartregister.view.activity.BaseProfileActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FamilyMetadata {
 
     public final Class familyFormActivity;
@@ -17,6 +20,9 @@ public class FamilyMetadata {
     public FamilyDueRegister familyDueRegister;
     public FamilyActivityRegister familyActivityRegister;
     public FamilyOtherMemberRegister familyOtherMemberRegister;
+    private ArrayList<String> locationFields = new ArrayList<>();
+    private String defaultLocation = "";
+    private ArrayList<String> locationHierarchy = new ArrayList<>();
 
     public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity, String uniqueIdentifierKey, boolean formWizardValidateRequiredFieldsBefore) {
         this.familyFormActivity = familyFormActivity;
@@ -148,5 +154,29 @@ public class FamilyMetadata {
             }
             this.showPagination = showPagination;
         }
+    }
+
+    public ArrayList<String> getLocationFields() {
+        return locationFields;
+    }
+
+    public void setLocationFields(ArrayList<String> locationFields) {
+        this.locationFields = locationFields;
+    }
+
+    public String getDefaultLocation() {
+        return defaultLocation;
+    }
+
+    public void setDefaultLocation(String defaultLocation) {
+        this.defaultLocation = defaultLocation;
+    }
+
+    public ArrayList<String> getLocationHierarchy() {
+        return locationHierarchy;
+    }
+
+    public void setLocationHierarchy(ArrayList<String> locationHierarchy) {
+        this.locationHierarchy = locationHierarchy;
     }
 }
