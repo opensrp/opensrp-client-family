@@ -115,7 +115,7 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
         }
     }
 
-    private void goToPatientDetailActivity(CommonPersonObjectClient patient,
+    protected void goToPatientDetailActivity(CommonPersonObjectClient patient,
                                            boolean goToDuePage) {
 
         Intent intent = new Intent(getActivity(), Utils.metadata().profileActivity);
