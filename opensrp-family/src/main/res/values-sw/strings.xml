@@ -48,7 +48,8 @@ Bonyeza kitufe cha sync kupata rekodi zaidi na kama bado hakipatikani, wasiliana
     <string name="back">RUDI NYUMA</string>
 
     <string name="family_title">{0} Kaya</string>
-    <string name="family_profile_title">%1$s %2$s Kaya</string>
+    <string name="family_profile_title">%1$s Kaya</string>
+    <string name="family_profile_title_with_firstname">%1$s %2$s Kaya</string>
     <string name="male">Kiume</string>
     <string name="female">Kike</string>
     <string name="abbrv_days">Siku</string>

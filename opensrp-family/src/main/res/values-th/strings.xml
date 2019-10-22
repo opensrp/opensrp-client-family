@@ -47,5 +47,6 @@
     <string name="back">ย้อนกลับ</string>
 
     <string name="family_title">{0} ครอบครัว</string>
-    <string name="family_profile_title">%1$s %2$s ครอบครัว</string>
+    <string name="family_profile_title">%1$s ครอบครัว</string>
+    <string name="family_profile_title_with_firstname">%1$s %2$s ครอบครัว</string>
 </resources>

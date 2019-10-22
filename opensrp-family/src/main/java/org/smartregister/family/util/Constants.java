@@ -71,4 +71,8 @@ public abstract class Constants {
     public static class WizardFormActivity {
         public static final String EnableOnCloseDialog = "EnableOnCloseDialog";
     }
+
+    public static class Properties {
+        public static final String FAMILY_HEAD_FIRSTNAME_ENABLED = "family.head.first.name.enabled";
+    }
 }
