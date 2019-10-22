@@ -47,7 +47,8 @@
     <string name="back">RETOUR</string>
 
     <string name="family_title">{0} Ménage</string>
-    <string name="family_profile_title">%1$s %2$s Ménage</string>
+    <string name="family_profile_title">%1$s Ménage</string>
+    <string name="family_profile_title_with_firstname">%1$s %2$s Ménage</string>
     <string name="male">Masculin</string>
     <string name="female">Feminin</string>
     <string name="abbrv_days">j</string>

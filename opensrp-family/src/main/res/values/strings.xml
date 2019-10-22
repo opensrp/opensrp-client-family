@@ -47,7 +47,8 @@
     <string name="back">BACK</string>
 
     <string name="family_title">{0} Family</string>
-    <string name="family_profile_title">%1$s %2$s Family</string>
+    <string name="family_profile_title">%1$s Family</string>
+    <string name="family_profile_title_with_firstname">%1$s %2$s Family</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="abbrv_days">d</string>
