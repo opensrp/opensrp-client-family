@@ -74,7 +74,7 @@ android {
 }
 
 dependencies {
-    implementation('org.smartregister:opensrp-client-core:1.7.38-PREV-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-core:1.7.38-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'
