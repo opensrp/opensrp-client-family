@@ -6,9 +6,8 @@
     <string name="all_families">Kaya Zote</string>
 
     <string name="saving_dialog_title">Kuhifadhi....</string>
-    <string name="no_unique_id">Kitambulisho hakipo. 
-Bonyeza kitufe cha sync kupata rekodi zaidi na kama bado hakipatikani, wasiliana na mtaalamu wa mifumo</string>
-    <string name="error_unable_to_start_form">Kosa limejitokeza wakati wa kufungua fomu</string>
+    <string name="no_unique_id">Kitambulisho hakipo. Bonyeza kitufe cha sync kupata rekodi zaidi na kama bado hakipatikani, wasiliana na mtaalamu wa mifumo</string>
+    <string name="error_unable_to_start_form">Hitilafu imejitokeza wakati wa kufungua fomu</string>
     <string name="no_matching_record_found_on_this_device">Hakuna rekodi zinazoshabihiana kwenye kifaa hiki</string>
 
     <string name="new_registration_saved">Usajili mpya umehifadhiwa &#x21;</string>
@@ -48,12 +47,12 @@ Bonyeza kitufe cha sync kupata rekodi zaidi na kama bado hakipatikani, wasiliana
     <string name="back">RUDI NYUMA</string>
 
     <string name="family_title">{0} Kaya</string>
-    <string name="family_profile_title">%1$s Kaya</string>
-    <string name="family_profile_title_with_firstname">%1$s %2$s Kaya</string>
-    <string name="male">Kiume</string>
-    <string name="female">Kike</string>
-    <string name="abbrv_days">Siku</string>
-    <string name="abbrv_weeks">Wiki</string>
-    <string name="abbrv_months">Mwezi</string>
-    <string name="abbrv_years">Mwaka</string>
+    <string name="family_profile_title">Kaya ya %1$s</string>
+    <string name="family_profile_title_with_firstname">Kaya ya %1$s %2$s</string>
+    <string name="male">Me</string>
+    <string name="female">Ke</string>
+    <string name="abbrv_days">d</string>
+    <string name="abbrv_weeks">w</string>
+    <string name="abbrv_months">m</string>
+    <string name="abbrv_years">y</string>
 </resources>
