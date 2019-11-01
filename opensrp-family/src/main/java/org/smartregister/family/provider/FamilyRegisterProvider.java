@@ -43,6 +43,8 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     private Context context;
     private CommonRepository commonRepository;
 
+    boolean familyHeadFirstNameEnabled = Utils.getBooleanProperty(Constants.Properties.FAMILY_HEAD_FIRSTNAME_ENABLED);
+
     public FamilyRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -59,16 +61,17 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         if (visibleColumns.isEmpty()) {
+            if (familyHeadFirstNameEnabled) {
+                String familyHeadId = pc.getColumnmaps().get(DBConstants.KEY.FAMILY_HEAD);
 
-            String familyHeadId = pc.getColumnmaps().get(DBConstants.KEY.FAMILY_HEAD);
+                final CommonPersonObject familyHeadObject = Utils.context().commonrepository(Utils.metadata().familyMemberRegister.tableName).findByBaseEntityId(familyHeadId);
 
-            final CommonPersonObject familyHeadObject =  Utils.context().commonrepository(Utils.metadata().familyMemberRegister.tableName).findByBaseEntityId(familyHeadId);
+                String familyHeadName = "";
+                if (familyHeadObject != null && familyHeadObject.getColumnmaps() != null)
+                    familyHeadName = familyHeadObject.getColumnmaps().get(DBConstants.KEY.FIRST_NAME);
 
-            String familyHeadName = "";
-            if (familyHeadObject != null && familyHeadObject.getColumnmaps() != null)
-                familyHeadName = familyHeadObject.getColumnmaps().get(DBConstants.KEY.FIRST_NAME);
-
-            pc.getColumnmaps().put(Constants.KEY.FAMILY_HEAD_NAME, familyHeadName);
+                pc.getColumnmaps().put(Constants.KEY.FAMILY_HEAD_NAME, familyHeadName);
+            }
             populatePatientColumn(pc, client, viewHolder);
             populateLastColumn(pc, viewHolder);
 
@@ -93,10 +96,17 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, final RegisterViewHolder viewHolder) {
 
         String firstName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String famName;
 
-        String familyHeadFirstName = Utils.getValue(pc.getColumnmaps(), Constants.KEY.FAMILY_HEAD_NAME, true);
+        if (familyHeadFirstNameEnabled) {
 
-        String famName =context.getString(R.string.family_profile_title,familyHeadFirstName, firstName);
+            String familyHeadFirstName = Utils.getValue(pc.getColumnmaps(), Constants.KEY.FAMILY_HEAD_NAME, true);
+            famName = context.getString(R.string.family_profile_title_with_firstname, familyHeadFirstName, firstName);
+
+        } else {
+
+            famName = context.getString(R.string.family_profile_title, firstName);
+        }
 
         fillValue(viewHolder.patientName, famName);
 

@@ -148,4 +148,8 @@ public class Utils extends org.smartregister.util.Utils {
     public static FamilyMetadata metadata() {
         return FamilyLibrary.getInstance().metadata();
     }
+
+    public static boolean getBooleanProperty(String propertyKey) {
+        return FamilyLibrary.getInstance().getProperties().hasProperty(propertyKey) && FamilyLibrary.getInstance().getProperties().getPropertyBoolean(propertyKey);
+    }
 }

@@ -7,6 +7,7 @@ import org.smartregister.repository.Repository;
 import org.smartregister.repository.UniqueIdRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
+import org.smartregister.util.AppProperties;
 
 import id.zelory.compressor.Compressor;
 
@@ -120,5 +121,9 @@ public class FamilyLibrary {
         if (context != null) {
             instance = new FamilyLibrary(context, repository, metadata, applicationVersion, databaseVersion);
         }
+    }
+
+    public AppProperties getProperties() {
+        return CoreLibrary.getInstance().context().getAppProperties();
     }
 }
