@@ -101,7 +101,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
         appExecutors.diskIO().execute(runnable);
     }
 
-    private void saveRegistration(List<FamilyEventClient> familyEventClientList, String jsonString, boolean isEditMode) {
+    private boolean saveRegistration(List<FamilyEventClient> familyEventClientList, String jsonString, boolean isEditMode) {
 
         try {
 
@@ -170,12 +170,14 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
 
             processClient(eventClientList);
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
+            return true;
         } catch (Exception e) {
             Timber.e(e);
+            return false;
         }
     }
 
-    protected  void processClient(List<EventClient> eventClientList) {
+    protected void processClient(List<EventClient> eventClientList) {
         try {
             getClientProcessorForJava().processClient(eventClientList);
         } catch (Exception e) {

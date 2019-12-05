@@ -130,7 +130,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
         appExecutors.diskIO().execute(runnable);
     }
 
-    private void saveRegistration(FamilyEventClient familyEventClient, String jsonString, boolean isEditMode) {
+    private boolean saveRegistration(FamilyEventClient familyEventClient, String jsonString, boolean isEditMode) {
 
         try {
 
@@ -188,8 +188,10 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
             org.smartregister.domain.db.Client domainClient = JsonFormUtils.gson.fromJson(clientJson.toString(), org.smartregister.domain.db.Client.class);
             processClient(Collections.singletonList(new EventClient(domainEvent, domainClient)));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
+            return true;
         } catch (Exception e) {
             Timber.e(e);
+            return false;
         }
     }
 
