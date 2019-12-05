@@ -65,7 +65,7 @@ public interface FamilyRegisterContract {
 
         void onNoUniqueId();
 
-        void onRegistrationSaved(boolean isEdit);
+        void onRegistrationSaved(boolean isEditMode, boolean isSaved, List<FamilyEventClient> familyEventClientList);
 
     }
 }

@@ -117,11 +117,11 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                saveRegistration(familyEventClient, jsonString, isEditMode);
+                final boolean isSaved = saveRegistration(familyEventClient, jsonString, isEditMode);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        callBack.onRegistrationSaved(isEditMode);
+                        callBack.onRegistrationSaved(isEditMode,isSaved,familyEventClient);
                     }
                 });
             }
