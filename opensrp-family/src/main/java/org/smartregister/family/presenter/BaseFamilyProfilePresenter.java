@@ -220,7 +220,7 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
     }
 
     @Override
-    public void onRegistrationSaved(boolean isEdit) {
+    public void onRegistrationSaved(boolean editMode, boolean isSaved, FamilyEventClient familyEventClient) {
         getView().refreshMemberList(FetchStatus.fetched);
         getView().hideProgressDialog();
     }

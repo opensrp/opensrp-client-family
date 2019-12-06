@@ -81,7 +81,7 @@ public interface FamilyProfileContract {
 
         void onNoUniqueId();
 
-        void onRegistrationSaved(boolean isEditMode);
+        void onRegistrationSaved(boolean editMode, boolean isSaved, FamilyEventClient familyEventClient);
 
     }
 

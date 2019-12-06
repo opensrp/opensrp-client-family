@@ -131,7 +131,7 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
     }
 
     @Override
-    public void onRegistrationSaved(boolean isEdit) {
+    public void onRegistrationSaved(boolean isEditMode, boolean isSaved, List<FamilyEventClient> familyEventClientList) {
         if (getView() != null) {
             getView().refreshList(FetchStatus.fetched);
             getView().hideProgressDialog();
