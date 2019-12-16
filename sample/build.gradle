@@ -19,6 +19,11 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion androidCompileSdkVersion
     buildToolsVersion androidBuildToolsVersion
 
@@ -86,7 +91,7 @@ dependencies {
     }
 
 
-    implementation('org.smartregister:opensrp-client-native-form:1.6.53-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-native-form:1.7.4-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
