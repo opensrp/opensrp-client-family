@@ -151,9 +151,18 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                 if (baseClient != null || baseEvent != null) {
                     String imageLocation = null;
                     if (i == 0) {
-                        imageLocation = JsonFormUtils.getFieldValue(jsonString, JsonFormUtils.STEP1, Constants.KEY.PHOTO);
+                        String familyStep = Utils.metadata().getCustomConfigs().get(Constants.CUSTOM_CONFIG.FAMILY_FORM_IMAGE_STEP);
+
+                        imageLocation = (StringUtils.isBlank(familyStep)) ?
+                                JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO) :
+                                JsonFormUtils.getFieldValue(jsonString, familyStep, Constants.KEY.PHOTO);
+
                     } else if (i == 1) {
-                        imageLocation = JsonFormUtils.getFieldValue(jsonString, JsonFormUtils.STEP2, Constants.KEY.PHOTO);
+                        String familyMemberStep = Utils.metadata().getCustomConfigs().get(Constants.CUSTOM_CONFIG.FAMILY_MEMBER_FORM_IMAGE_STEP);
+
+                        imageLocation = (StringUtils.isBlank(familyMemberStep)) ?
+                                JsonFormUtils.getFieldValue(jsonString, JsonFormUtils.STEP2, Constants.KEY.PHOTO) :
+                                JsonFormUtils.getFieldValue(jsonString, familyMemberStep, Constants.KEY.PHOTO);
                     }
 
                     if (StringUtils.isNotBlank(imageLocation)) {

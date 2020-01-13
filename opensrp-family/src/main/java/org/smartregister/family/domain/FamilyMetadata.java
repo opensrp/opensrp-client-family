@@ -7,7 +7,9 @@ import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 import org.smartregister.view.activity.BaseProfileActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class FamilyMetadata {
 
@@ -22,6 +24,7 @@ public class FamilyMetadata {
     public FamilyDueRegister familyDueRegister;
     public FamilyActivityRegister familyActivityRegister;
     public FamilyOtherMemberRegister familyOtherMemberRegister;
+    private Map<String, String> customConfigs;
 
     // contains the step name and the field name
     private List<Pair<String, String>> locationFields = new ArrayList<>();
@@ -182,5 +185,13 @@ public class FamilyMetadata {
 
     public void setLocationHierarchy(ArrayList<String> locationHierarchy) {
         this.locationHierarchy = locationHierarchy;
+    }
+
+    public Map<String, String> getCustomConfigs() {
+        return Collections.unmodifiableMap(customConfigs);
+    }
+
+    public void setCustomConfigs(Map<String, String> customConfigs) {
+        this.customConfigs = customConfigs;
     }
 }
