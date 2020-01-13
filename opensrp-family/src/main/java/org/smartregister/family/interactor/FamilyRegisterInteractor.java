@@ -76,11 +76,11 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-              final boolean isSaved=  saveRegistration(familyEventClientList, jsonString, isEditMode);
+                final boolean isSaved = saveRegistration(familyEventClientList, jsonString, isEditMode);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        callBack.onRegistrationSaved(isEditMode,isSaved,familyEventClientList);
+                        callBack.onRegistrationSaved(isEditMode, isSaved, familyEventClientList);
                     }
                 });
             }
@@ -151,7 +151,7 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                 if (baseClient != null || baseEvent != null) {
                     String imageLocation = null;
                     if (i == 0) {
-                        imageLocation = JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO);
+                        imageLocation = JsonFormUtils.getFieldValue(jsonString, JsonFormUtils.STEP1, Constants.KEY.PHOTO);
                     } else if (i == 1) {
                         imageLocation = JsonFormUtils.getFieldValue(jsonString, JsonFormUtils.STEP2, Constants.KEY.PHOTO);
                     }
