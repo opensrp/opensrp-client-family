@@ -125,7 +125,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString) {
 
         try {
-            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
+            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString, STEP1);
 
             if (!registrationFormParams.getLeft()) {
                 return null;
