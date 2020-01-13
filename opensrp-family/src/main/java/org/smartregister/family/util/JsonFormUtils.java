@@ -165,7 +165,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         try {
 
-            String familyStep = Utils.metadata().getCustomConfigs().get(Constants.CUSTOM_CONFIG.FAMILY_FORM_IMAGE_STEP);
+            String familyStep = Utils.metadata().getCustomConfigs().get(Constants.CustomConfig.FAMILY_FORM_IMAGE_STEP);
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = (StringUtils.isBlank(familyStep)) ?
                     validateParameters(jsonString) : validateParameters(jsonString, familyStep);
 

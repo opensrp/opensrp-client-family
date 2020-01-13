@@ -56,7 +56,7 @@ public abstract class Constants {
         public static final String GO_TO_DUE_PAGE = "go_to_due_page";
     }
 
-    public interface CUSTOM_CONFIG {
+    public interface CustomConfig {
         String FAMILY_FORM_IMAGE_STEP = "family_form_image_step";
         String FAMILY_MEMBER_FORM_IMAGE_STEP = "family_member_form_image_step";
     }
