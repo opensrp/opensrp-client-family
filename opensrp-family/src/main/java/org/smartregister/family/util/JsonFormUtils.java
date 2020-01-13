@@ -125,7 +125,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static FamilyEventClient processFamilyUpdateForm(AllSharedPreferences allSharedPreferences, String jsonString) {
 
         try {
-            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString, STEP1);
+
+            String familyStep = Utils.getCustomConfigs(Constants.CustomConfig.FAMILY_FORM_IMAGE_STEP);
+            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = (StringUtils.isBlank(familyStep)) ?
+                    validateParameters(jsonString, STEP1) : validateParameters(jsonString, familyStep);
 
             if (!registrationFormParams.getLeft()) {
                 return null;
@@ -165,9 +168,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         try {
 
-            String familyStep = Utils.metadata().getCustomConfigs().get(Constants.CustomConfig.FAMILY_FORM_IMAGE_STEP);
+            String familyStep = Utils.getCustomConfigs(Constants.CustomConfig.FAMILY_MEMBER_FORM_IMAGE_STEP);
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = (StringUtils.isBlank(familyStep)) ?
-                    validateParameters(jsonString) : validateParameters(jsonString, familyStep);
+                    validateParameters(jsonString, STEP2) : validateParameters(jsonString, familyStep);
 
             if (!registrationFormParams.getLeft()) {
                 return null;
