@@ -6,12 +6,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.domain.FamilyMetadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class UtilsTest {
 
@@ -20,9 +19,6 @@ public class UtilsTest {
 
     @Mock
     private FamilyMetadata familyMetadata;
-
-    @Mock
-    private FamilyMetadata.FamilyRegister familyRegister;
 
     @Before
     public void setUp() {
