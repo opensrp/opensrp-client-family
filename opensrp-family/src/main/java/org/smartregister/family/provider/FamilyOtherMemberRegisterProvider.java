@@ -117,7 +117,7 @@ public class FamilyOtherMemberRegisterProvider implements RecyclerViewProvider<F
 
         fillValue(viewHolder.patientNameAge, patientName);
 
-        viewHolder.profile.setImageResource(Utils.getProfileImageTwoResourceIDentifier());
+        viewHolder.profile.setImageResource(Utils.getProfileImageTwoResourceIdentifier());
 
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);

@@ -117,7 +117,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
-        viewHolder.status.setImageResource(Utils.getDueProfileImageResourceIDentifier());
+        viewHolder.status.setImageResource(Utils.getDueProfileImageResourceIdentifier());
 
         attachPatientOnclickListener(viewHolder.patientColumn, client);
 

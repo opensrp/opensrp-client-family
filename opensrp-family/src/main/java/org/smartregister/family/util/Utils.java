@@ -25,15 +25,15 @@ public class Utils extends org.smartregister.util.Utils {
         ALLOWED_LEVELS.add(FACILITY);
     }
 
-    public static int getProfileImageResourceIDentifier() {
+    public static int getProfileImageResourceIdentifier() {
         return R.mipmap.ic_family_white;
     }
 
-    public static int getProfileImageTwoResourceIDentifier() {
+    public static int getProfileImageTwoResourceIdentifier() {
         return R.mipmap.ic_family;
     }
 
-    public static int getMemberProfileImageResourceIDentifier(String entityType) {
+    public static int getMemberProfileImageResourceIdentifier(String entityType) {
         if (StringUtils.isBlank(entityType)) {
             return R.mipmap.ic_member;
         }
@@ -45,7 +45,7 @@ public class Utils extends org.smartregister.util.Utils {
         }
     }
 
-    public static int getActivityProfileImageResourceVistedIDentifier() {
+    public static int getActivityProfileImageResourceVisitedIdentifier() {
         return R.mipmap.ic_activity_visited;
     }
 
@@ -53,11 +53,11 @@ public class Utils extends org.smartregister.util.Utils {
         return R.mipmap.ic_activity_notvisited;
     }
 
-    public static int getDueProfileImageResourceIDentifier() {
+    public static int getDueProfileImageResourceIdentifier() {
         return R.color.due_profile_blue;
     }
 
-    public static int getChildProfileImageResourceIDentifier() {
+    public static int getChildProfileImageResourceIdentifier() {
         return R.mipmap.ic_child;
     }
 
@@ -106,27 +106,24 @@ public class Utils extends org.smartregister.util.Utils {
     }
 
     public static String getName(String firstName, String middleName, String lastName) {
-        firstName = firstName.trim();
-        middleName = middleName.trim();
-        lastName = lastName.trim();
         if (StringUtils.isNotBlank(firstName) && StringUtils.isNotBlank(lastName)) {
             if (StringUtils.isNotBlank(middleName)) {
-                return firstName + " " + middleName + " " + lastName;
+                return firstName.trim() + " " + middleName.trim() + " " + lastName.trim();
             }
-            return firstName + " " + lastName;
+            return firstName.trim() + " " + lastName.trim();
 
         } else {
             if (StringUtils.isNotBlank(firstName)) {
                 if (StringUtils.isNotBlank(middleName)) {
-                    return firstName + " " + middleName;
+                    return firstName.trim() + " " + middleName.trim();
                 }
-                return firstName;
+                return firstName.trim();
 
             } else if (StringUtils.isNotBlank(lastName)) {
                 if (StringUtils.isNotBlank(middleName)) {
-                    return middleName + " " + lastName;
+                    return middleName.trim() + " " + lastName.trim();
                 }
-                return lastName;
+                return lastName.trim();
             }
         }
 

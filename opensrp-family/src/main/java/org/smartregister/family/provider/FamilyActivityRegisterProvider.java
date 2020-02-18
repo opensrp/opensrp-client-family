@@ -117,7 +117,7 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
         fillValue(viewHolder.patientNameAge, patientName);
 
-        viewHolder.status.setImageResource(Utils.getActivityProfileImageResourceVistedIDentifier());
+        viewHolder.status.setImageResource(Utils.getActivityProfileImageResourceVisitedIdentifier());
 
         String gender = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.GENDER, true);
         fillValue(viewHolder.gender, gender);

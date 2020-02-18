@@ -119,14 +119,14 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.GRAY);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.ITALIC);
-            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIDentifier(entityType));
+            viewHolder.profile.setImageResource(Utils.getMemberProfileImageResourceIdentifier(entityType));
             viewHolder.nextArrow.setVisibility(View.GONE);
         } else {
             patientName = patientName + ", " + Utils.getTranslatedDate(dobString, context);
             viewHolder.patientNameAge.setFontVariant(FontVariant.REGULAR);
             viewHolder.patientNameAge.setTextColor(Color.BLACK);
             viewHolder.patientNameAge.setTypeface(viewHolder.patientNameAge.getTypeface(), Typeface.NORMAL);
-            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIDentifier(entityType));
+            imageRenderHelper.refreshProfileImage(pc.getCaseId(), viewHolder.profile, Utils.getMemberProfileImageResourceIdentifier(entityType));
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
