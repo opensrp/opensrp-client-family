@@ -1,6 +1,5 @@
 package org.smartregister.family.fragment;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import org.junit.Assert;
@@ -13,7 +12,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyOtherMemberProfileFragmentContract;
@@ -33,15 +31,11 @@ public class BaseFamilyOtherMemberProfileFragmentTest extends BaseUnitTest {
 
     private BaseFamilyOtherMemberProfileFragment fragment;
 
-    private Context context = RuntimeEnvironment.application;
-
-    private AppCompatActivity activity;
-
     @Before
     public void setUp() {
         org.smartregister.Context.bindtypes = new ArrayList<>();
         fragment = Mockito.mock(BaseFamilyOtherMemberProfileFragment.class, Mockito.CALLS_REAL_METHODS);
-        activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         activity.setContentView(R.layout.activity_family_profile);
         activity.getSupportFragmentManager().beginTransaction().add(fragment, "Presenter").commit();
 

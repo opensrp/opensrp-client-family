@@ -1,7 +1,5 @@
 package org.smartregister.family;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
 import org.smartregister.Context;
@@ -13,9 +11,7 @@ import org.smartregister.family.domain.FamilyMetadata;
 import org.smartregister.repository.Repository;
 import org.smartregister.view.activity.DrishtiApplication;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import timber.log.Timber;
 
 import static org.mockito.Mockito.mock;
 
@@ -50,33 +46,13 @@ public class TestApplication extends DrishtiApplication {
 
     @Override
     public void logoutCurrentUser() {
+        Timber.v("Logout");
     }
 
     @Override
     public Repository getRepository() {
         repository = mock(Repository.class);
-        SQLiteDatabase sqLiteDatabase = mock(SQLiteDatabase.class);
-        //when(repository.getWritableDatabase()).thenReturn(sqLiteDatabase);
-        //when(repository.getReadableDatabase()).thenReturn(sqLiteDatabase);
-
         return repository;
-    }
-
-    private void sampleUniqueIds() {
-        List<String> ids = generateIds(20);
-        FamilyLibrary.getInstance().getUniqueIdRepository().bulkInsertOpenmrsIds(ids);
-    }
-
-    private List<String> generateIds(int size) {
-        List<String> ids = new ArrayList<>();
-        Random r = new Random();
-
-        for (int i = 0; i < size; i++) {
-            Integer randomInt = r.nextInt(1000) + 1;
-            ids.add(randomInt.toString());
-        }
-
-        return ids;
     }
 
 }
