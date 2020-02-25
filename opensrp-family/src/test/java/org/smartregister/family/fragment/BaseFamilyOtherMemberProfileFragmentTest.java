@@ -43,7 +43,7 @@ public class BaseFamilyOtherMemberProfileFragmentTest extends BaseUnitTest {
     }
 
     @Test
-    public void testPresnter() {
+    public void testPresenter() {
         FamilyOtherMemberProfileFragmentContract.Presenter presenterInstance = fragment.presenter();
         Assert.assertEquals(presenter, presenterInstance);
     }

@@ -57,7 +57,7 @@ public class BaseFamilyProfileMemberPresenter implements FamilyProfileMemberCont
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = Utils.metadata().familyMemberRegister.tableName;
+        String tableName = getQueryTable();
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);
@@ -67,6 +67,11 @@ public class BaseFamilyProfileMemberPresenter implements FamilyProfileMemberCont
 
         getView().countExecute();
         getView().filterandSortInInitializeQueries();
+    }
+
+    @Override
+    public String getQueryTable() {
+        return Utils.metadata().familyMemberRegister.tableName;
     }
 
     @Override

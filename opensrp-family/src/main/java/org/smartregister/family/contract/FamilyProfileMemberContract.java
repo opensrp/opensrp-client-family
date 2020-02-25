@@ -29,6 +29,8 @@ public interface FamilyProfileMemberContract {
 
         void setPrimaryCaregiver(String primaryCaregiver);
 
+        String getQueryTable();
+
     }
 
     interface Model {
