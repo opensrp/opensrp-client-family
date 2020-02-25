@@ -17,9 +17,6 @@ import org.smartregister.family.util.AppExecutors;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.timeout;
 
