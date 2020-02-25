@@ -134,11 +134,11 @@ public class BaseFamilyProfilePresenterTest extends BaseUnitTest {
     public void testUpdateFamilyRegister() {
         String jsonString = "{}";
         FamilyEventClient familyEventClient = Mockito.mock(FamilyEventClient.class);
-        Mockito.doReturn(familyEventClient).when(model).processMemberRegistration(jsonString, familyBaseEntityId);
+        Mockito.doReturn(familyEventClient).when(model).processFamilyRegistrationForm(jsonString, familyBaseEntityId);
 
 
         presenter.updateFamilyRegister(jsonString);
-        interactor.saveRegistration(familyEventClient, jsonString, true, presenter);
+        Mockito.verify(interactor).saveRegistration(familyEventClient, jsonString, true, presenter);
     }
 
     @Test

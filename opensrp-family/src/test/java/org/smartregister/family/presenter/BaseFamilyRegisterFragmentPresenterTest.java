@@ -78,7 +78,7 @@ public class BaseFamilyRegisterFragmentPresenterTest extends BaseUnitTest {
 
     @Test
     public void testUpdateSortAndFilter() {
-        List<org.smartregister.configurableviews.model.Field> filterList = Mockito.mock(List.class);
+        List<Field> filterList = Mockito.mock(List.class);
         Field sortField = Mockito.mock(Field.class);
 
         Mockito.doReturn("123").when(view).getString(org.smartregister.R.string.filter);
