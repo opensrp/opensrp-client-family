@@ -31,8 +31,6 @@ public class FamilyProfileInteractorTest {
     @Mock
     private FamilyProfileContract.InteractorCallBack familyProfileCallback;
 
-    private String someBaseEntityId = "somebase-enityt-id";
-
     @Before
     public void setUp() {
         AppExecutors appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(),

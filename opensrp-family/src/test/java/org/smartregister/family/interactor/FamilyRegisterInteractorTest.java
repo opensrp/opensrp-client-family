@@ -114,7 +114,7 @@ public class FamilyRegisterInteractorTest {
                 "}";
 
         familyRegisterInteractor.saveRegistration(familyEventClients, someJson, false, callBack);
-        Mockito.verify(callBack, timeout(ASYNC_TIMEOUT)).onRegistrationSaved(eq(false), eq(false), eq(familyEventClients));
+        Mockito.verify(callBack, timeout(ASYNC_TIMEOUT)).onRegistrationSaved(eq(false), eq(true), eq(familyEventClients));
 
     }
 }
