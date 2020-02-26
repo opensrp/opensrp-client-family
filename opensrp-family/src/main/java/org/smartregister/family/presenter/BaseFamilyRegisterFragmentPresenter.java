@@ -50,7 +50,7 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = Utils.metadata().familyRegister.tableName;
+        String tableName = getQueryTable();
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);
@@ -60,6 +60,11 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
 
         getView().countExecute();
         getView().filterandSortInInitializeQueries();
+    }
+
+    @Override
+    public String getQueryTable() {
+        return Utils.metadata().familyRegister.tableName;
     }
 
     @Override

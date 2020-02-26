@@ -59,7 +59,7 @@ public class FamilyMetadata {
         this.familyOtherMemberRegister = new FamilyOtherMemberRegister(tableName, currentLimit, showPagination);
     }
 
-    public class FamilyRegister {
+    public static class FamilyRegister {
 
         public final String formName;
 

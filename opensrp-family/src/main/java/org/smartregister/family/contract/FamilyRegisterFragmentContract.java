@@ -29,6 +29,8 @@ public interface FamilyRegisterFragmentContract {
 
         String getDefaultSortQuery();
 
+        String getQueryTable();
+
     }
 
     interface Model {
