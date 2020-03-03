@@ -21,6 +21,8 @@ public interface FamilyOtherMemberProfileFragmentContract {
 
         String getDefaultSortQuery();
 
+        String getQueryTable();
+
     }
 
     interface Model {

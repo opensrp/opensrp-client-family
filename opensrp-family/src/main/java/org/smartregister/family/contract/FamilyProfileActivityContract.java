@@ -21,6 +21,7 @@ public interface FamilyProfileActivityContract {
 
         String getDefaultSortQuery();
 
+        String getQueryTable();
     }
 
     interface Model {

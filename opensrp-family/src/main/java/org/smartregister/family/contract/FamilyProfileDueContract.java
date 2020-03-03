@@ -21,6 +21,8 @@ public interface FamilyProfileDueContract {
 
         String getDefaultSortQuery();
 
+        String getQueryTable();
+
     }
 
     interface Model {
