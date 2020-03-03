@@ -2,6 +2,7 @@ package org.smartregister.family;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
+import org.robolectric.Robolectric;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
@@ -55,4 +56,8 @@ public class TestApplication extends DrishtiApplication {
         return repository;
     }
 
+    @Override
+    public void onTerminate() {
+        Robolectric.flushBackgroundThreadScheduler();
+    }
 }
