@@ -28,7 +28,7 @@ public class BaseFamilyProfileDuePresenterTest extends BaseUnitTest {
     private BaseFamilyProfileDuePresenter presenter;
 
     @Mock
-    private org.smartregister.family.contract.FamilyProfileDueContract.View view;
+    private FamilyProfileDueContract.View view;
 
     @Mock
     private FamilyProfileDueContract.Model model;

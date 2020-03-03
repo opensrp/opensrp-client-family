@@ -62,13 +62,13 @@ public class BaseFamilyOtherMemberProfileActivityPresenterTest extends BaseUnitT
     }
 
     @Test
-    public void testFetchProfileData(){
+    public void testFetchProfileData() {
         presenter.fetchProfileData();
         Mockito.verify(interactor).refreshProfileView(baseEntityId, presenter);
     }
 
     @Test
-    public void testRefreshProfileView(){
+    public void testRefreshProfileView() {
         presenter.refreshProfileView();
         Mockito.verify(interactor).refreshProfileView(baseEntityId, presenter);
     }
@@ -88,12 +88,12 @@ public class BaseFamilyOtherMemberProfileActivityPresenterTest extends BaseUnitT
     }
 
     @Test
-    public void testGetBaseEntityId(){
+    public void testGetBaseEntityId() {
         Assert.assertEquals(presenter.getBaseEntityId(), baseEntityId);
     }
 
     @Test
-    public void testRefreshProfileTopSection(){
+    public void testRefreshProfileTopSection() {
         CommonPersonObjectClient client = Mockito.mock(CommonPersonObjectClient.class);
         Map<String, String> columnMap = new HashMap<>();
         columnMap.put(DBConstants.KEY.ENTITY_TYPE, "entityType");
