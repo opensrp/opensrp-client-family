@@ -52,7 +52,7 @@ public class BaseFamilyOtherMemberProfileFragmentPresenter implements FamilyOthe
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = Utils.metadata().familyOtherMemberRegister.tableName;
+        String tableName = getQueryTable();
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);
@@ -62,6 +62,11 @@ public class BaseFamilyOtherMemberProfileFragmentPresenter implements FamilyOthe
 
         getView().countExecute();
         getView().filterandSortInInitializeQueries();
+    }
+
+    @Override
+    public String getQueryTable() {
+        return Utils.metadata().familyOtherMemberRegister.tableName;
     }
 
     @Override

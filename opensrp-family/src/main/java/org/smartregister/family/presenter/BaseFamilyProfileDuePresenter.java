@@ -53,7 +53,7 @@ public class BaseFamilyProfileDuePresenter implements FamilyProfileDueContract.P
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = Utils.metadata().familyDueRegister.tableName;
+        String tableName = getQueryTable();
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);
@@ -83,6 +83,11 @@ public class BaseFamilyProfileDuePresenter implements FamilyProfileDueContract.P
     @Override
     public String getDefaultSortQuery() {
         return DBConstants.KEY.DOD + ", " + DBConstants.KEY.DOB + " ASC ";
+    }
+
+    @Override
+    public String getQueryTable() {
+        return Utils.metadata().familyDueRegister.tableName;
     }
 
     protected FamilyProfileDueContract.View getView() {
