@@ -42,14 +42,6 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
     }
 
     @Test
-    @Ignore("Find a way to set the family metadata")
-    public void setProfileImage() {
-        String baseEntityId = "sample-bae-9109";
-        String entityType = "ec_child";
-        familyOtherMemberProfileActivity.setProfileImage(baseEntityId, entityType);
-    }
-
-    @Test
     public void setProfileName() {
         TextView nameView = new TextView(RuntimeEnvironment.systemContext);
         String name = "Jammie Fox";
