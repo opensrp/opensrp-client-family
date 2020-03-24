@@ -218,7 +218,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
 
     public BaseFamilyProfileMemberFragment getProfileMemberFragment() {
         Fragment fragment = adapter.getItem(0);
-        if (fragment != null && fragment instanceof BaseFamilyProfileMemberFragment) {
+        if (fragment instanceof BaseFamilyProfileMemberFragment) {
             return (BaseFamilyProfileMemberFragment) fragment;
         }
         return null;
