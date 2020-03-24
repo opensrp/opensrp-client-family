@@ -4,6 +4,8 @@ package org.smartregister.family.fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.junit.Before;
@@ -25,6 +27,7 @@ import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
+import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 import org.smartregister.view.customcontrols.FontVariant;
@@ -57,6 +60,12 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Mock
     private BaseRegisterFragmentContract.Presenter presenter;
+
+    @Mock
+    private ProgressBar syncProgressBar;
+
+    @Mock
+    private ImageView syncButton;
 
     @Captor
     private ArgumentCaptor<RecyclerViewPaginatedAdapter> adapterArgumentCaptor;
@@ -92,12 +101,21 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
         android.view.View view = LayoutInflater.from(activity).inflate(R.layout.fragment_base_register, null);
         registerFragment.setupViews(view);
         assertEquals(R.color.white, Shadows.shadowOf(registerFragment.getSearchView().getBackground()).getCreatedFromResId());
-        assertEquals(activity.getString(R.string.sort), ((TextView)view.findViewById(R.id.filter_text_view)).getText());
-        assertEquals(android.view.View .GONE, view.findViewById(R.id.opensrp_logo_image_view).getVisibility());
+        assertEquals(activity.getString(R.string.sort), ((TextView) view.findViewById(R.id.filter_text_view)).getText());
+        assertEquals(android.view.View.GONE, view.findViewById(R.id.opensrp_logo_image_view).getVisibility());
 
 
         CustomFontTextView titleView = view.findViewById(R.id.txt_title_label);
-        assertEquals(android.view.View .VISIBLE, titleView.getVisibility());
+        assertEquals(android.view.View.VISIBLE, titleView.getVisibility());
         assertEquals(activity.getString(R.string.all_families), titleView.getText());
+    }
+
+    @Test
+    public void testRefreshSyncProgressSpinner() {
+        Whitebox.setInternalState(registerFragment, "syncProgressBar", syncProgressBar);
+        Whitebox.setInternalState(registerFragment, "syncButton", syncButton);
+        SyncStatusBroadcastReceiver.init(activity);
+        registerFragment.refreshSyncProgressSpinner();
+        verify(syncButton).setVisibility(android.view.View.GONE);
     }
 }
