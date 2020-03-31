@@ -1,10 +1,10 @@
 package org.smartregister.family.fragment;
 
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,22 +25,24 @@ import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowDialog;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
+import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
+import org.smartregister.family.mock.MockBaseFamilyRegisterFragment;
 import org.smartregister.family.util.Utils;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
@@ -49,7 +51,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.smartregister.family.fragment.BaseFamilyRegisterFragment.CLICK_VIEW_DOSAGE_STATUS;
+import static org.smartregister.family.fragment.BaseFamilyRegisterFragment.CLICK_VIEW_NORMAL;
 import static org.smartregister.view.fragment.SecuredNativeSmartRegisterFragment.DIALOG_TAG;
 
 /**
@@ -87,12 +93,15 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
     @Mock
     private FragmentTransaction fragmentTransaction;
 
+    @Mock
+    private android.view.View view;
+
     @Captor
     private ArgumentCaptor<RecyclerViewPaginatedAdapter> adapterArgumentCaptor;
 
     private BaseFamilyRegisterFragment registerFragment;
 
-    private AppCompatActivity activity;
+    private FragmentActivity activity;
 
     @Before
     public void setUp() {
@@ -100,15 +109,15 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
         CoreLibrary.init(context);
         when(context.commonrepository(anyString())).thenReturn(commonRepository);
         activity = Robolectric.buildActivity(AppCompatActivity.class).create().resume().get();
-        when(registerFragment.getActivity()).thenReturn(activity);
-        when(registerFragment.getContext()).thenReturn(activity);
         Context.bindtypes = new ArrayList<>();
         Whitebox.setInternalState(registerFragment, "clientsView", clientsView);
         Whitebox.setInternalState(registerFragment, "presenter", presenter);
+        SyncStatusBroadcastReceiver.init(activity);
     }
 
     @Test
     public void testInitializeAdapter() {
+        when(registerFragment.getActivity()).thenReturn(activity);
         registerFragment.initializeAdapter(new HashSet<View>());
         verify(clientsView).setAdapter(adapterArgumentCaptor.capture());
         assertNotNull(adapterArgumentCaptor.getValue());
@@ -118,6 +127,8 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Test
     public void testSetupViews() {
+        when(registerFragment.getActivity()).thenReturn(activity);
+        when(registerFragment.getContext()).thenReturn(activity);
         android.view.View view = LayoutInflater.from(activity).inflate(R.layout.fragment_base_register, null);
         registerFragment.setupViews(view);
         assertEquals(R.color.white, Shadows.shadowOf(registerFragment.getSearchView().getBackground()).getCreatedFromResId());
@@ -134,7 +145,6 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
     public void testRefreshSyncProgressSpinner() {
         Whitebox.setInternalState(registerFragment, "syncProgressBar", syncProgressBar);
         Whitebox.setInternalState(registerFragment, "syncButton", syncButton);
-        SyncStatusBroadcastReceiver.init(activity);
         registerFragment.refreshSyncProgressSpinner();
         verify(syncButton).setVisibility(android.view.View.GONE);
     }
@@ -163,5 +173,48 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
         verify(fragmentManager).beginTransaction();
         verify(fragmentTransaction).addToBackStack(null);
         verify(fragmentTransaction).add(any(NoMatchDialogFragment.class), eq(DIALOG_TAG));
+    }
+
+    @Test
+    public void testOnViewClickedDoesNothing() {
+        when(registerFragment.getActivity()).thenReturn(null);
+        registerFragment.onViewClicked(view);
+        verifyZeroInteractions(view);
+    }
+
+    @Test
+    public void testOnViewClickedOpensProfile() {
+        registerFragment= new MockBaseFamilyRegisterFragment();
+        Context.bindtypes = new ArrayList<>();
+        Whitebox.setInternalState(registerFragment, "clientsView", clientsView);
+        Whitebox.setInternalState(registerFragment, "presenter", presenter);
+        activity.getSupportFragmentManager().beginTransaction().add(0,registerFragment).commit();
+        when(view.getTag(R.id.VIEW_ID)).thenReturn(CLICK_VIEW_NORMAL);
+        CommonPersonObjectClient client= new CommonPersonObjectClient("12",null,"");
+        client.setColumnmaps(new HashMap<String, String>());
+        when(view.getTag()).thenReturn(client);
+        registerFragment.onViewClicked(view);
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        assertNotNull(intent);
+        assertEquals(BaseFamilyProfileActivity.class, shadowOf(intent).getIntentClass());
+
+    }
+
+    @Test
+    public void testOnDosageViewClickedOpensProfile() {
+        registerFragment= new MockBaseFamilyRegisterFragment();
+        Context.bindtypes = new ArrayList<>();
+        Whitebox.setInternalState(registerFragment, "clientsView", clientsView);
+        Whitebox.setInternalState(registerFragment, "presenter", presenter);
+        activity.getSupportFragmentManager().beginTransaction().add(0,registerFragment).commit();
+        when(view.getTag(R.id.VIEW_ID)).thenReturn(CLICK_VIEW_DOSAGE_STATUS);
+        CommonPersonObjectClient client= new CommonPersonObjectClient("12",null,"");
+        client.setColumnmaps(new HashMap<String, String>());
+        when(view.getTag()).thenReturn(client);
+        registerFragment.onViewClicked(view);
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        assertNotNull(intent);
+        assertEquals(BaseFamilyProfileActivity.class, shadowOf(intent).getIntentClass());
+
     }
 }
