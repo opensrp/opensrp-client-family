@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
+import org.jetbrains.annotations.Nullable;
 import org.smartregister.view.activity.BaseProfileActivity;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class FamilyMetadata {
     public FamilyDueRegister familyDueRegister;
     public FamilyActivityRegister familyActivityRegister;
     public FamilyOtherMemberRegister familyOtherMemberRegister;
+    @Nullable
     private Map<String, String> customConfigs;
 
     // contains the step name and the field name
@@ -187,11 +189,12 @@ public class FamilyMetadata {
         this.locationHierarchy = locationHierarchy;
     }
 
+    @Nullable
     public Map<String, String> getCustomConfigs() {
-        return Collections.unmodifiableMap(customConfigs);
+        return customConfigs == null ? null : Collections.unmodifiableMap(customConfigs);
     }
 
-    public void setCustomConfigs(Map<String, String> customConfigs) {
+    public void setCustomConfigs(@Nullable Map<String, String> customConfigs) {
         this.customConfigs = customConfigs;
     }
 }
