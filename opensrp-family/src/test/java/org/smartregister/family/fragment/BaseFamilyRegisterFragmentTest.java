@@ -29,6 +29,7 @@ import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
+import org.smartregister.family.util.Utils;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
 import org.smartregister.view.customcontrols.CustomFontTextView;
@@ -130,10 +131,11 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
         assertEquals("11223",registerFragment.getSearchView().getText().toString());
     }
 
-    //@Test
+    @Test
     public void testStartRegistration() {
+        Utils.metadata().updateFamilyRegister("register_family.json","ec_family","","","","","");
         when(registerFragment.getActivity()).thenReturn(baseFamilyRegisterActivity);
         registerFragment.startRegistration();
-        verify(baseFamilyRegisterActivity).startFormActivity(anyString(),anyString(),anyString());
+        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json",null,null);
     }
 }
