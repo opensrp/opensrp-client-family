@@ -9,13 +9,11 @@ import java.util.HashMap;
  */
 public class MockBaseFamilyRegisterFragment extends BaseFamilyRegisterFragment {
     @Override
-    protected void initializePresenter() {
-
+    protected void initializePresenter() {//do nothing
     }
 
     @Override
-    public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
-
+    public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {//do nothing
     }
 
     @Override
