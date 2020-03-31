@@ -1,6 +1,10 @@
 package org.smartregister.family.fragment;
 
 
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +25,8 @@ import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
+import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowDialog;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonRepository;
@@ -39,9 +45,12 @@ import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.smartregister.view.fragment.SecuredNativeSmartRegisterFragment.DIALOG_TAG;
 
 /**
  * Created by samuelgithengi on 3/24/20.
@@ -71,6 +80,12 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Mock
     private BaseFamilyRegisterActivity baseFamilyRegisterActivity;
+
+    @Mock
+    private FragmentManager fragmentManager;
+
+    @Mock
+    private FragmentTransaction fragmentTransaction;
 
     @Captor
     private ArgumentCaptor<RecyclerViewPaginatedAdapter> adapterArgumentCaptor;
@@ -128,14 +143,25 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
     public void testSetUniqueID() {
         when(registerFragment.getSearchView()).thenReturn(new EditText(activity));
         registerFragment.setUniqueID("11223");
-        assertEquals("11223",registerFragment.getSearchView().getText().toString());
+        assertEquals("11223", registerFragment.getSearchView().getText().toString());
     }
 
     @Test
-    public void testStartRegistration() {
-        Utils.metadata().updateFamilyRegister("register_family.json","ec_family","","","","","");
+    public void testStartRegistrationStartsFormActivity() {
+        Utils.metadata().updateFamilyRegister("register_family.json", "ec_family", "", "", "", "", "");
         when(registerFragment.getActivity()).thenReturn(baseFamilyRegisterActivity);
         registerFragment.startRegistration();
-        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json",null,null);
+        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json", null, null);
+    }
+
+    @Test
+    public void testShowNotFoundPopupShowsDialog() {
+        when(registerFragment.getActivity()).thenReturn(baseFamilyRegisterActivity);
+        when(baseFamilyRegisterActivity.getFragmentManager()).thenReturn(fragmentManager);
+        when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
+        registerFragment.showNotFoundPopup("1234");
+        verify(fragmentManager).beginTransaction();
+        verify(fragmentTransaction).addToBackStack(null);
+        verify(fragmentTransaction).add(any(NoMatchDialogFragment.class), eq(DIALOG_TAG));
     }
 }
