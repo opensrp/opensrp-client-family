@@ -1,6 +1,7 @@
 package org.smartregister.family.util;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,6 +38,11 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     @Mock
     private Context context;
 
+    private JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
+
+    public JsonFormUtilsTest() throws JSONException {
+    }
+
     @Before
     public void setUp() {
         FamilyLibrary.init(context, null, 1, 1);
@@ -61,7 +67,6 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     @Test
     public void getFormAsJson_WithRegisterFamily_ShouldPopulateUniqueId() throws Exception {
 
-        JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
         originalForm.put(METADATA, new JSONObject());
         JSONObject form = JsonFormUtils.getFormAsJson(originalForm, "FAMILY_REGISTER", "1234", "location1");
         assertNotNull(form);
@@ -76,8 +81,6 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
     @Test
     public void getFormAsJson_WithRegisterFamilyMember_ShouldPopulateUniqueId() throws Exception {
-
-        JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
         originalForm.put(METADATA, new JSONObject());
         JSONObject form = JsonFormUtils.getFormAsJson(originalForm, "FAMILY_MEMBER_REGISTER", "1234", "location1");
         assertNotNull(form);
@@ -87,5 +90,19 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         assertEquals("1234", getFieldJSONObject(step1, Constants.JSON_FORM_KEY.UNIQUE_ID).getString(VALUE));
 
 
+    }
+
+    @Test
+    public void updateJsonForm_ShouldUpdateFamilyName() throws Exception {
+        JsonFormUtils.updateJsonForm(originalForm, "family122");
+        JSONArray step1 = fields(originalForm, STEP1);
+        assertEquals("family122", getFieldJSONObject(step1, Constants.JSON_FORM_KEY.FAMILY_NAME).getString(VALUE));
+    }
+
+    @Test
+    public void updateJsonForm_WithNullForm() throws Exception {
+        JSONObject form = null;
+        JsonFormUtils.updateJsonForm(form, "family122");
+        assertNull(form);
     }
 }
