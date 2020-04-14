@@ -1,6 +1,6 @@
 package org.smartregister.family.util;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,15 +11,21 @@ import org.mockito.junit.MockitoRule;
 import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
-import org.smartregister.family.domain.FamilyMetadata;
+import org.smartregister.family.TestData;
 
 import timber.log.Timber;
 
+import static com.vijay.jsonwizard.constants.JsonFormConstants.STEP1;
+import static com.vijay.jsonwizard.utils.FormUtils.fields;
+import static com.vijay.jsonwizard.utils.FormUtils.getFieldJSONObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.smartregister.family.util.JsonFormUtils.METADATA;
+import static org.smartregister.family.util.JsonFormUtils.STEP2;
 import static org.smartregister.util.JsonFormUtils.ENCOUNTER_LOCATION;
+import static org.smartregister.util.JsonFormUtils.VALUE;
+
 
 /**
  * Created by samuelgithengi on 4/14/20.
@@ -50,5 +56,36 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         JSONObject form = JsonFormUtils.getFormAsJson(originalForm, null, null, "location1");
         assertNotNull(form);
         assertEquals("location1", form.getJSONObject(METADATA).getString(ENCOUNTER_LOCATION));
+    }
+
+    @Test
+    public void getFormAsJson_WithRegisterFamily_ShouldPopulateUniqueId() throws Exception {
+
+        JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
+        originalForm.put(METADATA, new JSONObject());
+        JSONObject form = JsonFormUtils.getFormAsJson(originalForm, "FAMILY_REGISTER", "1234", "location1");
+        assertNotNull(form);
+        assertEquals("location1", form.getJSONObject(METADATA).getString(ENCOUNTER_LOCATION));
+
+        JSONArray step1 = fields(form, STEP1);
+        assertEquals("1234_Family", getFieldJSONObject(step1, Constants.JSON_FORM_KEY.UNIQUE_ID).getString(VALUE));
+
+        JSONArray step2 = fields(form, STEP2);
+        assertEquals("1234", getFieldJSONObject(step2, Constants.JSON_FORM_KEY.UNIQUE_ID).getString(VALUE));
+    }
+
+    @Test
+    public void getFormAsJson_WithRegisterFamilyMember_ShouldPopulateUniqueId() throws Exception {
+
+        JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
+        originalForm.put(METADATA, new JSONObject());
+        JSONObject form = JsonFormUtils.getFormAsJson(originalForm, "FAMILY_MEMBER_REGISTER", "1234", "location1");
+        assertNotNull(form);
+        assertEquals("location1", form.getJSONObject(METADATA).getString(ENCOUNTER_LOCATION));
+
+        JSONArray step1 = fields(form, STEP1);
+        assertEquals("1234", getFieldJSONObject(step1, Constants.JSON_FORM_KEY.UNIQUE_ID).getString(VALUE));
+
+
     }
 }
