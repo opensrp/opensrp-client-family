@@ -13,15 +13,19 @@ import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.TestData;
+import org.smartregister.family.domain.FamilyEventClient;
+import org.smartregister.repository.AllSharedPreferences;
 
-import timber.log.Timber;
+import java.util.Date;
 
 import static com.vijay.jsonwizard.constants.JsonFormConstants.STEP1;
 import static com.vijay.jsonwizard.utils.FormUtils.fields;
 import static com.vijay.jsonwizard.utils.FormUtils.getFieldJSONObject;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.smartregister.family.util.JsonFormUtils.METADATA;
 import static org.smartregister.family.util.JsonFormUtils.STEP2;
 import static org.smartregister.util.JsonFormUtils.ENCOUNTER_LOCATION;
@@ -39,6 +43,9 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     private Context context;
 
     private JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
+
+    @Mock
+    private AllSharedPreferences allSharedPreferences;
 
     public JsonFormUtilsTest() throws JSONException {
     }
@@ -104,5 +111,22 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         JSONObject form = null;
         JsonFormUtils.updateJsonForm(form, "family122");
         assertNull(form);
+    }
+
+
+    @Test
+    public void processFamilyUpdateForm_ShouldReturnEventAndClient() {
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyUpdateForm(allSharedPreferences, TestData.FILLED_FAMILY_FORN);
+        assertNotNull(familyEventClient);
+        assertEquals("763268733n",familyEventClient.getClient().getBaseEntityId());
+        assertEquals("John", familyEventClient.getClient().getFirstName());
+        assertEquals("Family", familyEventClient.getClient().getLastName());
+        assertFalse(familyEventClient.getClient().getBirthdateApprox());
+        assertEquals(new Date(0), familyEventClient.getClient().getBirthdate());
+
+        assertEquals("FAMILY", familyEventClient.getEvent().getEntityType());
+        assertEquals("FAMILY_REGISTRATION", familyEventClient.getEvent().getEventType());
+        assertEquals("763268733n", familyEventClient.getEvent().getBaseEntityId());
+        assertEquals(1,familyEventClient.getEvent().getObs().size());
     }
 }
