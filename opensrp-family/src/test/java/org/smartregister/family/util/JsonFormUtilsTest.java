@@ -13,7 +13,7 @@ import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
-import org.smartregister.family.TestData;
+import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.repository.AllSharedPreferences;
 
@@ -44,7 +44,7 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     @Mock
     private Context context;
 
-    private JSONObject originalForm = new JSONObject(TestData.REGISTER_FAMILY_FORM);
+    private JSONObject originalForm = new JSONObject(TestDataUtils.REGISTER_FAMILY_FORM);
 
     @Mock
     private AllSharedPreferences allSharedPreferences;
@@ -59,12 +59,12 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     }
 
     @Test
-    public void getFormAsJson_ShouldReturnNullWithNullForm() throws Exception {
+    public void getFormAsJsonShouldReturnNullWithNullForm() throws Exception {
         assertNull(JsonFormUtils.getFormAsJson(null, null, null, null));
     }
 
     @Test
-    public void getFormAsJson_ShouldPopulateEncounterLocation() throws Exception {
+    public void getFormAsJsonShouldPopulateEncounterLocation() throws Exception {
 
         JSONObject originalForm = new JSONObject();
         originalForm.put(METADATA, new JSONObject());
@@ -74,7 +74,7 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     }
 
     @Test
-    public void getFormAsJson_WithRegisterFamily_ShouldPopulateUniqueId() throws Exception {
+    public void getFormAsJsonWithRegisterFamilyShouldPopulateUniqueId() throws Exception {
 
         originalForm.put(METADATA, new JSONObject());
         JSONObject form = JsonFormUtils.getFormAsJson(originalForm, "FAMILY_REGISTER", "1234", "location1");
@@ -89,7 +89,7 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     }
 
     @Test
-    public void getFormAsJson_WithRegisterFamilyMember_ShouldPopulateUniqueId() throws Exception {
+    public void getFormAsJsonWithRegisterFamilyMemberShouldPopulateUniqueId() throws Exception {
         originalForm.put(METADATA, new JSONObject());
         JSONObject form = JsonFormUtils.getFormAsJson(originalForm, "FAMILY_MEMBER_REGISTER", "1234", "location1");
         assertNotNull(form);
@@ -102,14 +102,14 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     }
 
     @Test
-    public void updateJsonForm_ShouldUpdateFamilyName() throws Exception {
+    public void updateJsonFormShouldUpdateFamilyName() throws Exception {
         JsonFormUtils.updateJsonForm(originalForm, "family122");
         JSONArray step1 = fields(originalForm, STEP1);
         assertEquals("family122", getFieldJSONObject(step1, Constants.JSON_FORM_KEY.FAMILY_NAME).getString(VALUE));
     }
 
     @Test
-    public void updateJsonForm_WithNullForm() throws Exception {
+    public void updateJsonFormWithNullForm() throws Exception {
         JSONObject form = null;
         JsonFormUtils.updateJsonForm(form, "family122");
         assertNull(form);
@@ -117,8 +117,8 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
 
     @Test
-    public void processFamilyUpdateForm_ShouldReturnEventAndClient() {
-        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyUpdateForm(allSharedPreferences, TestData.FILLED_FAMILY_FORM);
+    public void processFamilyUpdateFormShouldReturnEventAndClient() {
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyUpdateForm(allSharedPreferences, TestDataUtils.FILLED_FAMILY_FORM);
         assertNotNull(familyEventClient);
         assertEquals("763268733n", familyEventClient.getClient().getBaseEntityId());
         assertEquals("John", familyEventClient.getClient().getFirstName());
@@ -134,8 +134,8 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
 
     @Test
-    public void processFamilyUpdateForm_WithFamilyId_ShouldReturnEventAndClient() {
-        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyUpdateForm(allSharedPreferences, TestData.FILLED_FAMILY_FORM, "1234455");
+    public void processFamilyUpdateFormWithFamilyIdShouldReturnEventAndClient() {
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyUpdateForm(allSharedPreferences, TestDataUtils.FILLED_FAMILY_FORM, "1234455");
         assertNotNull(familyEventClient);
         assertEquals("763268733n", familyEventClient.getClient().getBaseEntityId());
         assertEquals("John", familyEventClient.getClient().getFirstName());
