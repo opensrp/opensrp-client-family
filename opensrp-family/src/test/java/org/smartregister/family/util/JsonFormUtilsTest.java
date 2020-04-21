@@ -157,5 +157,28 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
     }
 
+    @Test
+    public void processFamilyHeadRegistrationFormShouldReturnEventClient() {
+
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyHeadRegistrationForm(allSharedPreferences, TestDataUtils.FILLED_FAMILY_FORM, "1234455");
+        assertNotNull(familyEventClient);
+        assertEquals("763268733n", familyEventClient.getClient().getBaseEntityId());
+        assertEquals("Doe", familyEventClient.getClient().getFirstName());
+        assertEquals("Jack", familyEventClient.getClient().getLastName());
+        assertTrue(familyEventClient.getClient().getBirthdateApprox());
+        assertEquals(Utils.getDob(34), new SimpleDateFormat("dd-MM-yyyy").format(familyEventClient.getClient().getBirthdate()));
+
+        assertEquals("34", familyEventClient.getClient().getAttribute("age_entered"));
+        assertTrue( familyEventClient.getClient().getAddresses().isEmpty());
+
+        assertEquals("1234455", familyEventClient.getClient().getRelationships().get("FAMILY").get(0));
+
+        assertEquals("FAMILY_MEMBER", familyEventClient.getEvent().getEntityType());
+        assertEquals("FAMILY_MEMBER_REGISTRATION", familyEventClient.getEvent().getEventType());
+        assertEquals("763268733n", familyEventClient.getEvent().getBaseEntityId());
+        assertEquals(3, familyEventClient.getEvent().getObs().size());
+
+    }
+
 
 }
