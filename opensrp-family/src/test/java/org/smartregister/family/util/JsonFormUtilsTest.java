@@ -12,18 +12,23 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.powermock.reflect.Whitebox;
 import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
+import org.smartregister.domain.ProfileImage;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.ImageRepository;
 import org.smartregister.sync.helper.ECSyncHelper;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import static com.vijay.jsonwizard.constants.JsonFormConstants.STEP1;
 import static com.vijay.jsonwizard.utils.FormUtils.fields;
@@ -60,8 +65,15 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     @Mock
     private ECSyncHelper ecSyncHelper;
 
+    @Mock
+    private ImageRepository imageRepository;
+
     @Captor
     private ArgumentCaptor<JSONObject> jsonObjectArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<ProfileImage> profileImageCaptor;
+
 
     public JsonFormUtilsTest() throws JSONException {
     }
@@ -195,7 +207,7 @@ public class JsonFormUtilsTest extends BaseUnitTest {
     }
 
     @Test
-    public void testMergeAndSaveClient() throws Exception {
+    public void testMergeAndSaveClientShouldSave() throws Exception {
         FamilyEventClient familyEventClient = JsonFormUtils.processFamilyHeadRegistrationForm(allSharedPreferences, TestDataUtils.FILLED_FAMILY_FORM, "1234455");
         String baseEntityId = familyEventClient.getClient().getBaseEntityId();
         when(ecSyncHelper.getClient(baseEntityId)).thenReturn(new JSONObject(org.smartregister.util.JsonFormUtils.gson.toJson(familyEventClient.getClient())));
@@ -224,6 +236,21 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
         assertEquals("1234455", mergedClient.getRelationships().get("FAMILY").get(0));
 
+    }
+
+    @Test
+    public void testSaveImage() {
+        Whitebox.setInternalState(Utils.context(), "imageRepository", imageRepository);
+        String id = UUID.randomUUID().toString();
+        JsonFormUtils.saveImage("user", id, "src/main/res/mipmap-hdpi/ic_family.png");
+        verify(imageRepository).add(profileImageCaptor.capture());
+        assertNotNull(profileImageCaptor.getValue());
+        assertEquals("user", profileImageCaptor.getValue().getAnmId());
+        assertEquals(id, profileImageCaptor.getValue().getEntityID());
+        assertEquals("profilepic", profileImageCaptor.getValue().getFilecategory());
+        assertEquals(ImageRepository.TYPE_Unsynced, profileImageCaptor.getValue().getSyncStatus());
+        File compressedFile = new File(profileImageCaptor.getValue().getFilepath());
+        assertTrue(compressedFile.exists());
     }
 
 
