@@ -284,9 +284,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static JSONObject getAutoPopulatedJsonEditFormString(Context context, CommonPersonObjectClient client) {
         try {
-            JSONObject form = FormUtils.getInstance(context).getFormJson(Utils.metadata().familyRegister.formName);
+
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();
+            return getAutoPopulatedJsonEditFormString(client, FormUtils.getInstance(context).getFormJson(Utils.metadata().familyRegister.formName), lpv);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return null;
+    }
+
+    public static JSONObject getAutoPopulatedJsonEditFormString(CommonPersonObjectClient client, JSONObject form, LocationPickerView lpv) {
+        try {
             // JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
             Timber.d("Form is " + form.toString());
             if (form != null) {
@@ -314,7 +323,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                 return form;
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             Timber.e(e);
         }
 

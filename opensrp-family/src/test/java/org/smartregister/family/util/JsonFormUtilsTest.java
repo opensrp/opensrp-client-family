@@ -21,9 +21,11 @@ import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.domain.FamilyEventClient;
+import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.sync.helper.ECSyncHelper;
+import org.smartregister.view.LocationPickerView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -38,6 +40,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,6 +70,12 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
     @Mock
     private ImageRepository imageRepository;
+
+    @Mock
+    private LocationPickerView locationPickerView;
+
+    @Mock
+    private ProfileImage profileImage;
 
     @Captor
     private ArgumentCaptor<JSONObject> jsonObjectArgumentCaptor;
@@ -251,6 +260,23 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         assertEquals(ImageRepository.TYPE_Unsynced, profileImageCaptor.getValue().getSyncStatus());
         File compressedFile = new File(profileImageCaptor.getValue().getFilepath());
         assertTrue(compressedFile.exists());
+    }
+
+
+    @Test
+    public void testGetAutoPopulatedJsonEditFormString() throws JSONException {
+        Whitebox.setInternalState(Utils.context(), "imageRepository", imageRepository);
+        when(imageRepository.findByEntityId(anyString())).thenReturn(profileImage);
+        when(profileImage.getFilepath()).thenReturn("/tmp/image112/.png");
+        LocationHelper.init(Utils.ALLOWED_LEVELS, Utils.DEFAULT_LOCATION_LEVEL);
+        String formString = TestDataUtils.FAMILY_MEMBER_FORM;
+        JSONObject form = JsonFormUtils.getAutoPopulatedJsonEditFormString(TestDataUtils.getCommonPersonObjectClient(), new JSONObject(formString), locationPickerView);
+        assertNotNull(form);
+        assertEquals("01-01-1982", org.smartregister.util.JsonFormUtils.getFieldValue(form.toString(), Constants.JSON_FORM_KEY.DOB));
+        assertEquals(profileImage.getFilepath(), org.smartregister.util.JsonFormUtils.getFieldValue(form.toString(), Constants.KEY.PHOTO));
+        assertEquals("12987632", org.smartregister.util.JsonFormUtils.getFieldValue(form.toString(), Constants.JSON_FORM_KEY.UNIQUE_ID));
+
+
     }
 
 
