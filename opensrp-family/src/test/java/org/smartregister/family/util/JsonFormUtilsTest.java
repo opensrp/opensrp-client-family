@@ -1,21 +1,26 @@
 package org.smartregister.family.util;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Address;
+import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.sync.helper.ECSyncHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +33,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.smartregister.family.util.JsonFormUtils.METADATA;
 import static org.smartregister.family.util.JsonFormUtils.STEP2;
 import static org.smartregister.util.JsonFormUtils.ENCOUNTER_LOCATION;
@@ -48,6 +56,12 @@ public class JsonFormUtilsTest extends BaseUnitTest {
 
     @Mock
     private AllSharedPreferences allSharedPreferences;
+
+    @Mock
+    private ECSyncHelper ecSyncHelper;
+
+    @Captor
+    private ArgumentCaptor<JSONObject> jsonObjectArgumentCaptor;
 
     public JsonFormUtilsTest() throws JSONException {
     }
@@ -169,7 +183,7 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         assertEquals(Utils.getDob(34), new SimpleDateFormat("dd-MM-yyyy").format(familyEventClient.getClient().getBirthdate()));
 
         assertEquals("34", familyEventClient.getClient().getAttribute("age_entered"));
-        assertTrue( familyEventClient.getClient().getAddresses().isEmpty());
+        assertTrue(familyEventClient.getClient().getAddresses().isEmpty());
 
         assertEquals("1234455", familyEventClient.getClient().getRelationships().get("FAMILY").get(0));
 
@@ -177,6 +191,38 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         assertEquals("FAMILY_MEMBER_REGISTRATION", familyEventClient.getEvent().getEventType());
         assertEquals("763268733n", familyEventClient.getEvent().getBaseEntityId());
         assertEquals(3, familyEventClient.getEvent().getObs().size());
+
+    }
+
+    @Test
+    public void testMergeAndSaveClient() throws Exception {
+        FamilyEventClient familyEventClient = JsonFormUtils.processFamilyHeadRegistrationForm(allSharedPreferences, TestDataUtils.FILLED_FAMILY_FORM, "1234455");
+        String baseEntityId = familyEventClient.getClient().getBaseEntityId();
+        when(ecSyncHelper.getClient(baseEntityId)).thenReturn(new JSONObject(org.smartregister.util.JsonFormUtils.gson.toJson(familyEventClient.getClient())));
+        Client newClient = new Client(baseEntityId);
+        newClient.withAddress(new Address().withCityVillage("Nairobi").withAddressField("street", "Padmore").withAddressType("home"));
+        DateTime lastModified = new DateTime();
+        newClient.withAttribute("last_edited", lastModified);
+        newClient.setFirstName("Frank");
+        JsonFormUtils.mergeAndSaveClient(ecSyncHelper, newClient);
+
+        verify(ecSyncHelper).addClient(eq(baseEntityId), jsonObjectArgumentCaptor.capture());
+
+
+        Client mergedClient = org.smartregister.util.JsonFormUtils.gson.fromJson(jsonObjectArgumentCaptor.getValue().toString(), Client.class);
+        assertNotNull(mergedClient);
+        assertEquals("763268733n", mergedClient.getBaseEntityId());
+        assertEquals("Frank", mergedClient.getFirstName());
+        assertEquals("Jack", mergedClient.getLastName());
+        assertTrue(mergedClient.getBirthdateApprox());
+        assertEquals(Utils.getDob(34), new SimpleDateFormat("dd-MM-yyyy").format(mergedClient.getBirthdate()));
+
+        assertEquals(lastModified.toString(), mergedClient.getAttribute("last_edited"));
+        assertFalse(mergedClient.getAddresses().isEmpty());
+        assertEquals("Nairobi", mergedClient.getAddress("home").getCityVillage());
+        assertEquals("Padmore", mergedClient.getAddress("home").getAddressField("street"));
+
+        assertEquals("1234455", mergedClient.getRelationships().get("FAMILY").get(0));
 
     }
 
