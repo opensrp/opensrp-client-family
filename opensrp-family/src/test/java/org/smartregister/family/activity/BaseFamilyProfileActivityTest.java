@@ -3,23 +3,33 @@ package org.smartregister.family.activity;
 import android.widget.TextView;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
+import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.R;
 import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
+import org.smartregister.family.shadow.FamilyProfileActivityShadow;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class BaseFamilyProfileActivityTest extends BaseUnitTest {
+
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
 
     @Mock
     private FamilyProfileContract.Presenter presenter;
@@ -31,14 +41,20 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-        Context context = Mockito.mock(Context.class);
-        FamilyLibrary.init(context, getMetadata(), 1, 1);
-        MockitoAnnotations.initMocks(this);
-        familyProfileActivity = Mockito.mock(BaseFamilyProfileActivity.class, Mockito.CALLS_REAL_METHODS);
+        Context.bindtypes = new ArrayList<>();
+        FamilyLibrary.init(Context.getInstance(), getMetadata(), 1, 1);
+        familyProfileActivity = Robolectric.buildActivity(FamilyProfileActivityShadow.class).create().start().resume().get();
         BaseFamilyProfileMemberFragment baseFamilyProfileMemberFragment = Mockito.mock(BaseFamilyProfileMemberFragment.class, Mockito.CALLS_REAL_METHODS);
         Whitebox.setInternalState(familyProfileActivity, "presenter", presenter);
         Whitebox.setInternalState(familyProfileActivity, "adapter", adapter);
         Mockito.when(adapter.getItem(0)).thenReturn(baseFamilyProfileMemberFragment);
+    }
+
+    @Test
+    public void testActivityCreation() {
+        assertNotNull(familyProfileActivity);
+        assertNotNull(familyProfileActivity.findViewById(R.id.imageview_profile));
+
     }
 
     @Test
@@ -92,7 +108,7 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
 
     @Test
     public void getProfileMemberFragment() {
-      assertNotNull(familyProfileActivity.getProfileMemberFragment());
+        assertNotNull(familyProfileActivity.getProfileMemberFragment());
     }
 
     @Test
