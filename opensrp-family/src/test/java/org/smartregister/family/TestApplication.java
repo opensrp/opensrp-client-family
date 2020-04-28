@@ -30,7 +30,7 @@ public class TestApplication extends DrishtiApplication {
 
         FamilyLibrary.init(context, getMetadata(), BuildConfig.VERSION_CODE, 2);
 
-        setTheme(R.style.TestTheme); //or just R.style.Theme_AppCompat
+        setTheme(R.style.FamilyTheme_NoActionBar); //or just R.style.Theme_AppCompat
     }
 
     public FamilyMetadata getMetadata() {
