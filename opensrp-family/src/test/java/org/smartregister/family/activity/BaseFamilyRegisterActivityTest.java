@@ -19,6 +19,7 @@ import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
 
@@ -40,9 +41,17 @@ public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
     }
 
     @Test
-    public void presenter() {
+    public void testGetPresenter() {
         FamilyRegisterContract.Presenter presenterInstance = familyRegisterActivity.presenter();
         assertEquals(presenter, presenterInstance);
+    }
+
+    @Test
+    public void testStartRegistration() throws Exception {
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        familyRegisterActivity.startRegistration();
+        verify(presenter).startForm("FAMILY_REGISTER",null,null,"");
+
     }
 
 }
