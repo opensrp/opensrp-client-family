@@ -1,7 +1,6 @@
 package org.smartregister.family.shadow;
 
 import android.support.v4.app.Fragment;
-import android.view.View;
 
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
@@ -25,12 +24,12 @@ public class FamilyRegisterActivityShadow extends BaseFamilyRegisterActivity {
         return new BaseFamilyRegisterFragment() {
             @Override
             protected void initializePresenter() {
-
+                //mocked method do nothing
             }
 
             @Override
             public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
-
+                //mocked method do nothing
             }
 
             @Override
