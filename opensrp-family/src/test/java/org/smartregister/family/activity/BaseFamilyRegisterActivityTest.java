@@ -1,5 +1,6 @@
 package org.smartregister.family.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
 import org.smartregister.family.util.Constants;
+import org.smartregister.family.util.JsonFormUtils;
+import org.smartregister.family.util.Utils;
 
 import java.util.ArrayList;
 
@@ -89,6 +92,18 @@ public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
         assertEquals(FamilyWizardFormActivity.class, shadowOf(intent).getIntentClass());
         assertEquals(intent.getStringExtra(Constants.JSON_FORM_EXTRA.JSON), form.toString());
         assertNotNull(intent.getSerializableExtra(JsonFormConstants.JSON_FORM_KEY.FORM));
+    }
+
+
+    @Test
+    public void testOnActivityResultExtended() throws JSONException {
+        JSONObject form = new JSONObject(TestDataUtils.FILLED_FAMILY_FORM);
+        form.put(JsonFormUtils.ENCOUNTER_TYPE, Utils.metadata().familyRegister.registerEventType);
+        Intent intent = new Intent();
+        intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, form.toString());
+        familyRegisterActivity.onActivityResultExtended(JsonFormUtils.REQUEST_CODE_GET_JSON, Activity.RESULT_OK, intent);
+        verify(presenter).saveForm(form.toString(), false);
+
     }
 
 }
