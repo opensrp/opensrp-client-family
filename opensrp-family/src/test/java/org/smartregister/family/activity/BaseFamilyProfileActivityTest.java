@@ -20,11 +20,13 @@ import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.shadow.FamilyProfileActivityShadow;
+import org.smartregister.service.UserService;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 public class BaseFamilyProfileActivityTest extends BaseUnitTest {
 
@@ -33,6 +35,10 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
 
     @Mock
     private FamilyProfileContract.Presenter presenter;
+
+
+    @Mock
+    private UserService userService;
 
     @Mock
     protected ViewPagerAdapter adapter;
@@ -43,16 +49,20 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     public void setUp() {
         Context.bindtypes = new ArrayList<>();
         FamilyLibrary.init(Context.getInstance(), getMetadata(), 1, 1);
+        Whitebox.setInternalState(Context.getInstance(),"userService",userService);
+        when(userService.hasSessionExpired()).thenReturn(false);
         familyProfileActivity = Robolectric.buildActivity(FamilyProfileActivityShadow.class).create().start().resume().get();
         BaseFamilyProfileMemberFragment baseFamilyProfileMemberFragment = Mockito.mock(BaseFamilyProfileMemberFragment.class, Mockito.CALLS_REAL_METHODS);
         Whitebox.setInternalState(familyProfileActivity, "presenter", presenter);
         Whitebox.setInternalState(familyProfileActivity, "adapter", adapter);
-        Mockito.when(adapter.getItem(0)).thenReturn(baseFamilyProfileMemberFragment);
+        when(adapter.getItem(0)).thenReturn(baseFamilyProfileMemberFragment);
     }
 
     @Test
     public void testActivityCreation() {
         assertNotNull(familyProfileActivity);
+        assertNotNull(familyProfileActivity.findViewById(R.id.textview_detail_one));
+        assertNotNull(familyProfileActivity.findViewById(R.id.textview_name));
         assertNotNull(familyProfileActivity.findViewById(R.id.imageview_profile));
 
     }

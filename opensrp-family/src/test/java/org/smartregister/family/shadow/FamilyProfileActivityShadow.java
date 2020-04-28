@@ -3,7 +3,7 @@ package org.smartregister.family.shadow;
 import android.support.v4.view.ViewPager;
 
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
-import org.smartregister.family.presenter.BaseFamilyOtherMemberProfileActivityPresenter;
+import org.smartregister.family.contract.FamilyProfileContract;
 
 import static org.mockito.Mockito.mock;
 
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 public class FamilyProfileActivityShadow extends BaseFamilyProfileActivity {
     @Override
     protected void initializePresenter() {
-        presenter = mock(BaseFamilyOtherMemberProfileActivityPresenter.class);
+        presenter = mock(FamilyProfileContract.Presenter.class);
     }
 
     @Override
