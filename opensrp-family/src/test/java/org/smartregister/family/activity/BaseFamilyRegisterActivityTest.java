@@ -3,6 +3,10 @@ package org.smartregister.family.activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.vijay.jsonwizard.constants.JsonFormConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,8 +20,10 @@ import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
+import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
+import org.smartregister.family.util.Constants;
 
 import java.util.ArrayList;
 
@@ -26,6 +32,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.robolectric.Shadows.shadowOf;
 
 public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
 
@@ -71,6 +78,17 @@ public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
         assertEquals(Toast.LENGTH_LONG, toast.getDuration());
 
 
+    }
+
+    @Test
+    public void testStartFormActivity() throws JSONException {
+        JSONObject form = new JSONObject(TestDataUtils.FAMILY_MEMBER_FORM);
+        familyRegisterActivity.startFormActivity(form);
+        Intent intent = shadowOf(familyRegisterActivity).getNextStartedActivity();
+        assertNotNull(intent);
+        assertEquals(FamilyWizardFormActivity.class, shadowOf(intent).getIntentClass());
+        assertEquals(intent.getStringExtra(Constants.JSON_FORM_EXTRA.JSON), form.toString());
+        assertNotNull(intent.getSerializableExtra(JsonFormConstants.JSON_FORM_KEY.FORM));
     }
 
 }
