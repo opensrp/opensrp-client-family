@@ -10,13 +10,15 @@ import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.HashMap;
 
+import static org.mockito.Mockito.mock;
+
 /**
  * Created by samuelgithengi on 4/28/20.
  */
 public class FamilyRegisterActivityShadow extends BaseFamilyRegisterActivity {
     @Override
     protected void initializePresenter() {
-        presenter = new BaseFamilyRegisterPresenter(this, new BaseFamilyRegisterModel());
+        presenter = new BaseFamilyRegisterPresenter(this, mock(BaseFamilyRegisterModel.class));
     }
 
     @Override

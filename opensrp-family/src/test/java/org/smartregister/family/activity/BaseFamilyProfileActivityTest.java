@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.json.JSONException;
@@ -66,6 +65,7 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     public void setUp() {
         Context.bindtypes = new ArrayList<>();
         FamilyLibrary.init(Context.getInstance(), getMetadata(), 1, 1);
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
         Whitebox.setInternalState(Context.getInstance(), "userService", userService);
         when(userService.hasSessionExpired()).thenReturn(false);
         familyProfileActivity = Robolectric.buildActivity(FamilyProfileActivityShadow.class).create().start().resume().get();
@@ -170,7 +170,7 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
         familyProfileActivity.startFormActivity(form);
         Intent intent = shadowOf(familyProfileActivity).getNextStartedActivity();
         assertNotNull(intent);
-        assertEquals(JsonWizardFormActivity.class, shadowOf(intent).getIntentClass());
+        assertEquals(FamilyWizardFormActivity.class, shadowOf(intent).getIntentClass());
         assertEquals(intent.getStringExtra(Constants.JSON_FORM_EXTRA.JSON), form.toString());
         assertNotNull(intent.getSerializableExtra(JsonFormConstants.JSON_FORM_KEY.FORM));
     }
@@ -178,7 +178,6 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
 
     @Test
     public void testOnActivitySavesFamilyMember() throws JSONException {
-        FamilyLibrary.getInstance().setMetadata(getMetadata());
         JSONObject form = new JSONObject(TestDataUtils.FILLED_FAMILY_FORM);
         form.put(JsonFormUtils.ENCOUNTER_TYPE, Utils.metadata().familyMemberRegister.registerEventType);
         Intent intent = new Intent();

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -35,7 +36,6 @@ import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.mock.MockBaseFamilyRegisterFragment;
-import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
 import org.smartregister.family.util.Utils;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
@@ -105,11 +105,10 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-        Context.bindtypes= new ArrayList<>();
         registerFragment = Mockito.mock(BaseFamilyRegisterFragment.class, Mockito.CALLS_REAL_METHODS);
         CoreLibrary.init(context);
         when(context.commonrepository(anyString())).thenReturn(commonRepository);
-        activity = Robolectric.buildActivity(FamilyRegisterActivityShadow.class).create().resume().get();
+        activity = Robolectric.buildActivity(AppCompatActivity.class).create().resume().get();
         Context.bindtypes = new ArrayList<>();
         Whitebox.setInternalState(registerFragment, "clientsView", clientsView);
         Whitebox.setInternalState(registerFragment, "presenter", presenter);
