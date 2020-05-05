@@ -198,4 +198,10 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
         verify(presenter).updateFamilyRegister(form.toString());
 
     }
+
+    @Test
+    public void testOnDestroy() {
+        familyProfileActivity.onDestroy();
+        verify(presenter).onDestroy(false);
+    }
 }
