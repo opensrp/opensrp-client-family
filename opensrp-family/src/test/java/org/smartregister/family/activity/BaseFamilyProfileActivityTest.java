@@ -68,7 +68,7 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         Whitebox.setInternalState(Context.getInstance(), "userService", userService);
         when(userService.hasSessionExpired()).thenReturn(false);
-        familyProfileActivity = Robolectric.buildActivity(FamilyProfileActivityShadow.class).create().start().resume().get();
+        familyProfileActivity = Robolectric.buildActivity(FamilyProfileActivityShadow.class).create().visible().get();
         BaseFamilyProfileMemberFragment baseFamilyProfileMemberFragment = Mockito.mock(BaseFamilyProfileMemberFragment.class, Mockito.CALLS_REAL_METHODS);
         Whitebox.setInternalState(familyProfileActivity, "presenter", presenter);
         Whitebox.setInternalState(familyProfileActivity, "adapter", adapter);
@@ -203,5 +203,11 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     public void testOnDestroy() {
         familyProfileActivity.onDestroy();
         verify(presenter).onDestroy(false);
+    }
+
+    @Test
+    public void testOnOptionsItemSelected() throws Exception {
+        shadowOf(familyProfileActivity).clickMenuItem(R.id.add_member);
+        verify(presenter).startForm(Utils.metadata().familyMemberRegister.formName, null, null, "");
     }
 }
