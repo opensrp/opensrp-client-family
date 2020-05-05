@@ -2,7 +2,6 @@ package org.smartregister.family.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Looper;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
@@ -35,14 +35,20 @@ import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
+import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.service.UserService;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
@@ -67,6 +73,9 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     @Mock
     protected ViewPagerAdapter adapter;
 
+    @Mock
+    private ImageRenderHelper imageRenderHelper;
+
     private BaseFamilyProfileActivity familyProfileActivity;
 
     private AppExecutors appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor());
@@ -79,10 +88,9 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
         Whitebox.setInternalState(Context.getInstance(), "userService", userService);
         when(userService.hasSessionExpired()).thenReturn(false);
         familyProfileActivity = Robolectric.buildActivity(FamilyProfileActivityShadow.class).create().visible().get();
-        BaseFamilyProfileMemberFragment baseFamilyProfileMemberFragment = Mockito.mock(BaseFamilyProfileMemberFragment.class, Mockito.CALLS_REAL_METHODS);
         Whitebox.setInternalState(familyProfileActivity, "presenter", presenter);
         Whitebox.setInternalState(familyProfileActivity, "adapter", adapter);
-        when(adapter.getItem(0)).thenReturn(baseFamilyProfileMemberFragment);
+        when(adapter.getItem(0)).thenReturn(memberFragment);
     }
 
     @Test
@@ -243,6 +251,21 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
         verify(memberFragment, timeout(ASYNC_TIMEOUT)).refreshListView();
     }
 
+    @Test
+    public void testDisplayShortToast() {
+        familyProfileActivity.displayShortToast(R.string.no_unique_id);
+        Toast toast = ShadowToast.getLatestToast();
+        assertNotNull(toast);
+        assertEquals(Toast.LENGTH_SHORT, toast.getDuration());
+        assertEquals(familyProfileActivity.getString(R.string.no_unique_id), ShadowToast.getTextOfLatestToast());
+    }
+
+    @Test
+    public void testSetProfileImage() {
+        Whitebox.setInternalState(familyProfileActivity, "imageRenderHelper", imageRenderHelper);
+        familyProfileActivity.setProfileImage("user1");
+        verify(imageRenderHelper).refreshProfileImage(eq("user1"), any(CircleImageView.class), eq(R.mipmap.ic_family_white));
+    }
 
 
 }
