@@ -4,21 +4,30 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
+import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyOtherMemberContract;
+import org.smartregister.family.shadow.ShadowFamilyOtherMemberProfileActivity;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
 public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
 
+
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
     @Mock
     private FamilyOtherMemberContract.Presenter presenter;
 
@@ -26,11 +35,10 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-
-        Context context = Mockito.mock(Context.class);
-        FamilyLibrary.init(context, getMetadata(), 1, 1);
-        MockitoAnnotations.initMocks(this);
-        familyOtherMemberProfileActivity = Mockito.mock(BaseFamilyOtherMemberProfileActivity.class, Mockito.CALLS_REAL_METHODS);
+        Context.bindtypes = new ArrayList<>();
+        FamilyLibrary.init(Context.getInstance(), getMetadata(), 1, 1);
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        familyOtherMemberProfileActivity = Robolectric.buildActivity(ShadowFamilyOtherMemberProfileActivity.class).create().visible().get();
         Whitebox.setInternalState(familyOtherMemberProfileActivity, "presenter", presenter);
     }
 
