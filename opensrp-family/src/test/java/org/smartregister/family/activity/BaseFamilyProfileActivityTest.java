@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
@@ -48,7 +47,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
@@ -112,7 +110,7 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     @Test
     public void fetchProfileData() {
         familyProfileActivity.fetchProfileData();
-        Mockito.verify(presenter).fetchProfileData();
+        verify(presenter).fetchProfileData();
     }
 
     @Test
