@@ -2,6 +2,7 @@ package org.smartregister.family.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Looper;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowToast;
 import org.smartregister.Context;
+import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
@@ -29,17 +31,21 @@ import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.shadow.FamilyProfileActivityShadow;
+import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.service.UserService;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -52,6 +58,8 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     @Mock
     private FamilyProfileContract.Presenter presenter;
 
+    @Mock
+    private BaseFamilyProfileMemberFragment memberFragment;
 
     @Mock
     private UserService userService;
@@ -60,6 +68,8 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
     protected ViewPagerAdapter adapter;
 
     private BaseFamilyProfileActivity familyProfileActivity;
+
+    private AppExecutors appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor());
 
     @Before
     public void setUp() {
@@ -210,4 +220,29 @@ public class BaseFamilyProfileActivityTest extends BaseUnitTest {
         shadowOf(familyProfileActivity).clickMenuItem(R.id.add_member);
         verify(presenter).startForm(Utils.metadata().familyMemberRegister.formName, null, null, "");
     }
+
+    @Test
+    public void testRefreshMemberList() {
+        familyProfileActivity = spy(familyProfileActivity);
+        when(familyProfileActivity.getProfileMemberFragment()).thenReturn(memberFragment);
+        familyProfileActivity.refreshMemberList(FetchStatus.fetched);
+        verify(memberFragment, timeout(ASYNC_TIMEOUT)).refreshListView();
+    }
+
+    @Test
+    public void testRefreshMemberListWithWorkerThread() {
+        familyProfileActivity = spy(familyProfileActivity);
+        when(familyProfileActivity.getProfileMemberFragment()).thenReturn(memberFragment);
+        Whitebox.setInternalState(familyProfileActivity, "appExecutors", appExecutors);
+        appExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                familyProfileActivity.refreshMemberList(FetchStatus.fetched);
+            }
+        });
+        verify(memberFragment, timeout(ASYNC_TIMEOUT)).refreshListView();
+    }
+
+
+
 }
