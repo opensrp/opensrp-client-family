@@ -1,5 +1,6 @@
 package org.smartregister.family.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,13 +20,16 @@ import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyOtherMemberContract;
 import org.smartregister.family.shadow.ShadowFamilyOtherMemberProfileActivity;
+import org.smartregister.family.util.Utils;
 import org.smartregister.service.UserService;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
 
@@ -131,4 +135,18 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
         FamilyOtherMemberContract.Presenter presenterInstance = familyOtherMemberProfileActivity.presenter();
         assertEquals(presenter, presenterInstance);
     }
+
+    @Test
+    public void testOnResumption() {
+        familyOtherMemberProfileActivity.onResumption();
+        verify(presenter).refreshProfileView();
+    }
+
+    @Test
+    public void testOnDestroy() {
+        familyOtherMemberProfileActivity.onDestroy();
+        verify(presenter).onDestroy(false);
+    }
+
+
 }
