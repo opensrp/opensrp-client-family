@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowActivity;
 import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
@@ -30,6 +31,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
+import static org.smartregister.AllConstants.FORM_NAME_PARAM;
+import static org.smartregister.AllConstants.FORM_SUCCESSFULLY_SUBMITTED_RESULT_CODE;
 
 public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
 
@@ -148,5 +151,14 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
         verify(presenter).onDestroy(false);
     }
 
+
+    @Test
+    public void testOnOptionsItemSelectedStartsForm() {
+        shadowOf(familyOtherMemberProfileActivity).clickMenuItem(R.id.add_member);
+        ShadowActivity.IntentForResult intent = shadowOf(familyOtherMemberProfileActivity).getNextStartedActivityForResult();
+        assertNotNull(intent);
+        assertEquals(FORM_SUCCESSFULLY_SUBMITTED_RESULT_CODE, intent.requestCode);
+        assertEquals(Utils.metadata().familyMemberRegister.formName, intent.intent.getStringExtra(FORM_NAME_PARAM));
+    }
 
 }
