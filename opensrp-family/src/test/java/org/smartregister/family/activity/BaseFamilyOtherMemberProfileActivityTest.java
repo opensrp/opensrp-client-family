@@ -16,20 +16,28 @@ import org.robolectric.RuntimeEnvironment;
 import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyOtherMemberContract;
 import org.smartregister.family.shadow.ShadowFamilyOtherMemberProfileActivity;
+import org.smartregister.service.UserService;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
 
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
+
     @Mock
     private FamilyOtherMemberContract.Presenter presenter;
+
+    @Mock
+    private UserService userService;
 
     private BaseFamilyOtherMemberProfileActivity familyOtherMemberProfileActivity;
 
@@ -40,6 +48,20 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         familyOtherMemberProfileActivity = Robolectric.buildActivity(ShadowFamilyOtherMemberProfileActivity.class).create().visible().get();
         Whitebox.setInternalState(familyOtherMemberProfileActivity, "presenter", presenter);
+    }
+
+    @Test
+    public void testOnCreationAndSetUpViews() {
+        Whitebox.setInternalState(Context.getInstance(), "userService", userService);
+        when(userService.hasSessionExpired()).thenReturn(false);
+        familyOtherMemberProfileActivity = Robolectric.buildActivity(ShadowFamilyOtherMemberProfileActivity.class).create().visible().get();
+
+        assertNotNull(familyOtherMemberProfileActivity);
+        assertNotNull(familyOtherMemberProfileActivity.findViewById(R.id.textview_detail_one));
+        assertNotNull(familyOtherMemberProfileActivity.findViewById(R.id.textview_name));
+        assertNotNull(familyOtherMemberProfileActivity.findViewById(R.id.imageview_profile));
+        assertNotNull(familyOtherMemberProfileActivity.presenter());
+
     }
 
     @Test
