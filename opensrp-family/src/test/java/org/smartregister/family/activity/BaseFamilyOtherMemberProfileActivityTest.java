@@ -1,6 +1,5 @@
 package org.smartregister.family.activity;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,9 +21,12 @@ import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyOtherMemberContract;
 import org.smartregister.family.shadow.ShadowFamilyOtherMemberProfileActivity;
 import org.smartregister.family.util.Utils;
+import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.service.UserService;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -46,7 +48,14 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private ImageRenderHelper imageRenderHelper;
+
+    @Mock
+    private CircleImageView circleImageView;
+
     private BaseFamilyOtherMemberProfileActivity familyOtherMemberProfileActivity;
+
 
     @Before
     public void setUp() {
@@ -159,6 +168,14 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
         assertNotNull(intent);
         assertEquals(FORM_SUCCESSFULLY_SUBMITTED_RESULT_CODE, intent.requestCode);
         assertEquals(Utils.metadata().familyMemberRegister.formName, intent.intent.getStringExtra(FORM_NAME_PARAM));
+    }
+
+    @Test
+    public void testSetProfileImage() {
+        Whitebox.setInternalState(familyOtherMemberProfileActivity, "imageRenderHelper", imageRenderHelper);
+        Whitebox.setInternalState(familyOtherMemberProfileActivity, "imageView", circleImageView);
+        familyOtherMemberProfileActivity.setProfileImage("user1", Utils.metadata().familyMemberRegister.registerEventType);
+        verify(imageRenderHelper).refreshProfileImage("user1", circleImageView, R.mipmap.ic_child);
     }
 
 }
