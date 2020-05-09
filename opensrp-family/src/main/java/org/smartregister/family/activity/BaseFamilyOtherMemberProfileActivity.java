@@ -77,11 +77,6 @@ public abstract class BaseFamilyOtherMemberProfileActivity extends BaseProfileAc
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (presenter() != null) {

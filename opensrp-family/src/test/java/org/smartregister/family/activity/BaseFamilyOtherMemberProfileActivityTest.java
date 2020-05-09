@@ -4,34 +4,80 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
+import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowActivity;
 import org.smartregister.Context;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.R;
 import org.smartregister.family.contract.FamilyOtherMemberContract;
+import org.smartregister.family.shadow.ShadowFamilyOtherMemberProfileActivity;
+import org.smartregister.family.util.Utils;
+import org.smartregister.helper.ImageRenderHelper;
+import org.smartregister.service.UserService;
+
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
+import static org.smartregister.AllConstants.FORM_NAME_PARAM;
+import static org.smartregister.AllConstants.FORM_SUCCESSFULLY_SUBMITTED_RESULT_CODE;
 
 public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
+
+
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
 
     @Mock
     private FamilyOtherMemberContract.Presenter presenter;
 
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private ImageRenderHelper imageRenderHelper;
+
+    @Mock
+    private CircleImageView circleImageView;
+
     private BaseFamilyOtherMemberProfileActivity familyOtherMemberProfileActivity;
+
 
     @Before
     public void setUp() {
-
-        Context context = Mockito.mock(Context.class);
-        FamilyLibrary.init(context, getMetadata(), 1, 1);
-        MockitoAnnotations.initMocks(this);
-        familyOtherMemberProfileActivity = Mockito.mock(BaseFamilyOtherMemberProfileActivity.class, Mockito.CALLS_REAL_METHODS);
+        Context.bindtypes = new ArrayList<>();
+        FamilyLibrary.init(Context.getInstance(), getMetadata(), 1, 1);
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        familyOtherMemberProfileActivity = Robolectric.buildActivity(ShadowFamilyOtherMemberProfileActivity.class).create().visible().get();
         Whitebox.setInternalState(familyOtherMemberProfileActivity, "presenter", presenter);
+    }
+
+    @Test
+    public void testOnCreationAndSetUpViews() {
+        Whitebox.setInternalState(Context.getInstance(), "userService", userService);
+        when(userService.hasSessionExpired()).thenReturn(false);
+        familyOtherMemberProfileActivity = Robolectric.buildActivity(ShadowFamilyOtherMemberProfileActivity.class).create().visible().get();
+
+        assertNotNull(familyOtherMemberProfileActivity);
+        assertNotNull(familyOtherMemberProfileActivity.findViewById(R.id.textview_detail_one));
+        assertNotNull(familyOtherMemberProfileActivity.findViewById(R.id.textview_name));
+        assertNotNull(familyOtherMemberProfileActivity.findViewById(R.id.imageview_profile));
+        assertNotNull(familyOtherMemberProfileActivity.presenter());
+
     }
 
     @Test
@@ -101,4 +147,35 @@ public class BaseFamilyOtherMemberProfileActivityTest extends BaseUnitTest {
         FamilyOtherMemberContract.Presenter presenterInstance = familyOtherMemberProfileActivity.presenter();
         assertEquals(presenter, presenterInstance);
     }
+
+    @Test
+    public void testOnResumption() {
+        familyOtherMemberProfileActivity.onResumption();
+        verify(presenter).refreshProfileView();
+    }
+
+    @Test
+    public void testOnDestroy() {
+        familyOtherMemberProfileActivity.onDestroy();
+        verify(presenter).onDestroy(false);
+    }
+
+
+    @Test
+    public void testOnOptionsItemSelectedStartsForm() {
+        shadowOf(familyOtherMemberProfileActivity).clickMenuItem(R.id.add_member);
+        ShadowActivity.IntentForResult intent = shadowOf(familyOtherMemberProfileActivity).getNextStartedActivityForResult();
+        assertNotNull(intent);
+        assertEquals(FORM_SUCCESSFULLY_SUBMITTED_RESULT_CODE, intent.requestCode);
+        assertEquals(Utils.metadata().familyMemberRegister.formName, intent.intent.getStringExtra(FORM_NAME_PARAM));
+    }
+
+    @Test
+    public void testSetProfileImage() {
+        Whitebox.setInternalState(familyOtherMemberProfileActivity, "imageRenderHelper", imageRenderHelper);
+        Whitebox.setInternalState(familyOtherMemberProfileActivity, "imageView", circleImageView);
+        familyOtherMemberProfileActivity.setProfileImage("user1", Utils.metadata().familyMemberRegister.registerEventType);
+        verify(imageRenderHelper).refreshProfileImage("user1", circleImageView, R.mipmap.ic_child);
+    }
+
 }

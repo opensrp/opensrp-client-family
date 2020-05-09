@@ -1,7 +1,6 @@
 package org.smartregister.family.activity;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -21,6 +20,7 @@ import org.smartregister.family.R;
 import org.smartregister.family.adapter.ViewPagerAdapter;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
+import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
@@ -39,6 +39,8 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
     private CircleImageView imageView;
 
     protected ViewPagerAdapter adapter;
+
+    private AppExecutors appExecutors = new AppExecutors();
 
     @Override
     protected void onCreation() {
@@ -168,8 +170,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
                 memberFragment.refreshListView();
             }
         } else {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
+            appExecutors.mainThread().execute(new Runnable() {
                 @Override
                 public void run() {
                     BaseFamilyProfileMemberFragment memberFragment = getProfileMemberFragment();
