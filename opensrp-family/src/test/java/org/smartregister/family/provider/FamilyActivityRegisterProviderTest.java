@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by samuelgithengi on 5/12/20.
@@ -65,7 +66,7 @@ public class FamilyActivityRegisterProviderTest extends BaseUnitTest {
     @Before
     public void setUp() {
         familyActivityRegisterProvider = new FamilyActivityRegisterProvider(context, commonRepository, visibleColumns, onClickListener, paginationClickListener);
-        rootView = familyActivityRegisterProvider.inflater.inflate(R.layout.family_activity_register_list_row, null);
+        rootView = familyActivityRegisterProvider.inflater().inflate(R.layout.family_activity_register_list_row, null);
         viewHolder = new FamilyActivityRegisterProvider.RegisterViewHolder(rootView);
 
         String dob = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
@@ -100,5 +101,26 @@ public class FamilyActivityRegisterProviderTest extends BaseUnitTest {
         assertEquals(String.format("Charity Otala, %s (deceased)", dobString), viewHolder.patientNameAge.getText());
         assertEquals(Color.GRAY, viewHolder.patientNameAge.getCurrentTextColor());
         assertEquals("Completed on 10 July 2018", viewHolder.lastVisit.getText());
+    }
+
+    @Test
+    public void testStatusOnClick() {
+        familyActivityRegisterProvider.getView(cursor, client, viewHolder);
+        viewHolder.status.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
+    }
+
+    @Test
+    public void testPatientColumnOnClick() {
+        familyActivityRegisterProvider.getView(cursor, client, viewHolder);
+        viewHolder.patientColumn.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
+    }
+
+    @Test
+    public void testRegisterColumnOnClick() {
+        familyActivityRegisterProvider.getView(cursor, client, viewHolder);
+        viewHolder.registerColumns.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
     }
 }
