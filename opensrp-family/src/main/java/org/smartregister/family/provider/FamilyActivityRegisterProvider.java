@@ -223,7 +223,7 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
     // Inner classes
     ////////////////////////////////////////////////////////////////
 
-    public class RegisterViewHolder extends RecyclerView.ViewHolder {
+    public static class RegisterViewHolder extends RecyclerView.ViewHolder {
         public ImageView status;
         public CustomFontTextView patientNameAge;
         public TextView gender;
