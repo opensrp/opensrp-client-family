@@ -19,6 +19,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
 import org.smartregister.family.TestDataUtils;
+import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
@@ -118,9 +119,9 @@ public class FamilyActivityRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
-    public void testRegisterColumnOnClick() {
+    public void testAttachClickListener() {
         familyActivityRegisterProvider.getView(cursor, client, viewHolder);
-        viewHolder.registerColumns.performClick();
-        verify(onClickListener).onClick(viewHolder.patientColumn);
+        assertEquals(client, viewHolder.patientColumn.getTag());
+        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NORMAL, viewHolder.patientColumn.getTag(R.id.VIEW_ID));
     }
 }
