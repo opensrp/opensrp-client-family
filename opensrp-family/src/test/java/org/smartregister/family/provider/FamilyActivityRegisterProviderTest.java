@@ -62,7 +62,7 @@ public class FamilyActivityRegisterProviderTest extends BaseUnitTest {
 
     private View rootView;
 
-    String ageString;
+    private String ageString;
 
     @Before
     public void setUp() {
