@@ -32,14 +32,14 @@ public class BaseFamilyProfileActivityModel implements FamilyProfileActivityCont
     @Override
     public String countSelect(String tableName, String mainCondition) {
         SmartRegisterQueryBuilder countQueryBuilder = new SmartRegisterQueryBuilder();
-        countQueryBuilder.SelectInitiateMainTableCounts(tableName);
+        countQueryBuilder.selectInitiateMainTableCounts(tableName);
         return countQueryBuilder.mainCondition(mainCondition);
     }
 
     @Override
     public String mainSelect(String tableName, String mainCondition) {
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-        queryBUilder.SelectInitiateMainTable(tableName, mainColumns(tableName));
+        queryBUilder.selectInitiateMainTable(tableName, mainColumns(tableName));
         return queryBUilder.mainCondition(mainCondition);
     }
 
