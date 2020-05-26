@@ -23,6 +23,7 @@ import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
+import org.smartregister.family.provider.FamilyActivityRegisterProvider.FooterViewHolder;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
@@ -173,7 +174,7 @@ public class FamilyActivityRegisterProviderTest extends BaseUnitTest {
     @Test
     public void testCreateFooterHolderIsHidden() {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
-        FamilyActivityRegisterProvider.FooterViewHolder footer = (FamilyActivityRegisterProvider.FooterViewHolder) familyActivityRegisterProvider.createFooterHolder(null);
+        FooterViewHolder footer = (FooterViewHolder) familyActivityRegisterProvider.createFooterHolder(null);
         assertNotNull(footer);
         assertNotNull(footer.nextPageView);
         assertNotNull(footer.previousPageView);
@@ -196,5 +197,27 @@ public class FamilyActivityRegisterProviderTest extends BaseUnitTest {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         assertTrue(familyActivityRegisterProvider.isFooterViewHolder(familyActivityRegisterProvider.createFooterHolder(null)));
         assertFalse(familyActivityRegisterProvider.isFooterViewHolder(familyActivityRegisterProvider.createViewHolder(null)));
+    }
+
+    @Test
+    public void testGetFooterView(){
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        FooterViewHolder footer = (FooterViewHolder) familyActivityRegisterProvider.createFooterHolder(null);
+        familyActivityRegisterProvider.getFooterView(footer,2,12,true,true);
+        assertEquals("Page 2 of 12",footer.pageInfoView.getText());
+        assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
+        assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
+        footer.nextPageView.performClick();
+        verify(paginationClickListener).onClick(footer.nextPageView);
+
+        footer.previousPageView.performClick();
+        verify(paginationClickListener).onClick(footer.previousPageView);
+
+        //test if no previous and next page then controls are not rendered
+        familyActivityRegisterProvider.getFooterView(footer,2,12,false,false);
+        assertEquals(View.INVISIBLE,footer.nextPageView.getVisibility());
+        assertEquals(View.INVISIBLE,footer.nextPageView.getVisibility());
+
+
     }
 }
