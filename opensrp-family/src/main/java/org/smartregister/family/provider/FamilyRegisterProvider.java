@@ -45,6 +45,8 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
     boolean familyHeadFirstNameEnabled = Utils.getBooleanProperty(Constants.Properties.FAMILY_HEAD_FIRSTNAME_ENABLED);
 
+    protected CommonRepository familyMemberRegisterRepository;
+
     public FamilyRegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,6 +57,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
 
         this.context = context;
         this.commonRepository = commonRepository;
+        familyMemberRegisterRepository = Utils.context().commonrepository(Utils.metadata().familyMemberRegister.tableName);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
             if (familyHeadFirstNameEnabled) {
                 String familyHeadId = pc.getColumnmaps().get(DBConstants.KEY.FAMILY_HEAD);
 
-                final CommonPersonObject familyHeadObject = Utils.context().commonrepository(Utils.metadata().familyMemberRegister.tableName).findByBaseEntityId(familyHeadId);
+                final CommonPersonObject familyHeadObject = familyMemberRegisterRepository.findByBaseEntityId(familyHeadId);
 
                 String familyHeadName = "";
                 if (familyHeadObject != null && familyHeadObject.getColumnmaps() != null)
