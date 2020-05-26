@@ -52,26 +52,21 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
     @Mock
     private Cursor cursor;
 
-
-    private CommonPersonObject commonPersonObject;
-
     private CommonPersonObjectClient client = TestDataUtils.getCommonPersonObjectClient();
 
     private FamilyRegisterProvider.RegisterViewHolder viewHolder;
 
     private FamilyRegisterProvider provider;
 
-    private View rootView;
-
     @Before
     public void setUp() {
         org.smartregister.Context.bindtypes = new ArrayList<>();
         FamilyLibrary.getInstance().setMetadata(getMetadata());
-        commonPersonObject = new CommonPersonObject("1234", "", null, "");
+        CommonPersonObject commonPersonObject = new CommonPersonObject("1234", "", null, "");
         commonPersonObject.setColumnmaps(new HashMap<String, String>());
         commonPersonObject.getColumnmaps().put(DBConstants.KEY.FIRST_NAME, "Alexia");
         provider = new FamilyRegisterProvider(context, commonRepository, visibleColumns, onClickListener, paginationClickListener);
-        rootView = provider.inflater().inflate(R.layout.family_register_list_row, null);
+        View rootView = provider.inflater().inflate(R.layout.family_register_list_row, null);
         viewHolder = new FamilyRegisterProvider.RegisterViewHolder(rootView);
         when(commonRepository.findByBaseEntityId(anyString())).thenReturn(commonPersonObject);
         client.getColumnmaps().put(DBConstants.KEY.VILLAGE_TOWN, "Village A");
