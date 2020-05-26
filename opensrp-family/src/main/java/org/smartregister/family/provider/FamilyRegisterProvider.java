@@ -219,7 +219,7 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     // Inner classes
     ////////////////////////////////////////////////////////////////
 
-    public class RegisterViewHolder extends RecyclerView.ViewHolder {
+    public static class RegisterViewHolder extends RecyclerView.ViewHolder {
         public TextView patientName;
         public TextView villageTown;
         public Button dueButton;
