@@ -34,7 +34,7 @@ public class Utils extends org.smartregister.util.Utils {
     }
 
     public static int getMemberProfileImageResourceIDentifier(String entityType) {
-        if (StringUtils.isBlank(entityType)) {
+        if (StringUtils.isBlank(entityType) || Constants.EntityType.INDEPENDENT_CLIENT.equalsIgnoreCase(entityType)) {
             return R.mipmap.ic_member;
         }
 
