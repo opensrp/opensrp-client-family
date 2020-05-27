@@ -80,4 +80,8 @@ public abstract class Constants {
     public static class Properties {
         public static final String FAMILY_HEAD_FIRSTNAME_ENABLED = "family.head.first.name.enabled";
     }
+
+    public interface EntityType{
+        String INDEPENDENT_CLIENT = "ec_independent_client";
+    }
 }

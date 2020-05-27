@@ -33,9 +33,9 @@ import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
-import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.mock.MockBaseFamilyRegisterFragment;
+import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
 import org.smartregister.family.util.Utils;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
@@ -184,37 +184,39 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Test
     public void testOnViewClickedOpensProfile() {
+        FamilyRegisterActivityShadow   familyRegisterActivity = Robolectric.buildActivity(FamilyRegisterActivityShadow.class ,new Intent()).create().start().resume().get();
         registerFragment= new MockBaseFamilyRegisterFragment();
         Context.bindtypes = new ArrayList<>();
         Whitebox.setInternalState(registerFragment, "clientsView", clientsView);
         Whitebox.setInternalState(registerFragment, "presenter", presenter);
-        activity.getSupportFragmentManager().beginTransaction().add(0,registerFragment).commit();
+        familyRegisterActivity.getSupportFragmentManager().beginTransaction().add(0,registerFragment).commit();
         when(view.getTag(R.id.VIEW_ID)).thenReturn(CLICK_VIEW_NORMAL);
         CommonPersonObjectClient client= new CommonPersonObjectClient("12",null,"");
         client.setColumnmaps(new HashMap<String, String>());
         when(view.getTag()).thenReturn(client);
         registerFragment.onViewClicked(view);
-        Intent intent = shadowOf(activity).getNextStartedActivity();
+        Intent intent = shadowOf(familyRegisterActivity).getNextStartedActivity();
         assertNotNull(intent);
-        assertEquals(BaseFamilyProfileActivity.class, shadowOf(intent).getIntentClass());
+        assertEquals( Utils.metadata().profileActivity, shadowOf(intent).getIntentClass());
 
     }
 
     @Test
     public void testOnDosageViewClickedOpensProfile() {
+        FamilyRegisterActivityShadow   familyRegisterActivity = Robolectric.buildActivity(FamilyRegisterActivityShadow.class ,new Intent()).create().start().resume().get();
         registerFragment= new MockBaseFamilyRegisterFragment();
         Context.bindtypes = new ArrayList<>();
         Whitebox.setInternalState(registerFragment, "clientsView", clientsView);
         Whitebox.setInternalState(registerFragment, "presenter", presenter);
-        activity.getSupportFragmentManager().beginTransaction().add(0,registerFragment).commit();
+        familyRegisterActivity.getSupportFragmentManager().beginTransaction().add(0,registerFragment).commit();
         when(view.getTag(R.id.VIEW_ID)).thenReturn(CLICK_VIEW_DOSAGE_STATUS);
         CommonPersonObjectClient client= new CommonPersonObjectClient("12",null,"");
         client.setColumnmaps(new HashMap<String, String>());
         when(view.getTag()).thenReturn(client);
         registerFragment.onViewClicked(view);
-        Intent intent = shadowOf(activity).getNextStartedActivity();
+        Intent intent = shadowOf(familyRegisterActivity).getNextStartedActivity();
         assertNotNull(intent);
-        assertEquals(BaseFamilyProfileActivity.class, shadowOf(intent).getIntentClass());
+        assertEquals( Utils.metadata().profileActivity, shadowOf(intent).getIntentClass());
 
     }
 }
