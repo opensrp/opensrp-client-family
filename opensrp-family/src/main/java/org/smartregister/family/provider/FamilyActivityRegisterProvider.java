@@ -66,8 +66,6 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
-            populateIdentifierColumn(pc, viewHolder);
-
             return;
         }
     }
@@ -141,21 +139,10 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
 
     }
 
-    private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-        String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        //fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
-    }
-
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
         view.setTag(client);
         view.setTag(R.id.VIEW_ID, BaseFamilyProfileMemberFragment.CLICK_VIEW_NORMAL);
-    }
-
-    private void attachNextArrowOnclickListener(View view, SmartRegisterClient client) {
-        view.setOnClickListener(onClickListener);
-        view.setTag(client);
-        view.setTag(R.id.VIEW_ID, BaseFamilyProfileMemberFragment.CLICK_VIEW_NEXT_ARROW);
     }
 
     @Override
@@ -180,19 +167,6 @@ public class FamilyActivityRegisterProvider implements RecyclerViewProvider<Fami
     @Override
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.family_activity_register_list_row, parent, false);
-
-        /*
-        ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
-        if (helper.isJsonViewsEnabled()) {
-
-            ViewConfiguration viewConfiguration = helper.getViewConfiguration(Constants.CONFIGURATION.HOME_REGISTER_ROW);
-            ViewConfiguration commonConfiguration = helper.getViewConfiguration(COMMON_REGISTER_ROW);
-
-            if (viewConfiguration != null) {
-                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, view, R.id.register_columns, false);
-            }
-        }*/
-
         return new RegisterViewHolder(view);
     }
 

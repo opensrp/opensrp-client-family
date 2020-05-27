@@ -1,5 +1,7 @@
 package org.smartregister.family;
 
+import android.support.annotation.NonNull;
+
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.family.domain.FamilyMetadata;
@@ -99,9 +101,10 @@ public class FamilyLibrary {
         this.clientProcessorForJava = clientProcessorForJava;
     }
 
+    @NonNull
     public Compressor getCompressor() {
         if (compressor == null) {
-            compressor = Compressor.getDefault(context().applicationContext());
+            compressor = new Compressor(context().applicationContext());
         }
         return compressor;
     }
