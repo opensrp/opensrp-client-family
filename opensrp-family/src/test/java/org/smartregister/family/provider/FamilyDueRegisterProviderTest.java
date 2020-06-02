@@ -69,10 +69,26 @@ public class FamilyDueRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
-    public void testGetView() {
+    public void testPopulatePatientColumn() {
         provider.getView(cursor, client, viewHolder);
-        assertEquals("Boby Smith , 3y · Home Visit", viewHolder.patientNameAge.getText());
+        assertEquals("Charity Otala, " + ageString, viewHolder.patientNameAge.getText());
         assertEquals(Color.BLACK, viewHolder.patientNameAge.getCurrentTextColor());
+        assertEquals(View.VISIBLE, viewHolder.nextArrow.getVisibility());
+    }
+
+    @Test
+    public void testGetPopulatePatientColumnDeceased() {
+        String dod = "2019-03-05T00:00:00.000+03:00";
+        client.getColumnmaps().put(DBConstants.KEY.DOD, dod);
+
+        String dobString = Utils.getDuration(dod, client.getColumnmaps().get(DBConstants.KEY.DOB));
+        dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+
+
+        provider.getView(cursor, client, viewHolder);
+        assertEquals(String.format("Charity Otala, %s (deceased)", dobString), viewHolder.patientNameAge.getText());
+        assertEquals(Color.GRAY, viewHolder.patientNameAge.getCurrentTextColor());
+        assertEquals(View.GONE, viewHolder.nextArrow.getVisibility());
     }
 
 }

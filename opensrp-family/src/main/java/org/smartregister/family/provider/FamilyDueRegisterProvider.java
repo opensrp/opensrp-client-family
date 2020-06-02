@@ -66,8 +66,6 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
-            populateIdentifierColumn(pc, viewHolder);
-
             return;
         }
     }
@@ -117,6 +115,8 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
             viewHolder.nextArrow.setVisibility(View.VISIBLE);
         }
 
+        viewHolder.patientNameAge.setText(patientName);
+
         viewHolder.status.setImageResource(Utils.getDueProfileImageResourceIDentifier());
 
         attachPatientOnclickListener(viewHolder.patientColumn, client);
@@ -143,11 +143,6 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
                 viewHolder.patientColumn.performClick();
             }
         });
-    }
-
-    private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-        String uniqueId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.UNIQUE_ID, false);
-        //fillValue(viewHolder.ancId, String.format(context.getString(R.string.unique_id_text), uniqueId));
     }
 
     private void attachPatientOnclickListener(View view, SmartRegisterClient client) {
@@ -184,18 +179,6 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
     @Override
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.family_due_register_list_row, parent, false);
-
-        /*
-        ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
-        if (helper.isJsonViewsEnabled()) {
-
-            ViewConfiguration viewConfiguration = helper.getViewConfiguration(Constants.CONFIGURATION.HOME_REGISTER_ROW);
-            ViewConfiguration commonConfiguration = helper.getViewConfiguration(COMMON_REGISTER_ROW);
-
-            if (viewConfiguration != null) {
-                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, view, R.id.register_columns, false);
-            }
-        }*/
 
         return new RegisterViewHolder(view);
     }
