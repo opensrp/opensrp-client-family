@@ -120,6 +120,20 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
+    public void testRegisterColumnsOnClick() {
+        provider.getView(cursor, client, viewHolder);
+        viewHolder.registerColumns.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
+    }
+
+    @Test
+    public void testDueWrapperOnClick() {
+        provider.getView(cursor, client, viewHolder);
+        viewHolder.dueWrapper.performClick();
+        verify(onClickListener).onClick(viewHolder.dueButton);
+    }
+
+    @Test
     public void testUpdateClients() {
         viewHolder = spy(viewHolder);
         assertNull(provider.updateClients(null, null, null, null));
