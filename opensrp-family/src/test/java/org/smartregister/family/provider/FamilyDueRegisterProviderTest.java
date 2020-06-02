@@ -2,8 +2,10 @@ package org.smartregister.family.provider;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,7 +15,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.robolectric.RuntimeEnvironment;
-import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.family.BaseUnitTest;
@@ -23,8 +24,6 @@ import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,16 +32,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 /**
- * Created by samuelgithengi on 5/26/20.
+ * Created by samuelgithengi on 6/2/20.
  */
-public class FamilyRegisterProviderTest extends BaseUnitTest {
+public class FamilyDueRegisterProviderTest extends BaseUnitTest {
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -62,54 +60,62 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
     @Mock
     private Cursor cursor;
 
+    private FamilyDueRegisterProvider provider;
+
     private CommonPersonObjectClient client = TestDataUtils.getCommonPersonObjectClient();
 
-    private FamilyRegisterProvider.RegisterViewHolder viewHolder;
+    private FamilyDueRegisterProvider.RegisterViewHolder viewHolder;
 
-    private FamilyRegisterProvider provider;
+    private String ageString;
 
     @Before
     public void setUp() {
-        org.smartregister.Context.bindtypes = new ArrayList<>();
-        FamilyLibrary.getInstance().setMetadata(getMetadata());
-        CommonPersonObject commonPersonObject = new CommonPersonObject("1234", "", null, "");
-        commonPersonObject.setColumnmaps(new HashMap<String, String>());
-        commonPersonObject.getColumnmaps().put(DBConstants.KEY.FIRST_NAME, "Alexia");
-        provider = new FamilyRegisterProvider(context, commonRepository, visibleColumns, onClickListener, paginationClickListener);
-        View rootView = provider.inflater().inflate(R.layout.family_register_list_row, null);
-        viewHolder = new FamilyRegisterProvider.RegisterViewHolder(rootView);
-        when(commonRepository.findByBaseEntityId(anyString())).thenReturn(commonPersonObject);
-        client.getColumnmaps().put(DBConstants.KEY.VILLAGE_TOWN, "Village A");
-        client.getColumnmaps().put(DBConstants.KEY.FAMILY_HEAD, commonPersonObject.getCaseId());
+        provider = new FamilyDueRegisterProvider(context, commonRepository, visibleColumns, onClickListener, paginationClickListener);
+        View rootView = provider.inflater().inflate(R.layout.family_due_register_list_row, null);
+        viewHolder = new FamilyDueRegisterProvider.RegisterViewHolder(rootView);
 
+        String dob = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
+        String dobString = Utils.getDuration(dob);
+        ageString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
     }
 
     @Test
-    public void testGetView() {
+    public void testPopulatePatientColumn() {
         provider.getView(cursor, client, viewHolder);
-        assertEquals("Charity Family", viewHolder.patientName.getText());
-        assertEquals("Village A", viewHolder.villageTown.getText());
-        assertEquals(View.VISIBLE, viewHolder.dueButton.getVisibility());
-        assertEquals("Home Visit", viewHolder.dueButton.getText());
+        assertEquals("Charity Otala, " + ageString, viewHolder.patientNameAge.getText());
+        assertEquals(Color.BLACK, viewHolder.patientNameAge.getCurrentTextColor());
+        assertEquals(View.VISIBLE, viewHolder.nextArrow.getVisibility());
     }
 
     @Test
-    public void testGetViewWithFamilyHeadNameEnabled() {
-        provider.familyHeadFirstNameEnabled = true;
-        provider.familyMemberRegisterRepository = commonRepository;
+    public void testGetPopulatePatientColumnDeceased() {
+        String dod = "2019-03-05T00:00:00.000+03:00";
+        client.getColumnmaps().put(DBConstants.KEY.DOD, dod);
+
+        String dobString = Utils.getDuration(dod, client.getColumnmaps().get(DBConstants.KEY.DOB));
+        dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+
+
         provider.getView(cursor, client, viewHolder);
-        assertEquals("Alexia Charity Family", viewHolder.patientName.getText());
-        assertEquals("Village A", viewHolder.villageTown.getText());
-        assertEquals(View.VISIBLE, viewHolder.dueButton.getVisibility());
-        assertEquals("Home Visit", viewHolder.dueButton.getText());
+        assertEquals(String.format("Charity Otala, %s (deceased)", dobString), viewHolder.patientNameAge.getText());
+        assertEquals(Color.GRAY, viewHolder.patientNameAge.getCurrentTextColor());
+        assertEquals(View.GONE, viewHolder.nextArrow.getVisibility());
     }
 
 
     @Test
-    public void testDueButtonOnClick() {
+    public void testNextArrosOnClick() {
         provider.getView(cursor, client, viewHolder);
-        viewHolder.dueButton.performClick();
-        verify(onClickListener).onClick(viewHolder.dueButton);
+        viewHolder.nextArrowColumn.performClick();
+        verify(onClickListener).onClick(viewHolder.nextArrow);
+    }
+
+
+    @Test
+    public void testStatusOnClick() {
+        provider.getView(cursor, client, viewHolder);
+        viewHolder.statusColumn.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
     }
 
     @Test
@@ -126,12 +132,6 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
         verify(onClickListener).onClick(viewHolder.patientColumn);
     }
 
-    @Test
-    public void testDueWrapperOnClick() {
-        provider.getView(cursor, client, viewHolder);
-        viewHolder.dueWrapper.performClick();
-        verify(onClickListener).onClick(viewHolder.dueButton);
-    }
 
     @Test
     public void testUpdateClients() {
@@ -159,25 +159,25 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
     public void testCreateViewHolder() {
         viewHolder = provider.createViewHolder(null);
         assertNotNull(viewHolder);
-        assertNotNull(viewHolder.patientName);
-        assertNotNull(viewHolder.villageTown);
+        assertNotNull(viewHolder.patientNameAge);
     }
 
     @Test
     public void testCreateFooterHolderIsHidden() {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
-        FamilyRegisterProvider.FooterViewHolder footer = (FamilyRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
+        Whitebox.setInternalState(Utils.metadata().familyDueRegister, "showPagination", false);
+        FamilyDueRegisterProvider.FooterViewHolder footer = (FamilyDueRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
         assertNotNull(footer);
         assertNotNull(footer.nextPageView);
         assertNotNull(footer.previousPageView);
         assertNotNull(footer.pageInfoView);
+        assertEquals(View.GONE, footer.itemView.getVisibility());
     }
 
 
     @Test
     public void testCreateFooterHolderIsShown() {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
-        Whitebox.setInternalState(Utils.metadata().familyActivityRegister, "showPagination", true);
         RecyclerView.ViewHolder footer = provider.createFooterHolder(null);
         assertNotNull(footer);
         assertEquals(View.VISIBLE, footer.itemView.getVisibility());
@@ -193,7 +193,7 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
     @Test
     public void testGetFooterView(){
         FamilyLibrary.getInstance().setMetadata(getMetadata());
-        FamilyRegisterProvider.FooterViewHolder footer = (FamilyRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
+        FamilyDueRegisterProvider.FooterViewHolder footer = (FamilyDueRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
         provider.getFooterView(footer,2,12,true,true);
         assertEquals("Page 2 of 12",footer.pageInfoView.getText());
         assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
@@ -212,6 +212,13 @@ public class FamilyRegisterProviderTest extends BaseUnitTest {
 
     }
 
+
+    @Test
+    public void testFillValue(){
+        TextView textView= new TextView(context);
+        FamilyDueRegisterProvider.fillValue(textView,"Doe");
+        assertEquals("Doe",textView.getText());
+    }
 
 
 }

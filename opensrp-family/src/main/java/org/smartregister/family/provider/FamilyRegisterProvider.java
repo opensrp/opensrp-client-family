@@ -185,18 +185,6 @@ public class FamilyRegisterProvider implements RecyclerViewProvider<FamilyRegist
     public RegisterViewHolder createViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.family_register_list_row, parent, false);
 
-        /*
-        ConfigurableViewsHelper helper = ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper();
-        if (helper.isJsonViewsEnabled()) {
-
-            ViewConfiguration viewConfiguration = helper.getViewConfiguration(Constants.CONFIGURATION.HOME_REGISTER_ROW);
-            ViewConfiguration commonConfiguration = helper.getViewConfiguration(COMMON_REGISTER_ROW);
-
-            if (viewConfiguration != null) {
-                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, view, R.id.register_columns, false);
-            }
-        }*/
-
         return new RegisterViewHolder(view);
     }
 
