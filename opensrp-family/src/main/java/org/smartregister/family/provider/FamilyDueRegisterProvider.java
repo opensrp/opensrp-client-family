@@ -227,7 +227,7 @@ public class FamilyDueRegisterProvider implements RecyclerViewProvider<FamilyDue
     // Inner classes
     ////////////////////////////////////////////////////////////////
 
-    public class RegisterViewHolder extends RecyclerView.ViewHolder {
+    public static class RegisterViewHolder extends RecyclerView.ViewHolder {
         public ImageView status;
         public CustomFontTextView patientNameAge;
         public TextView lastVisit;
