@@ -3,6 +3,7 @@ package org.smartregister.family.provider;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import org.junit.Before;
@@ -27,16 +28,11 @@ import org.smartregister.helper.ImageRenderHelper;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -44,7 +40,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 /**
  * Created by samuelgithengi on 6/9/20.
  */
-public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
+public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -70,18 +66,17 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
 
     private CommonPersonObjectClient client = TestDataUtils.getCommonPersonObjectClient();
 
-    private FamilyMemberRegisterProvider.RegisterViewHolder viewHolder;
+    private FamilyOtherMemberRegisterProvider.RegisterViewHolder viewHolder;
 
-    private FamilyMemberRegisterProvider provider;
+    private FamilyOtherMemberRegisterProvider provider;
 
     private String ageString;
 
     @Before
     public void setUp() {
-        provider = new FamilyMemberRegisterProvider(context, commonRepository, visibleColumns, onClickListener, paginationClickListener, "123", "124");
-        Whitebox.setInternalState(provider, "imageRenderHelper", imageRenderHelper);
+        provider = new FamilyOtherMemberRegisterProvider(context, commonRepository, visibleColumns, onClickListener, paginationClickListener);
         View rootView = provider.inflater().inflate(R.layout.family_member_register_list_row, null);
-        viewHolder = new FamilyMemberRegisterProvider.RegisterViewHolder(rootView);
+        viewHolder = new FamilyOtherMemberRegisterProvider.RegisterViewHolder(rootView);
         String dob = Utils.getValue(client.getColumnmaps(), DBConstants.KEY.DOB, false);
         String dobString = Utils.getDuration(dob);
         ageString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
@@ -94,7 +89,7 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
         assertEquals("Female", viewHolder.gender.getText());
         assertEquals(Color.BLACK, viewHolder.patientNameAge.getCurrentTextColor());
         assertEquals(View.VISIBLE, viewHolder.nextArrow.getVisibility());
-        verify(imageRenderHelper).refreshProfileImage(eq(client.getCaseId()),any(CircleImageView.class),eq(R.mipmap.ic_member));
+
     }
 
 
@@ -111,8 +106,6 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
         assertEquals(String.format("Charity Otala, %s (deceased)" ,dobString), viewHolder.patientNameAge.getText());
         assertEquals("Female", viewHolder.gender.getText());
         assertEquals(Color.GRAY, viewHolder.patientNameAge.getCurrentTextColor());
-        assertEquals(View.GONE, viewHolder.nextArrow.getVisibility());
-        verify(imageRenderHelper,never()).refreshProfileImage(eq(client.getCaseId()),any(CircleImageView.class),eq(R.mipmap.ic_member));
     }
 
     @Test
@@ -153,20 +146,6 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
-    public void testPopulateIdentifierColumn(){
-        provider.getView(cursor, client, viewHolder);
-        assertEquals(View.GONE,viewHolder.familyHead.getVisibility());
-        assertEquals(View.GONE,viewHolder.primaryCaregiver.getVisibility());
-        Whitebox.setInternalState(provider,"familyHead",client.getCaseId());
-        Whitebox.setInternalState(provider,"primaryCaregiver",client.getCaseId());
-        provider.getView(cursor, client, viewHolder);
-        assertEquals(View.VISIBLE,viewHolder.familyHead.getVisibility());
-        assertEquals(View.VISIBLE,viewHolder.primaryCaregiver.getVisibility());
-
-    }
-
-
-    @Test
     public void testUpdateClients() {
         viewHolder = spy(viewHolder);
         assertNull(provider.updateClients(null, null, null, null));
@@ -196,14 +175,23 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
-    public void testCreateFooterHolder() {
+    public void testCreateFooterHolderIsHidden() {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         Whitebox.setInternalState(Utils.metadata().familyDueRegister, "showPagination", false);
-        FamilyMemberRegisterProvider.FooterViewHolder footer = (FamilyMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
+        FamilyOtherMemberRegisterProvider.FooterViewHolder footer = (FamilyOtherMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
         assertNotNull(footer);
         assertNotNull(footer.nextPageView);
         assertNotNull(footer.previousPageView);
         assertNotNull(footer.pageInfoView);
+        assertEquals(View.GONE, footer.itemView.getVisibility());
+    }
+
+    @Test
+    public void testCreateFooterHolderIsShown() {
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        Whitebox.setInternalState(Utils.metadata().familyOtherMemberRegister, "showPagination", true);
+        RecyclerView.ViewHolder footer = provider.createFooterHolder(null);
+        assertNotNull(footer);
         assertEquals(View.VISIBLE, footer.itemView.getVisibility());
     }
 
@@ -217,7 +205,7 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
     @Test
     public void testGetFooterView(){
         FamilyLibrary.getInstance().setMetadata(getMetadata());
-        FamilyMemberRegisterProvider.FooterViewHolder footer = (FamilyMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
+        FamilyOtherMemberRegisterProvider.FooterViewHolder footer = (FamilyOtherMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
         provider.getFooterView(footer,2,12,true,true);
         assertEquals("Page 2 of 12",footer.pageInfoView.getText());
         assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
@@ -235,10 +223,4 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
 
 
     }
-
-
-
-
-
-
 }
