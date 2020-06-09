@@ -107,6 +107,28 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
         verify(imageRenderHelper,never()).refreshProfileImage(eq(client.getCaseId()),any(CircleImageView.class),eq(R.mipmap.ic_member));
     }
 
+    @Test
+    public void testNextArrowOnClick() {
+        provider.getView(cursor, client, viewHolder);
+        viewHolder.nextArrowColumn.performClick();
+        verify(onClickListener).onClick(viewHolder.nextArrow);
+    }
+
+
+    @Test
+    public void testProfileOnClick() {
+        provider.getView(cursor, client, viewHolder);
+        viewHolder.profile.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
+    }
+
+    @Test
+    public void tesRegisterColumnOnClick() {
+        provider.getView(cursor, client, viewHolder);
+        viewHolder.registerColumns.performClick();
+        verify(onClickListener).onClick(viewHolder.patientColumn);
+    }
+
 
 
 
