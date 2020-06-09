@@ -3,6 +3,7 @@ package org.smartregister.family.provider;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import org.junit.Before;
@@ -16,8 +17,10 @@ import org.robolectric.RuntimeEnvironment;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.family.BaseUnitTest;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.TestDataUtils;
+import org.smartregister.family.domain.FamilyMetadata;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
@@ -28,11 +31,17 @@ import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
  * Created by samuelgithengi on 6/9/20.
@@ -47,7 +56,7 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
     @Mock
     private CommonRepository commonRepository;
 
-    private Set visibleColumns = new HashSet<>();
+    private Set<String> visibleColumns = new HashSet<>();
 
     @Mock
     private View.OnClickListener onClickListener;
@@ -157,6 +166,78 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
         assertEquals(View.VISIBLE,viewHolder.primaryCaregiver.getVisibility());
 
     }
+
+
+    @Test
+    public void testUpdateClients() {
+        viewHolder = spy(viewHolder);
+        assertNull(provider.updateClients(null, null, null, null));
+        verifyZeroInteractions(viewHolder);
+    }
+
+    @Test
+    public void testOnServiceModeSelected() {
+        viewHolder = spy(viewHolder);
+        provider.onServiceModeSelected(null);
+        verifyZeroInteractions(viewHolder);
+    }
+
+    @Test
+    public void testNewFormLauncher() {
+        viewHolder = spy(viewHolder);
+        assertNull(provider.newFormLauncher(null, null, null));
+        verifyZeroInteractions(viewHolder);
+    }
+
+
+    @Test
+    public void testCreateViewHolder() {
+        viewHolder = provider.createViewHolder(null);
+        assertNotNull(viewHolder);
+        assertNotNull(viewHolder.patientNameAge);
+    }
+
+    @Test
+    public void testCreateFooterHolder() {
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        Whitebox.setInternalState(Utils.metadata().familyDueRegister, "showPagination", false);
+        FamilyMemberRegisterProvider.FooterViewHolder footer = (FamilyMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
+        assertNotNull(footer);
+        assertNotNull(footer.nextPageView);
+        assertNotNull(footer.previousPageView);
+        assertNotNull(footer.pageInfoView);
+        assertEquals(View.VISIBLE, footer.itemView.getVisibility());
+    }
+
+    @Test
+    public void testIsFooterViewHolder() {
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        assertTrue(provider.isFooterViewHolder(provider.createFooterHolder(null)));
+        assertFalse(provider.isFooterViewHolder(provider.createViewHolder(null)));
+    }
+
+    @Test
+    public void testGetFooterView(){
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
+        FamilyMemberRegisterProvider.FooterViewHolder footer = (FamilyMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
+        provider.getFooterView(footer,2,12,true,true);
+        assertEquals("Page 2 of 12",footer.pageInfoView.getText());
+        assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
+        assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
+        footer.nextPageView.performClick();
+        verify(paginationClickListener).onClick(footer.nextPageView);
+
+        footer.previousPageView.performClick();
+        verify(paginationClickListener).onClick(footer.previousPageView);
+
+        //test if no previous and next page then controls are not rendered
+        provider.getFooterView(footer,2,12,false,false);
+        assertEquals(View.INVISIBLE,footer.nextPageView.getVisibility());
+        assertEquals(View.INVISIBLE,footer.nextPageView.getVisibility());
+
+
+    }
+
 
 
 
