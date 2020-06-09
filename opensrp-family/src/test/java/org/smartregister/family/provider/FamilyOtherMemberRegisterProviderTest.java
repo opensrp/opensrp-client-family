@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.family.BaseUnitTest;
@@ -23,7 +24,6 @@ import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
-import org.smartregister.helper.ImageRenderHelper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -61,9 +61,6 @@ public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
     @Mock
     private Cursor cursor;
 
-    @Mock
-    private ImageRenderHelper imageRenderHelper;
-
     private CommonPersonObjectClient client = TestDataUtils.getCommonPersonObjectClient();
 
     private FamilyOtherMemberRegisterProvider.RegisterViewHolder viewHolder;
@@ -89,7 +86,7 @@ public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
         assertEquals("Female", viewHolder.gender.getText());
         assertEquals(Color.BLACK, viewHolder.patientNameAge.getCurrentTextColor());
         assertEquals(View.VISIBLE, viewHolder.nextArrow.getVisibility());
-
+        assertEquals(Utils.getProfileImageTwoResourceIDentifier(), Shadows.shadowOf(viewHolder.profile.getDrawable()).getCreatedFromResId());
     }
 
 
@@ -103,9 +100,10 @@ public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
 
         provider.getView(cursor, client, viewHolder);
 
-        assertEquals(String.format("Charity Otala, %s (deceased)" ,dobString), viewHolder.patientNameAge.getText());
+        assertEquals(String.format("Charity Otala, %s (deceased)", dobString), viewHolder.patientNameAge.getText());
         assertEquals("Female", viewHolder.gender.getText());
         assertEquals(Color.GRAY, viewHolder.patientNameAge.getCurrentTextColor());
+        assertEquals(Utils.getProfileImageTwoResourceIDentifier(), Shadows.shadowOf(viewHolder.profile.getDrawable()).getCreatedFromResId());
     }
 
     @Test
@@ -134,15 +132,15 @@ public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
     @Test
     public void testAttachPatientOnclickListener() {
         provider.getView(cursor, client, viewHolder);
-        assertEquals(client,viewHolder.patientColumn.getTag());
-        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NORMAL,viewHolder.patientColumn.getTag(R.id.VIEW_ID));
+        assertEquals(client, viewHolder.patientColumn.getTag());
+        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NORMAL, viewHolder.patientColumn.getTag(R.id.VIEW_ID));
     }
 
     @Test
     public void testAttachNextArrowOnclickListener() {
         provider.getView(cursor, client, viewHolder);
-        assertEquals(client,viewHolder.nextArrow.getTag());
-        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NEXT_ARROW,viewHolder.nextArrow.getTag(R.id.VIEW_ID));
+        assertEquals(client, viewHolder.nextArrow.getTag());
+        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NEXT_ARROW, viewHolder.nextArrow.getTag(R.id.VIEW_ID));
     }
 
     @Test
@@ -203,13 +201,13 @@ public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
-    public void testGetFooterView(){
+    public void testGetFooterView() {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         FamilyOtherMemberRegisterProvider.FooterViewHolder footer = (FamilyOtherMemberRegisterProvider.FooterViewHolder) provider.createFooterHolder(null);
-        provider.getFooterView(footer,2,12,true,true);
-        assertEquals("Page 2 of 12",footer.pageInfoView.getText());
-        assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
-        assertEquals(View.VISIBLE,footer.nextPageView.getVisibility());
+        provider.getFooterView(footer, 2, 12, true, true);
+        assertEquals("Page 2 of 12", footer.pageInfoView.getText());
+        assertEquals(View.VISIBLE, footer.nextPageView.getVisibility());
+        assertEquals(View.VISIBLE, footer.nextPageView.getVisibility());
         footer.nextPageView.performClick();
         verify(paginationClickListener).onClick(footer.nextPageView);
 
@@ -217,9 +215,9 @@ public class FamilyOtherMemberRegisterProviderTest extends BaseUnitTest {
         verify(paginationClickListener).onClick(footer.previousPageView);
 
         //test if no previous and next page then controls are not rendered
-        provider.getFooterView(footer,2,12,false,false);
-        assertEquals(View.INVISIBLE,footer.nextPageView.getVisibility());
-        assertEquals(View.INVISIBLE,footer.nextPageView.getVisibility());
+        provider.getFooterView(footer, 2, 12, false, false);
+        assertEquals(View.INVISIBLE, footer.nextPageView.getVisibility());
+        assertEquals(View.INVISIBLE, footer.nextPageView.getVisibility());
 
 
     }
