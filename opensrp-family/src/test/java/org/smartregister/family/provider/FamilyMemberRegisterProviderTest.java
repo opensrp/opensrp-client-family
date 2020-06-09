@@ -18,6 +18,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
 import org.smartregister.family.TestDataUtils;
+import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.helper.ImageRenderHelper;
@@ -123,10 +124,38 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
     }
 
     @Test
-    public void tesRegisterColumnOnClick() {
+    public void testRegisterColumnOnClick() {
         provider.getView(cursor, client, viewHolder);
         viewHolder.registerColumns.performClick();
         verify(onClickListener).onClick(viewHolder.patientColumn);
+    }
+
+
+    @Test
+    public void testAttachPatientOnclickListener() {
+        provider.getView(cursor, client, viewHolder);
+        assertEquals(client,viewHolder.patientColumn.getTag());
+        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NORMAL,viewHolder.patientColumn.getTag(R.id.VIEW_ID));
+    }
+
+    @Test
+    public void testAttachNextArrowOnclickListener() {
+        provider.getView(cursor, client, viewHolder);
+        assertEquals(client,viewHolder.nextArrow.getTag());
+        assertEquals(BaseFamilyProfileMemberFragment.CLICK_VIEW_NEXT_ARROW,viewHolder.nextArrow.getTag(R.id.VIEW_ID));
+    }
+
+    @Test
+    public void testPopulateIdentifierColumn(){
+        provider.getView(cursor, client, viewHolder);
+        assertEquals(View.GONE,viewHolder.familyHead.getVisibility());
+        assertEquals(View.GONE,viewHolder.primaryCaregiver.getVisibility());
+        Whitebox.setInternalState(provider,"familyHead",client.getCaseId());
+        Whitebox.setInternalState(provider,"primaryCaregiver",client.getCaseId());
+        provider.getView(cursor, client, viewHolder);
+        assertEquals(View.VISIBLE,viewHolder.familyHead.getVisibility());
+        assertEquals(View.VISIBLE,viewHolder.primaryCaregiver.getVisibility());
+
     }
 
 
