@@ -25,7 +25,13 @@ import org.smartregister.helper.ImageRenderHelper;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by samuelgithengi on 6/9/20.
@@ -80,5 +86,29 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
         assertEquals("Female", viewHolder.gender.getText());
         assertEquals(Color.BLACK, viewHolder.patientNameAge.getCurrentTextColor());
         assertEquals(View.VISIBLE, viewHolder.nextArrow.getVisibility());
+        verify(imageRenderHelper).refreshProfileImage(eq(client.getCaseId()),any(CircleImageView.class),eq(R.mipmap.ic_member));
     }
+
+
+    @Test
+    public void testPopulatePatientColumnDeceased() {
+        String dod = "2019-03-05T00:00:00.000+03:00";
+        client.getColumnmaps().put(DBConstants.KEY.DOD, dod);
+
+        String dobString = Utils.getDuration(dod, client.getColumnmaps().get(DBConstants.KEY.DOB));
+        dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
+
+        provider.getView(cursor, client, viewHolder);
+
+        assertEquals(String.format("Charity Otala, %s (deceased)" ,dobString), viewHolder.patientNameAge.getText());
+        assertEquals("Female", viewHolder.gender.getText());
+        assertEquals(Color.GRAY, viewHolder.patientNameAge.getCurrentTextColor());
+        assertEquals(View.GONE, viewHolder.nextArrow.getVisibility());
+        verify(imageRenderHelper,never()).refreshProfileImage(eq(client.getCaseId()),any(CircleImageView.class),eq(R.mipmap.ic_member));
+    }
+
+
+
+
+
 }
