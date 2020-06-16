@@ -42,6 +42,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.smartregister.family.util.JsonFormUtils.CURRENT_OPENSRP_ID;
 
 
 public class FamilyProfileInteractorTest extends BaseUnitTest {
@@ -140,8 +141,10 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         Whitebox.setInternalState(FamilyLibrary.getInstance(), "syncHelper", ecSyncHelper);
         when(ecSyncHelper.getClient(id)).thenReturn(new JSONObject("{\"firstName\":\"Jane\",\"lastName\":\"Doe\",\"birthdate\":\"1997-11-21T07:00:00.000+07:00\",\"birthdateApprox\":false,\"deathdateApprox\":false,\"gender\":\"Female\",\"relationships\":{\"family\":[\"9d4c4722-eef4-4baa-94aa-1805b2a0a60b\"]},\"baseEntityId\":\"600d9823-78ae-48e2-8c4c-c9\",\"identifiers\":{\"opensrp_id\":\"11152030\"},\"addresses\":[],\"attributes\":{\"residence\":\"896d12ca-2ac8-4e7c-a725-cd42ea49ac06\"},\"dateCreated\":\"2019-11-21T17:13:33.197+07:00\",\"serverVersion\":1574331213134,\"clientApplicationVersion\":7,\"clientDatabaseVersion\":3,\"type\":\"Client\",\"id\":\"b43ea939-3e54-45b3-9197-cb5839c8518a\",\"revision\":\"v1\"}"));
         FamilyEventClient familyEventClient = new FamilyEventClient(client, event);
-        //client.addIdentifier("UNIQUE_IDENTIFIER_KEY","123");
-        familyProfileInteractor.saveRegistration(familyEventClient, TestDataUtils.FILLED_FAMILY_FORM, true, familyProfileCallback);
+        client.addIdentifier("UNIQUE_IDENTIFIER_KEY", "123");
+        JSONObject jsonObject = new JSONObject(TestDataUtils.FILLED_FAMILY_FORM);
+        jsonObject.put(CURRENT_OPENSRP_ID, "1234");
+        familyProfileInteractor.saveRegistration(familyEventClient, jsonObject.toString(), true, familyProfileCallback);
         verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onRegistrationSaved(true, true, familyEventClient);
         verify(ecSyncHelper).addClient(eq(id), any(JSONObject.class));
         verify(ecSyncHelper).addEvent(eq(id), any(JSONObject.class));
