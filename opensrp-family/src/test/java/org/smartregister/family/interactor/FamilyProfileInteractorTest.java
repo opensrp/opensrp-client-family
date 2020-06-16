@@ -2,47 +2,53 @@ package org.smartregister.family.interactor;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.smartregister.family.TestApplication;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.powermock.reflect.Whitebox;
+import org.smartregister.domain.UniqueId;
+import org.smartregister.family.BaseUnitTest;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.AppExecutors;
+import org.smartregister.repository.UniqueIdRepository;
 
 import java.util.concurrent.Executors;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(application = TestApplication.class)
-public class FamilyProfileInteractorTest {
+public class FamilyProfileInteractorTest extends BaseUnitTest {
 
-    private final int ASYNC_TIMEOUT = 2000;
-
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
     private FamilyProfileContract.Interactor familyProfileInteractor;
 
     @Mock
     private FamilyProfileContract.InteractorCallBack familyProfileCallback;
 
+    @Mock
+    private UniqueIdRepository uniqueIdRepository;
+
+    private AppExecutors appExecutors;
+
+    private Triple<String, String, String> triple;
+
     @Before
     public void setUp() {
-        AppExecutors appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(),
+        appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(),
                 Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor());
-        MockitoAnnotations.initMocks(this);
         familyProfileInteractor = new FamilyProfileInteractor(appExecutors);
-    }
-
-
-    @Test
-    public void testGetNextUniqueId() {
-        Triple<String, String, String> triple = new Triple<String, String, String>() {
+        triple = new Triple<String, String, String>() {
             @Override
             public String getLeft() {
                 return "I turned myself to Pickle";
@@ -58,8 +64,23 @@ public class FamilyProfileInteractorTest {
                 return "pickle Rick";
             }
         };
+        Whitebox.setInternalState(FamilyLibrary.getInstance(),"uniqueIdRepository",uniqueIdRepository);
+    }
+
+
+    @Test
+    public void testGetNextUniqueIdWithNoUniqueId() {
         familyProfileInteractor.getNextUniqueId(triple, familyProfileCallback);
-        Mockito.verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onNoUniqueId();
+        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onNoUniqueId();
+    }
+
+    @Test
+    public void testGetNextUniqueIdWithUniqueId() {
+        UniqueId uniqueId = new UniqueId();
+        uniqueId.setOpenmrsId("1233-1");
+        when(uniqueIdRepository.getNextUniqueId()).thenReturn(uniqueId);
+        familyProfileInteractor.getNextUniqueId(triple, familyProfileCallback);
+        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onUniqueIdFetched(triple,uniqueId.getOpenmrsId());
     }
 
     @Test
@@ -111,6 +132,13 @@ public class FamilyProfileInteractorTest {
                 "}";
 
         familyProfileInteractor.saveRegistration(familyEventClient, someJson, false, familyProfileCallback);
-        Mockito.verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onRegistrationSaved(eq(false), eq(false), eq(familyEventClient));
+        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onRegistrationSaved(eq(false), eq(false), eq(familyEventClient));
+    }
+
+    @Test
+    public void testOnDestroy() {
+        appExecutors = spy(appExecutors);
+        familyProfileInteractor.onDestroy(false);
+        verifyNoMoreInteractions(appExecutors);
     }
 }

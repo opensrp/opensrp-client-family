@@ -48,8 +48,7 @@ public class FamilyProfileInteractor implements FamilyProfileContract.Interactor
     }
 
     @Override
-    public void onDestroy(boolean isChangingConfiguration) {
-        // TODO implement this
+    public void onDestroy(boolean isChangingConfiguration) {// TODO implement this
     }
 
     @Override

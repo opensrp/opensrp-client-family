@@ -24,8 +24,10 @@ import org.smartregister.family.util.Utils;
 import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
@@ -53,9 +55,12 @@ public class FamilyOtherMemberProfileInteractorTest extends BaseUnitTest {
 
     private FamilyOtherMemberContract.Interactor familyMemberInteractor;
 
+
+    private AppExecutors appExecutors;
+
     @Before
     public void setUp() {
-        AppExecutors appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(),
+        appExecutors = new AppExecutors(Executors.newSingleThreadExecutor(),
                 Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor());
         familyMemberInteractor = new FamilyOtherMemberProfileInteractor(appExecutors);
         commonPersonObject = new CommonPersonObject("some-crazy-base-entity-id", "", null, "");
@@ -74,5 +79,12 @@ public class FamilyOtherMemberProfileInteractorTest extends BaseUnitTest {
         verify(callback, timeout(ASYNC_TIMEOUT)).refreshProfileTopSection(commonPersonObjectClientArgumentCaptor.capture());
         assertEquals(commonPersonObject.getCaseId(), commonPersonObjectClientArgumentCaptor.getValue().getCaseId());
         assertEquals(commonPersonObject.getColumnmaps(), commonPersonObjectClientArgumentCaptor.getValue().getColumnmaps());
+    }
+
+    @Test
+    public void testOnDestroy() {
+        appExecutors = spy(appExecutors);
+        familyMemberInteractor.onDestroy(false);
+        verifyNoMoreInteractions(appExecutors);
     }
 }
