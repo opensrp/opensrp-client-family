@@ -60,8 +60,6 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
     @Mock
     private CommonRepository commonRepository;
 
-    private HashMap<Object, Object> mapOfCommonRepository;
-
     @Mock
     private ECSyncHelper ecSyncHelper;
 
@@ -108,7 +106,7 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         event.setBaseEntityId(id);
 
-        mapOfCommonRepository = spy(new HashMap<>());
+        HashMap<Object, Object> mapOfCommonRepository = spy(new HashMap<>());
         when(mapOfCommonRepository.get(anyString())).thenReturn(commonRepository);
         Whitebox.setInternalState(FamilyLibrary.getInstance().context(), "MapOfCommonRepository", mapOfCommonRepository);
     }
