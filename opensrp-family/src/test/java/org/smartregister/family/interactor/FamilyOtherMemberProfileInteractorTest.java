@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.util.ReflectionHelpers;
-import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
@@ -21,6 +20,8 @@ import org.smartregister.family.domain.FamilyMetadata;
 import org.smartregister.family.util.AppExecutors;
 import org.smartregister.family.util.Utils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
@@ -45,9 +46,6 @@ public class FamilyOtherMemberProfileInteractorTest extends BaseUnitTest {
     @Mock
     private CommonRepository commonRepository;
 
-    @Mock
-    private Context context;
-
     @Captor
     private ArgumentCaptor<CommonPersonObjectClient> commonPersonObjectClientArgumentCaptor;
 
@@ -70,11 +68,13 @@ public class FamilyOtherMemberProfileInteractorTest extends BaseUnitTest {
     @Test
     public void testRefreshProfileView() {
         String tableName = "fam-table";
-        when(context.commonrepository(tableName)).thenReturn(commonRepository);
+        Map<String, CommonRepository> mapOfCommonRepository = new HashMap<>();
+        mapOfCommonRepository.put(tableName, commonRepository);
+        ReflectionHelpers.setField(FamilyLibrary.getInstance().context(), "MapOfCommonRepository", mapOfCommonRepository);
         when(commonRepository.findByBaseEntityId(commonPersonObject.getCaseId())).thenReturn(commonPersonObject);
         ReflectionHelpers.setField(familyMemberRegister, "tableName", tableName);
         ReflectionHelpers.setField(Utils.metadata(), "familyMemberRegister", familyMemberRegister);
-        ReflectionHelpers.setField(FamilyLibrary.getInstance(), "context", context);
+
         familyMemberInteractor.refreshProfileView(commonPersonObject.getCaseId(), callback);
         verify(callback, timeout(ASYNC_TIMEOUT)).refreshProfileTopSection(commonPersonObjectClientArgumentCaptor.capture());
         assertEquals(commonPersonObject.getCaseId(), commonPersonObjectClientArgumentCaptor.getValue().getCaseId());

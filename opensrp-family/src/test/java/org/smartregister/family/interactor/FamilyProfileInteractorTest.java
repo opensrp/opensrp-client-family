@@ -12,8 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
-import org.robolectric.util.ReflectionHelpers;
-import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObject;
@@ -61,8 +59,7 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
     @Mock
     private CommonRepository commonRepository;
 
-    @Mock
-    private Context context;
+    private HashMap<Object, Object> mapOfCommonRepository;
 
     @Mock
     private ECSyncHelper ecSyncHelper;
@@ -109,6 +106,10 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         commonPersonObject.setColumnmaps(TestDataUtils.getCommonPersonObjectClient().getColumnmaps());
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         event.setBaseEntityId(id);
+
+        mapOfCommonRepository = spy(new HashMap<>());
+        when(mapOfCommonRepository.get(anyString())).thenReturn(commonRepository);
+        Whitebox.setInternalState(FamilyLibrary.getInstance().context(), "MapOfCommonRepository", mapOfCommonRepository);
     }
 
 
@@ -136,14 +137,14 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
 
     @Test
     public void testSaveRegistrationEditMode() throws JSONException {
-        Whitebox.setInternalState(FamilyLibrary.getInstance(),"syncHelper",ecSyncHelper);
+        Whitebox.setInternalState(FamilyLibrary.getInstance(), "syncHelper", ecSyncHelper);
         when(ecSyncHelper.getClient(id)).thenReturn(new JSONObject("{\"firstName\":\"Jane\",\"lastName\":\"Doe\",\"birthdate\":\"1997-11-21T07:00:00.000+07:00\",\"birthdateApprox\":false,\"deathdateApprox\":false,\"gender\":\"Female\",\"relationships\":{\"family\":[\"9d4c4722-eef4-4baa-94aa-1805b2a0a60b\"]},\"baseEntityId\":\"600d9823-78ae-48e2-8c4c-c9\",\"identifiers\":{\"opensrp_id\":\"11152030\"},\"addresses\":[],\"attributes\":{\"residence\":\"896d12ca-2ac8-4e7c-a725-cd42ea49ac06\"},\"dateCreated\":\"2019-11-21T17:13:33.197+07:00\",\"serverVersion\":1574331213134,\"clientApplicationVersion\":7,\"clientDatabaseVersion\":3,\"type\":\"Client\",\"id\":\"b43ea939-3e54-45b3-9197-cb5839c8518a\",\"revision\":\"v1\"}"));
         FamilyEventClient familyEventClient = new FamilyEventClient(client, event);
         //client.addIdentifier("UNIQUE_IDENTIFIER_KEY","123");
         familyProfileInteractor.saveRegistration(familyEventClient, TestDataUtils.FILLED_FAMILY_FORM, true, familyProfileCallback);
         verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onRegistrationSaved(true, true, familyEventClient);
-        verify(ecSyncHelper).addClient(eq(id),any(JSONObject.class));
-        verify(ecSyncHelper).addEvent(eq(id),any(JSONObject.class));
+        verify(ecSyncHelper).addClient(eq(id), any(JSONObject.class));
+        verify(ecSyncHelper).addEvent(eq(id), any(JSONObject.class));
     }
 
     @Test
@@ -159,11 +160,9 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         CommonPersonObject familyHead = new CommonPersonObject("12121213445", "", null, "");
         familyHead.setColumnmaps(new HashMap<String, String>());
         familyHead.getColumnmaps().put(DBConstants.KEY.FIRST_NAME, "Jack");
-        when(context.commonrepository(anyString())).thenReturn(commonRepository);
         commonPersonObject.getColumnmaps().put(DBConstants.KEY.FAMILY_HEAD, "12121213445");
         when(commonRepository.findByBaseEntityId(commonPersonObject.getCaseId())).thenReturn(commonPersonObject);
         when(commonRepository.findByBaseEntityId("12121213445")).thenReturn(familyHead);
-        ReflectionHelpers.setField(FamilyLibrary.getInstance(), "context", context);
 
         familyProfileInteractor.refreshProfileView(commonPersonObject.getCaseId(), false, familyProfileCallback);
         verify(commonRepository, timeout(ASYNC_TIMEOUT)).findByBaseEntityId(commonPersonObject.getCaseId());
@@ -179,11 +178,9 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         CommonPersonObject familyHead = new CommonPersonObject("12121213445", "", null, "");
         familyHead.setColumnmaps(new HashMap<String, String>());
         familyHead.getColumnmaps().put(DBConstants.KEY.FIRST_NAME, "Jack");
-        when(context.commonrepository(anyString())).thenReturn(commonRepository);
         commonPersonObject.getColumnmaps().put(DBConstants.KEY.FAMILY_HEAD, "12121213445");
         when(commonRepository.findByBaseEntityId(commonPersonObject.getCaseId())).thenReturn(commonPersonObject);
         when(commonRepository.findByBaseEntityId("12121213445")).thenReturn(familyHead);
-        ReflectionHelpers.setField(FamilyLibrary.getInstance(), "context", context);
 
         familyProfileInteractor.refreshProfileView(commonPersonObject.getCaseId(), true, familyProfileCallback);
         verify(commonRepository, timeout(ASYNC_TIMEOUT)).findByBaseEntityId(commonPersonObject.getCaseId());
