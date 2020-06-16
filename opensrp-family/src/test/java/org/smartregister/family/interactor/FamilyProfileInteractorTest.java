@@ -4,21 +4,35 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
+import org.robolectric.util.ReflectionHelpers;
+import org.smartregister.Context;
+import org.smartregister.commonregistry.CommonPersonObject;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.UniqueId;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.TestDataUtils;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.AppExecutors;
+import org.smartregister.family.util.Constants;
+import org.smartregister.family.util.DBConstants;
+import org.smartregister.family.util.Utils;
 import org.smartregister.repository.UniqueIdRepository;
 
+import java.util.HashMap;
 import java.util.concurrent.Executors;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
@@ -39,9 +53,21 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
     @Mock
     private UniqueIdRepository uniqueIdRepository;
 
+    @Mock
+    private CommonRepository commonRepository;
+
+    @Mock
+    private Context context;
+
+    @Captor
+    private ArgumentCaptor<CommonPersonObjectClient> commonPersonObjectClientArgumentCaptor;
+
     private AppExecutors appExecutors;
 
     private Triple<String, String, String> triple;
+
+    private CommonPersonObject commonPersonObject;
+
 
     @Before
     public void setUp() {
@@ -64,7 +90,10 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
                 return "pickle Rick";
             }
         };
-        Whitebox.setInternalState(FamilyLibrary.getInstance(),"uniqueIdRepository",uniqueIdRepository);
+        Whitebox.setInternalState(FamilyLibrary.getInstance(), "uniqueIdRepository", uniqueIdRepository);
+        commonPersonObject = new CommonPersonObject("some-crazy-base-entity-id", "", null, "");
+        commonPersonObject.setColumnmaps(TestDataUtils.getCommonPersonObjectClient().getColumnmaps());
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
     }
 
 
@@ -80,7 +109,7 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         uniqueId.setOpenmrsId("1233-1");
         when(uniqueIdRepository.getNextUniqueId()).thenReturn(uniqueId);
         familyProfileInteractor.getNextUniqueId(triple, familyProfileCallback);
-        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onUniqueIdFetched(triple,uniqueId.getOpenmrsId());
+        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).onUniqueIdFetched(triple, uniqueId.getOpenmrsId());
     }
 
     @Test
@@ -140,5 +169,46 @@ public class FamilyProfileInteractorTest extends BaseUnitTest {
         appExecutors = spy(appExecutors);
         familyProfileInteractor.onDestroy(false);
         verifyNoMoreInteractions(appExecutors);
+    }
+
+
+    @Test
+    public void testRefreshProfileViewRefreshesTopSection() {
+        CommonPersonObject familyHead = new CommonPersonObject("12121213445", "", null, "");
+        familyHead.setColumnmaps(new HashMap<String, String>());
+        familyHead.getColumnmaps().put(DBConstants.KEY.FIRST_NAME, "Jack");
+        when(context.commonrepository(anyString())).thenReturn(commonRepository);
+        commonPersonObject.getColumnmaps().put(DBConstants.KEY.FAMILY_HEAD, "12121213445");
+        when(commonRepository.findByBaseEntityId(commonPersonObject.getCaseId())).thenReturn(commonPersonObject);
+        when(commonRepository.findByBaseEntityId("12121213445")).thenReturn(familyHead);
+        ReflectionHelpers.setField(FamilyLibrary.getInstance(), "context", context);
+
+        familyProfileInteractor.refreshProfileView(commonPersonObject.getCaseId(), false, familyProfileCallback);
+        verify(commonRepository, timeout(ASYNC_TIMEOUT)).findByBaseEntityId(commonPersonObject.getCaseId());
+        verify(commonRepository, timeout(ASYNC_TIMEOUT)).findByBaseEntityId(familyHead.getCaseId());
+        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).refreshProfileTopSection(commonPersonObjectClientArgumentCaptor.capture());
+        assertEquals(commonPersonObject.getCaseId(), commonPersonObjectClientArgumentCaptor.getValue().getCaseId());
+        assertEquals(commonPersonObject.getColumnmaps(), commonPersonObjectClientArgumentCaptor.getValue().getColumnmaps());
+        assertEquals("Jack", commonPersonObjectClientArgumentCaptor.getValue().getColumnmaps().get(Constants.KEY.FAMILY_HEAD_NAME));
+    }
+
+    @Test
+    public void testRefreshProfileViewOpensForm() {
+        CommonPersonObject familyHead = new CommonPersonObject("12121213445", "", null, "");
+        familyHead.setColumnmaps(new HashMap<String, String>());
+        familyHead.getColumnmaps().put(DBConstants.KEY.FIRST_NAME, "Jack");
+        when(context.commonrepository(anyString())).thenReturn(commonRepository);
+        commonPersonObject.getColumnmaps().put(DBConstants.KEY.FAMILY_HEAD, "12121213445");
+        when(commonRepository.findByBaseEntityId(commonPersonObject.getCaseId())).thenReturn(commonPersonObject);
+        when(commonRepository.findByBaseEntityId("12121213445")).thenReturn(familyHead);
+        ReflectionHelpers.setField(FamilyLibrary.getInstance(), "context", context);
+
+        familyProfileInteractor.refreshProfileView(commonPersonObject.getCaseId(), true, familyProfileCallback);
+        verify(commonRepository, timeout(ASYNC_TIMEOUT)).findByBaseEntityId(commonPersonObject.getCaseId());
+        verify(commonRepository, timeout(ASYNC_TIMEOUT)).findByBaseEntityId(familyHead.getCaseId());
+        verify(familyProfileCallback, timeout(ASYNC_TIMEOUT)).startFormForEdit(commonPersonObjectClientArgumentCaptor.capture());
+        assertEquals(commonPersonObject.getCaseId(), commonPersonObjectClientArgumentCaptor.getValue().getCaseId());
+        assertEquals(commonPersonObject.getColumnmaps(), commonPersonObjectClientArgumentCaptor.getValue().getColumnmaps());
+        assertEquals("Jack", commonPersonObjectClientArgumentCaptor.getValue().getColumnmaps().get(Constants.KEY.FAMILY_HEAD_NAME));
     }
 }
