@@ -1,7 +1,5 @@
 package org.smartregister.family.model;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
