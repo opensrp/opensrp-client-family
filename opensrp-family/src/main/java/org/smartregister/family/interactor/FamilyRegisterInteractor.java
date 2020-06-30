@@ -169,8 +169,8 @@ public class FamilyRegisterInteractor implements FamilyRegisterContract.Interact
                         JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
                     }
                 }
-                org.smartregister.domain.db.Event domainEvent = JsonFormUtils.gson.fromJson(eventJson.toString(), org.smartregister.domain.db.Event.class);
-                org.smartregister.domain.db.Client domainClient = JsonFormUtils.gson.fromJson(clientJson.toString(), org.smartregister.domain.db.Client.class);
+                org.smartregister.domain.Event domainEvent = JsonFormUtils.gson.fromJson(eventJson.toString(), org.smartregister.domain.Event.class);
+                org.smartregister.domain.Client domainClient = JsonFormUtils.gson.fromJson(clientJson.toString(), org.smartregister.domain.Client.class);
                 eventClientList.add(new EventClient(domainEvent, domainClient));
             }
 
