@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.1.2"
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
     }
 }
@@ -31,7 +31,6 @@ android {
         versionName project.VERSION_NAME
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     }
     buildTypes {
         release {
@@ -52,12 +51,7 @@ android {
     // avoid errors with message 'Duplicate files copied in APK ...'
     packagingOptions {
         exclude 'LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/*'
     }
 
     testOptions {
@@ -120,8 +114,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     testImplementation 'org.mockito:mockito-inline:2.25.0'
-    testImplementation 'org.robolectric:robolectric:4.3.1'
-    testImplementation 'org.robolectric:shadows-multidex:4.2'
+    testImplementation ('org.robolectric:robolectric:4.0'){
+        transitive = true
+        exclude group: 'androidx.test'
+    }
+    testImplementation 'org.robolectric:shadows-multidex:4.0'
     // PowerMock
     def powerMockVersion = '2.0.0'
     testImplementation "org.powermock:powermock-module-junit4:$powerMockVersion"
@@ -144,11 +141,11 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
 
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.buildDir, includes: [
+    sourceDirectories.from(files([mainSrc]))
+    classDirectories .from(files([debugTree]))
+    executionData.from(fileTree(dir: project.buildDir, includes: [
             'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
-    ])
+    ]))
 }
 
 tasks.coveralls {
@@ -157,6 +154,7 @@ tasks.coveralls {
 
 coveralls {
     jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/merged.xml"
+    sourceDirs = ["$project.projectDir/src/main/java"]
 }
 
 apply from: '../maven.gradle'
