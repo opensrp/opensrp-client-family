@@ -6,8 +6,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath ('com.android.tools.build:gradle:4.0.0'){
+            transitive = true
+            exclude group: 'org.apache.httpcomponents', module: 'httpmime'
+        }
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
+        classpath 'org.apache.httpcomponents:httpmime:4.3'
     }
 }
 
