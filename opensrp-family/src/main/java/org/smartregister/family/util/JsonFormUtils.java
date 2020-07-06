@@ -152,6 +152,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             baseClient.setLastName("Family");
             baseClient.setBirthdate(new Date(0));
             baseClient.setGender("Male");
+            baseClient.setClientType("Family");
 
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, getJSONObject(jsonForm, METADATA), formTag(allSharedPreferences), entityId, Utils.metadata().familyRegister.registerEventType, Utils.metadata().familyRegister.tableName);
 
