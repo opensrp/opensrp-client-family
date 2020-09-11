@@ -96,7 +96,7 @@ public abstract class BaseFamilyOtherMemberProfileActivity extends BaseProfileAc
         int itemId = item.getItemId();
 
         if (itemId == R.id.add_member) {
-            startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
+            startFormActivity(Utils.metadata().familyMemberRegister.formName, null, "");
         }
 
         return super.onOptionsItemSelected(item);
