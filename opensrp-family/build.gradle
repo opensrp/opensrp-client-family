@@ -119,7 +119,7 @@ dependencies {
     }
     testImplementation 'org.robolectric:shadows-multidex:4.0'
     // PowerMock
-    def powerMockVersion = '2.0.0'
+    def powerMockVersion = '2.0.4'
     testImplementation "org.powermock:powermock-module-junit4:$powerMockVersion"
     testImplementation "org.powermock:powermock-module-junit4-rule:$powerMockVersion"
     testImplementation "org.powermock:powermock-api-mockito2:$powerMockVersion"
