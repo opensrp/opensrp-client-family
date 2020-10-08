@@ -1,13 +1,10 @@
 package org.smartregister.family.model;
 
-import android.util.Log;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
-import org.smartregister.configurableviews.model.View;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.Response;
@@ -16,6 +13,8 @@ import org.smartregister.family.contract.FamilyRegisterFragmentContract;
 import org.smartregister.family.util.ConfigHelper;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
+import org.smartregister.view.contract.IField;
+import org.smartregister.view.contract.IView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentCon
     }
 
     @Override
-    public Set<View> getRegisterActiveColumns(String viewConfigurationIdentifier) {
+    public Set<IView> getRegisterActiveColumns(String viewConfigurationIdentifier) {
         return ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().getRegisterActiveColumns(viewConfigurationIdentifier);
     }
 
@@ -73,8 +72,8 @@ public class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentCon
     }
 
     @Override
-    public String getFilterText(List<Field> list, String filterTitle) {
-        List<Field> filterList = list;
+    public String getFilterText(List<IField> list, String filterTitle) {
+        List<IField> filterList = list;
         if (filterList == null) {
             filterList = new ArrayList<>();
         }
@@ -87,7 +86,7 @@ public class BaseFamilyRegisterFramentModel implements FamilyRegisterFragmentCon
     }
 
     @Override
-    public String getSortText(Field sortField) {
+    public String getSortText(IField sortField) {
         String sortText = "";
         if (sortField != null) {
             if (StringUtils.isNotBlank(sortField.getDisplayName())) {

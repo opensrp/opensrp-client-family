@@ -60,7 +60,7 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
     }
 
     @Override
-    public void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception {
+    public void startForm(String formName, String entityId, String metadata, String currentLocationId) {
 
         if (StringUtils.isBlank(entityId)) {
             Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
@@ -68,10 +68,14 @@ public class BaseFamilyRegisterPresenter implements FamilyRegisterContract.Prese
             return;
         }
 
-        JSONObject form = model.getFormAsJson(formName, entityId, currentLocationId);
-        if (getView() != null)
-            getView().startFormActivity(form);
-
+        JSONObject form;
+        try {
+            form = model.getFormAsJson(formName, entityId, currentLocationId);
+            if (getView() != null)
+                getView().startFormActivity(form);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyOtherMemberProfileFragmentContract;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
+import org.smartregister.view.contract.IView;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
@@ -21,7 +22,7 @@ public class BaseFamilyOtherMemberProfileFragmentPresenter implements FamilyOthe
 
     protected String familyBaseEntityId;
 
-    protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
+    protected Set<IView> visibleColumns = new TreeSet<>();
 
     private String viewConfigurationIdentifier;
 
@@ -96,7 +97,7 @@ public class BaseFamilyOtherMemberProfileFragmentPresenter implements FamilyOthe
             return null;
     }
 
-    private void setVisibleColumns(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
+    private void setVisibleColumns(Set<IView> visibleColumns) {
         this.visibleColumns = visibleColumns;
     }
 

@@ -105,7 +105,7 @@ public abstract class BaseFamilyProfileActivity extends BaseProfileActivity impl
         int itemId = item.getItemId();
 
         if (itemId == R.id.add_member) {
-            startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
+            startFormActivity(Utils.metadata().familyMemberRegister.formName, null, (String) null);
         }
 
         return super.onOptionsItemSelected(item);

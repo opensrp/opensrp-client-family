@@ -7,6 +7,7 @@ import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyOtherMemberContract;
 import org.smartregister.family.util.ConfigHelper;
 import org.smartregister.family.util.Utils;
+import org.smartregister.view.contract.IView;
 
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class BaseFamilyOtherMemberProfileActivityModel implements FamilyOtherMem
     }
 
     @Override
-    public Set<View> getRegisterActiveColumns(String viewConfigurationIdentifier) {
+    public Set<IView> getRegisterActiveColumns(String viewConfigurationIdentifier) {
         return ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().getRegisterActiveColumns(viewConfigurationIdentifier);
     }
 }
