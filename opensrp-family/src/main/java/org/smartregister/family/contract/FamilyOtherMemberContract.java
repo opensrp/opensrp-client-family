@@ -2,9 +2,7 @@ package org.smartregister.family.contract;
 
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
-import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.view.contract.BaseProfileContract;
-import org.smartregister.view.contract.BaseRegisterContract;
 import org.smartregister.view.contract.IView;
 import org.smartregister.view.contract.IViewConfiguration;
 
