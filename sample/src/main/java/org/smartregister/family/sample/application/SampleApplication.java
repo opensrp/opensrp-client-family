@@ -52,7 +52,7 @@ public class SampleApplication extends DrishtiApplication {
 
 
         //Auto login by default
-        String password = "pwd";
+        byte[] password = "pwd".getBytes();
         context.session().start(context.session().lengthInMilliseconds());
         context.configuration().getDrishtiApplication().setPassword(password);
         context.session().setPassword(password);
