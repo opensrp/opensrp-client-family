@@ -1,12 +1,13 @@
 package org.smartregister.family.activity;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import org.smartregister.family.R;
 import org.smartregister.family.adapter.ViewPagerAdapter;

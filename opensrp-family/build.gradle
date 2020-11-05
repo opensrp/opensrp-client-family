@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:4.0.0'
     }
 }
 
@@ -156,4 +156,4 @@ coveralls {
     sourceDirs = ["$project.projectDir/src/main/java"]
 }
 
-// apply from: '../maven.gradle'
+apply from: '../maven.gradle'

@@ -54,8 +54,8 @@ public class SampleApplication extends DrishtiApplication {
         //Auto login by default
         byte[] password = "pwd".getBytes();
         context.session().start(context.session().lengthInMilliseconds());
-        context.configuration().getDrishtiApplication().setPassword(password);
-        context.session().setPassword(password);
+        context.configuration().getDrishtiApplication().setPassword(password.getBytes());
+        context.session().setPassword(password.getBytes());
 
 
         //init Job Manager
