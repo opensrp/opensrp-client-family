@@ -36,14 +36,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/listview_background_rounded">
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/recycler_view_wash_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:visibility="gone" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_below="@+id/recycler_view_wash_check"
             android:layout_alignWithParentIfMissing="true"

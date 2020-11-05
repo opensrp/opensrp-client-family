@@ -3,7 +3,7 @@ package org.smartregister.family.provider;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
