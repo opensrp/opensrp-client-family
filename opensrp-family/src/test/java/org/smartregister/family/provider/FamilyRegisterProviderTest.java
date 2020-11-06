@@ -2,7 +2,7 @@ package org.smartregister.family.provider;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.appcompat.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import org.junit.Before;
