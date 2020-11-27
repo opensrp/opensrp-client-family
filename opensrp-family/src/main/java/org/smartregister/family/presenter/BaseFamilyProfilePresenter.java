@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.R;
+import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.interactor.FamilyProfileInteractor;
@@ -119,11 +120,11 @@ public class BaseFamilyProfilePresenter implements FamilyProfileContract.Present
         if (Utils.getBooleanProperty(Constants.Properties.FAMILY_HEAD_FIRSTNAME_ENABLED)) {
 
             String familyHeadFirstName = Utils.getValue(client.getColumnmaps(), Constants.KEY.FAMILY_HEAD_NAME, true);
-            famName = getView().getApplicationContext().getString(R.string.family_profile_title_with_firstname, familyHeadFirstName, firstName);
+            famName = ((BaseFamilyProfileActivity) getView()).getString(R.string.family_profile_title_with_firstname, familyHeadFirstName, firstName);
 
         } else {
 
-            famName = getView().getApplicationContext().getString(R.string.family_profile_title, firstName);
+            famName = ((BaseFamilyProfileActivity) getView()).getString(R.string.family_profile_title, firstName);
         }
 
         getView().setProfileName(famName);
