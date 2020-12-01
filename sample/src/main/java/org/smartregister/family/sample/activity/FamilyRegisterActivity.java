@@ -9,6 +9,8 @@ import org.smartregister.family.presenter.BaseFamilyRegisterPresenter;
 import org.smartregister.family.sample.fragment.FamilyRegisterFragment;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
+import java.util.Map;
+
 public  class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
 
     @Override
@@ -27,6 +29,10 @@ public  class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
     }
 
     @Override
+    public void startFormActivity(String s, String s1, Map<String, String> map) {//do nothing
+    }
+
+    @Override
     protected void registerBottomNavigation() {
         super.registerBottomNavigation();
 
@@ -38,5 +44,7 @@ public  class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
         bottomNavigationView.getMenu().removeItem(org.smartregister.R.id.action_search);
         bottomNavigationView.getMenu().removeItem(org.smartregister.R.id.action_library);
     }
+
+
 
 }
