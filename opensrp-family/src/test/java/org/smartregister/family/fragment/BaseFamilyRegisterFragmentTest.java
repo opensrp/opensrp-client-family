@@ -161,7 +161,7 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
         Utils.metadata().updateFamilyRegister("register_family.json", "ec_family", "", "", "", "", "");
         when(registerFragment.getActivity()).thenReturn(baseFamilyRegisterActivity);
         registerFragment.startRegistration();
-        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json", null, null);
+        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json", null, (String)null);
     }
 
     @Test
