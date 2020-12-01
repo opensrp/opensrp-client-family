@@ -21,7 +21,6 @@ import org.smartregister.view.activity.BaseProfileActivity;
 
 
 @RunWith(RobolectricTestRunner.class)
-@PowerMockRunnerDelegate(RobolectricTestRunner.class)
 @Config(application = TestApplication.class, shadows = {CustomFontTextViewShadow.class}, sdk = Build.VERSION_CODES.P)
 @PowerMockIgnore({"org.mockito.*", "org.robolectric.*", "android.*"})
 public abstract class BaseUnitTest {
