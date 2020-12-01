@@ -1,6 +1,6 @@
 package org.smartregister.family.shadow;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;

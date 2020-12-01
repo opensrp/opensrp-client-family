@@ -1,6 +1,6 @@
 package org.smartregister.family.fragment;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.junit.Assert;
 import org.junit.Before;
