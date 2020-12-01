@@ -9,7 +9,7 @@ import org.smartregister.family.presenter.BaseFamilyRegisterPresenter;
 import org.smartregister.family.sample.fragment.FamilyRegisterFragment;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
-public class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
+public  class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
 
     @Override
     protected void initializePresenter() {

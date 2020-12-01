@@ -63,7 +63,7 @@ public abstract class BaseFamilyProfileDueFragment extends BaseRegisterFragment 
 
     @Override
     protected void startRegistration() {
-        ((BaseFamilyProfileActivity) getActivity()).startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
+        ((BaseFamilyProfileActivity) getActivity()).startFormActivity(Utils.metadata().familyMemberRegister.formName, null, (String)null);
     }
 
     @Override
