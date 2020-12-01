@@ -27,7 +27,7 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
 
     @Override
     public void startRegistration() {
-        startFormActivity(Utils.metadata().familyRegister.formName, null, null);
+        startFormActivity(Utils.metadata().familyRegister.formName, null, (String)null);
     }
 
     @Override
