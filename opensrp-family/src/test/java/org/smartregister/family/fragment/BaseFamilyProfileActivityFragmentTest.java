@@ -1,7 +1,8 @@
 package org.smartregister.family.fragment;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +17,14 @@ import org.smartregister.family.R;
 import org.smartregister.family.TestApplication;
 import org.smartregister.family.contract.FamilyProfileActivityContract;
 import org.smartregister.family.presenter.BaseFamilyProfileActivityPresenter;
+import org.smartregister.family.shadow.BaseFamilyProfileActivityFragmentShadow;
 import org.smartregister.family.shadow.CustomFontTextViewShadow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 /**
  * @author Elly Kitoto (Nerdstone)
@@ -34,9 +39,10 @@ public class BaseFamilyProfileActivityFragmentTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        familyProfileActivity = Mockito.mock(BaseFamilyProfileActivityFragment.class, Mockito.CALLS_REAL_METHODS);
-        BaseFamilyProfileActivityPresenter presenter = new BaseFamilyProfileActivityPresenter(Mockito.mock(FamilyProfileActivityContract.View.class),
-                Mockito.mock(FamilyProfileActivityContract.Model.class), null, "familybaseid");
+        familyProfileActivity = new BaseFamilyProfileActivityFragmentShadow();
+        BaseFamilyProfileActivityPresenter presenter = spy(new BaseFamilyProfileActivityPresenter(Mockito.mock(FamilyProfileActivityContract.View.class),
+                Mockito.mock(FamilyProfileActivityContract.Model.class), null, "familybaseid"));
+        doNothing().when(presenter).initializeQueries(anyString());
         Whitebox.setInternalState(familyProfileActivity, "presenter", presenter);
         AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         Whitebox.setInternalState(familyProfileActivity, "searchView", new EditText(activity));

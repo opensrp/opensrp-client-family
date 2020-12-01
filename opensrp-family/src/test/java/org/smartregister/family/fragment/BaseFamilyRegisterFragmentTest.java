@@ -4,14 +4,15 @@ package org.smartregister.family.fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import androidx.fragment.app.FragmentActivity;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,6 +33,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.BaseUnitTest;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.mock.MockBaseFamilyRegisterFragment;
@@ -117,6 +119,7 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Test
     public void testInitializeAdapter() {
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
         when(registerFragment.getActivity()).thenReturn(activity);
         registerFragment.initializeAdapter(new HashSet<View>());
         verify(clientsView).setAdapter(adapterArgumentCaptor.capture());
