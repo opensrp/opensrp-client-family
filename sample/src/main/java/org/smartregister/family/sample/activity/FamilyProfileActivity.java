@@ -1,6 +1,6 @@
 package org.smartregister.family.sample.activity;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.adapter.ViewPagerAdapter;

@@ -1,7 +1,7 @@
 package org.smartregister.family.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +62,7 @@ public abstract class BaseFamilyProfileActivityFragment extends BaseRegisterFrag
 
     @Override
     protected void startRegistration() {
-        ((BaseFamilyProfileActivity) getActivity()).startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
+        ((BaseFamilyProfileActivity) getActivity()).startFormActivity(Utils.metadata().familyMemberRegister.formName, null, (String)null);
     }
 
     @Override

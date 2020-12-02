@@ -17,6 +17,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.R;
+import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.contract.FamilyProfileContract;
 import org.smartregister.family.domain.FamilyEventClient;
 
@@ -35,6 +36,9 @@ public class BaseFamilyProfilePresenterTest extends BaseUnitTest {
 
     @Mock
     private FamilyProfileContract.Interactor interactor;
+
+    @Mock
+    private BaseFamilyProfileActivity familyProfileActivity;
 
     private Context context = RuntimeEnvironment.application;
 
@@ -69,13 +73,14 @@ public class BaseFamilyProfilePresenterTest extends BaseUnitTest {
 
     @Test
     public void testRefreshProfileTopSection() {
+        BaseFamilyProfilePresenter mockPresenter = Mockito.spy(presenter);
         CommonPersonObjectClient client = Mockito.mock(CommonPersonObjectClient.class);
         Mockito.doReturn("12345").when(client).getCaseId();
-        Mockito.doReturn(context).when(view).getApplicationContext();
+        Mockito.doReturn(familyProfileActivity).when(mockPresenter).getView();
 
-        presenter.refreshProfileTopSection(client);
+        mockPresenter.refreshProfileTopSection(client);
 
-        Mockito.verify(view).setProfileImage(client.getCaseId());
+        Mockito.verify(familyProfileActivity).setProfileImage(client.getCaseId());
     }
 
     @Test

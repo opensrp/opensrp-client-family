@@ -5,6 +5,8 @@ import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 import org.robolectric.Robolectric;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
+import org.smartregister.SyncConfiguration;
+import org.smartregister.SyncFilter;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.family.activity.BaseFamilyProfileActivity;
 import org.smartregister.family.activity.FamilyWizardFormActivity;
@@ -15,6 +17,7 @@ import org.smartregister.view.activity.DrishtiApplication;
 import timber.log.Timber;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TestApplication extends DrishtiApplication {
 
@@ -25,7 +28,9 @@ public class TestApplication extends DrishtiApplication {
         mInstance = this;
         context = Context.getInstance();
         context.updateApplicationContext(getApplicationContext());
-        CoreLibrary.init(context);
+        SyncConfiguration syncConfig = mock(SyncConfiguration.class);
+        when(syncConfig.getEncryptionParam()).thenReturn(SyncFilter.LOCATION_ID);
+        CoreLibrary.init(context, syncConfig);
         ConfigurableViewsLibrary.init(context);
 
         FamilyLibrary.init(context, getMetadata(), BuildConfig.VERSION_CODE, 2);

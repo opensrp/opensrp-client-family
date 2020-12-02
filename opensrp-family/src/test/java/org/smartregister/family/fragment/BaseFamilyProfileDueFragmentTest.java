@@ -1,7 +1,8 @@
 package org.smartregister.family.fragment;
 
-import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +17,15 @@ import org.smartregister.family.R;
 import org.smartregister.family.TestApplication;
 import org.smartregister.family.contract.FamilyProfileDueContract;
 import org.smartregister.family.presenter.BaseFamilyProfileDuePresenter;
+import org.smartregister.family.shadow.BaseFamilyProfileDueFragmentShadow;
 import org.smartregister.family.shadow.CustomFontTextViewShadow;
 import org.smartregister.family.util.DBConstants;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 /**
  * @author Elly Kitoto (Nerdstone)
@@ -35,9 +40,10 @@ public class BaseFamilyProfileDueFragmentTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        familyProfileDueFragment = Mockito.mock(BaseFamilyProfileDueFragment.class, Mockito.CALLS_REAL_METHODS);
-        BaseFamilyProfileDuePresenter familyProfileDuePresenter = new BaseFamilyProfileDuePresenter(Mockito.mock(FamilyProfileDueContract.View.class),
-                Mockito.mock(FamilyProfileDueContract.Model.class), null, "familybaseid");
+        familyProfileDueFragment = new BaseFamilyProfileDueFragmentShadow();
+        BaseFamilyProfileDuePresenter familyProfileDuePresenter = spy(new BaseFamilyProfileDuePresenter(Mockito.mock(FamilyProfileDueContract.View.class),
+                Mockito.mock(FamilyProfileDueContract.Model.class), null, "familybaseid"));
+        doNothing().when(familyProfileDuePresenter).initializeQueries(anyString());
         Whitebox.setInternalState(familyProfileDueFragment, "presenter", familyProfileDuePresenter);
         AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         Whitebox.setInternalState(familyProfileDueFragment, "searchView", new EditText(activity));
