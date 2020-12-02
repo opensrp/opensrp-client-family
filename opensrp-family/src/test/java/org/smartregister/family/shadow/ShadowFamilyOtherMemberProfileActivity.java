@@ -1,6 +1,6 @@
 package org.smartregister.family.shadow;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 import org.smartregister.family.activity.BaseFamilyOtherMemberProfileActivity;
 import org.smartregister.family.contract.FamilyOtherMemberContract;

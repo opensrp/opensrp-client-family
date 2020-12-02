@@ -1,6 +1,6 @@
 package org.smartregister.family.shadow;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
@@ -9,6 +9,7 @@ import org.smartregister.family.presenter.BaseFamilyRegisterPresenter;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 
@@ -49,5 +50,9 @@ public class FamilyRegisterActivityShadow extends BaseFamilyRegisterActivity {
     @Override
     protected Fragment[] getOtherFragments() {
         return new Fragment[0];
+    }
+
+    @Override
+    public void startFormActivity(String s, String s1, Map<String, String> map) {//do nothing
     }
 }

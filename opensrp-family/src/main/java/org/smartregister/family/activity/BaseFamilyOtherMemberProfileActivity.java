@@ -1,7 +1,7 @@
 package org.smartregister.family.activity;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -96,7 +96,7 @@ public abstract class BaseFamilyOtherMemberProfileActivity extends BaseProfileAc
         int itemId = item.getItemId();
 
         if (itemId == R.id.add_member) {
-            startFormActivity(Utils.metadata().familyMemberRegister.formName, null, null);
+            startFormActivity(Utils.metadata().familyMemberRegister.formName, null, (String)null);
         }
 
         return super.onOptionsItemSelected(item);

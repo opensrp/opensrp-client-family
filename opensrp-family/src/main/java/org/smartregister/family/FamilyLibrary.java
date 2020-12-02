@@ -1,11 +1,10 @@
 package org.smartregister.family;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.family.domain.FamilyMetadata;
-import org.smartregister.repository.Repository;
 import org.smartregister.repository.UniqueIdRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
