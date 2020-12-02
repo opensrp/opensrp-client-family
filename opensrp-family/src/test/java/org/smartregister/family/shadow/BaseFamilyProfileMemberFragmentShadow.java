@@ -9,12 +9,10 @@ import java.util.HashMap;
  */
 public class BaseFamilyProfileMemberFragmentShadow extends BaseFamilyProfileMemberFragment {
     @Override
-    protected void initializePresenter() {
-
+    protected void initializePresenter() {//mock method do nothing
     }
 
     @Override
-    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {
-
+    public void setAdvancedSearchFormData(HashMap<String, String> hashMap) {//mock method do nothing
     }
 }
