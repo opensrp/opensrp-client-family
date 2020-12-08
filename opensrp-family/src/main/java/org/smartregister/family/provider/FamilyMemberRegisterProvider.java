@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.family.R;
+import org.smartregister.family.dao.ChildDao;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
@@ -172,8 +175,8 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
     }
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-
         String baseEntityId = pc.getCaseId();
+        boolean isPhysicallyChallenged = ChildDao.isPhysicallyChallenged(baseEntityId);
         if (StringUtils.isNotBlank(baseEntityId)) {
             if (baseEntityId.equals(familyHead)) {
                 viewHolder.familyHead.setVisibility(View.VISIBLE);
@@ -181,6 +184,11 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
                 viewHolder.familyHead.setVisibility(View.GONE);
             }
 
+            if (isPhysicallyChallenged) {
+                viewHolder.physicallyChallenged.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.physicallyChallenged.setVisibility(View.GONE);
+            }
 
             if (baseEntityId.equals(primaryCaregiver)) {
                 viewHolder.primaryCaregiver.setVisibility(View.VISIBLE);
@@ -256,6 +264,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         public CustomFontTextView patientNameAge;
         public TextView gender;
         public TextView familyHead;
+        public TextView physicallyChallenged;
         public TextView primaryCaregiver;
         public ImageView nextArrow;
 
@@ -274,6 +283,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             gender = itemView.findViewById(R.id.gender);
             familyHead = itemView.findViewById(R.id.family_head);
             primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
+            physicallyChallenged = itemView.findViewById(R.id.physically_challenged);
             nextArrow = itemView.findViewById(R.id.next_arrow);
 
             statusLayout = itemView.findViewById(R.id.status_layout);
