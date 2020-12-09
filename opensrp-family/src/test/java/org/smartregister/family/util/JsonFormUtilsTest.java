@@ -46,6 +46,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.smartregister.family.util.JsonFormUtils.METADATA;
 import static org.smartregister.family.util.JsonFormUtils.STEP2;
+import static org.smartregister.family.util.JsonFormUtils.getFieldValue;
 import static org.smartregister.util.JsonFormUtils.ENCOUNTER_LOCATION;
 import static org.smartregister.util.JsonFormUtils.VALUE;
 
@@ -262,6 +263,11 @@ public class JsonFormUtilsTest extends BaseUnitTest {
         assertTrue(compressedFile.exists());
     }
 
+    @Test
+    public void testGetFieldValue() {
+        String fieldValue = getFieldValue(TestDataUtils.FILLED_FAMILY_FORM, "step1",  "fam_name");
+        assertEquals("John",  fieldValue);
+    }
 
     @Test
     public void testGetAutoPopulatedJsonEditFormString() throws JSONException {
