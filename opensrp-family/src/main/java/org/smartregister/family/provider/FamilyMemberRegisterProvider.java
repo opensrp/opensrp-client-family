@@ -19,7 +19,6 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.family.R;
-import org.smartregister.family.dao.ChildDao;
 import org.smartregister.family.fragment.BaseFamilyProfileMemberFragment;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
@@ -174,22 +173,14 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
     }
 
-    private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
+    protected void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String baseEntityId = pc.getCaseId();
-        boolean isPhysicallyChallenged = ChildDao.isPhysicallyChallenged(baseEntityId);
         if (StringUtils.isNotBlank(baseEntityId)) {
             if (baseEntityId.equals(familyHead)) {
                 viewHolder.familyHead.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.familyHead.setVisibility(View.GONE);
             }
-
-            if (isPhysicallyChallenged) {
-                viewHolder.physicallyChallenged.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.physicallyChallenged.setVisibility(View.GONE);
-            }
-
             if (baseEntityId.equals(primaryCaregiver)) {
                 viewHolder.primaryCaregiver.setVisibility(View.VISIBLE);
             } else {
