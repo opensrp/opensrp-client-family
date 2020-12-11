@@ -156,6 +156,7 @@ public class FamilyMemberRegisterProviderTest extends BaseUnitTest {
     public void testPopulateIdentifierColumn(){
         provider.getView(cursor, client, viewHolder);
         assertEquals(View.GONE,viewHolder.familyHead.getVisibility());
+        assertEquals(View.GONE,viewHolder.physicallyChallenged.getVisibility());
         assertEquals(View.GONE,viewHolder.primaryCaregiver.getVisibility());
         Whitebox.setInternalState(provider,"familyHead",client.getCaseId());
         Whitebox.setInternalState(provider,"primaryCaregiver",client.getCaseId());
