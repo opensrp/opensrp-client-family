@@ -34,6 +34,8 @@
     <!-- register -->
     <string name="family_head">Mkuu wa Kaya</string>
     <string name="primary_care_giver">Mlezi</string>
+    <string name="physically_challenged">Ulemavu wa mwili</string>
+
 
     <!-- member -->
     <string name="return_to_all_families">Rudi kwenye kaya zote</string>
