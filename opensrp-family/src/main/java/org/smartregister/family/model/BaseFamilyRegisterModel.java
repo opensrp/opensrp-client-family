@@ -1,9 +1,12 @@
 package org.smartregister.family.model;
 
+import android.content.Context;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterContract;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.family.util.Constants;
@@ -80,7 +83,10 @@ public class BaseFamilyRegisterModel implements FamilyRegisterContract.Model {
 
     @Override
     public JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception {
-        JSONObject form = getFormUtils().getFormJson(formName);
+//        JSONObject form = getFormUtils().getFormJson(formName);
+        com.vijay.jsonwizard.utils.FormUtils formUtils = new com.vijay.jsonwizard.utils.FormUtils();
+        JSONObject form = formUtils.getFormJsonFromRepositoryOrAssets(FamilyLibrary.getInstance().context().applicationContext(), formName);
+
         if (form == null) {
             return null;
         }
