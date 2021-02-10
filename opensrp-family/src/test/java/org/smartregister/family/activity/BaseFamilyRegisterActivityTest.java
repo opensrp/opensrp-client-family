@@ -93,6 +93,8 @@ public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
         assertNotNull(intent);
         assertEquals(FamilyWizardFormActivity.class, shadowOf(intent).getIntentClass());
         assertEquals(getString(R.string.save), extraForm.getSaveLabel());
+        assertEquals(R.color.family_actionbar, extraForm.getActionBarBackground());
+        assertEquals(R.color.family_navigation, extraForm.getNavigationBackground());
         assertEquals(intent.getStringExtra(Constants.JSON_FORM_EXTRA.JSON), form.toString());
         assertNotNull(intent.getSerializableExtra(JsonFormConstants.JSON_FORM_KEY.FORM));
     }
