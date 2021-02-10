@@ -2,9 +2,11 @@ package org.smartregister.family.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
+import com.vijay.jsonwizard.domain.Form;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +30,7 @@ import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -88,8 +91,10 @@ public class BaseFamilyRegisterActivityTest extends BaseUnitTest {
         JSONObject form = new JSONObject(TestDataUtils.FAMILY_MEMBER_FORM);
         familyRegisterActivity.startFormActivity(form);
         Intent intent = shadowOf(familyRegisterActivity).getNextStartedActivity();
+        Form extraForm = (Form)intent.getSerializableExtra(JsonFormConstants.JSON_FORM_KEY.FORM);
         assertNotNull(intent);
         assertEquals(FamilyWizardFormActivity.class, shadowOf(intent).getIntentClass());
+        assertEquals(getString(R.string.save), extraForm.getSaveLabel());
         assertEquals(intent.getStringExtra(Constants.JSON_FORM_EXTRA.JSON), form.toString());
         assertNotNull(intent.getSerializableExtra(JsonFormConstants.JSON_FORM_KEY.FORM));
     }
