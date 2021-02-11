@@ -22,6 +22,7 @@ configure(allprojects) { project ->
             jcenter()
             mavenCentral()
             maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+            maven { url 'https://dl.bintray.com/ibm-watson-health/ibm-fhir-server-releases'}
             mavenLocal()
         }
     }
