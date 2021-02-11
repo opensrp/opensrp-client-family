@@ -1,7 +1,6 @@
 package org.smartregister.family.adapter;
 
 import android.database.Cursor;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.smartregister.commonregistry.CommonRepository;

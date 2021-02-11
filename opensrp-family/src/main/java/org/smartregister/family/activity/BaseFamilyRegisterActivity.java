@@ -1,8 +1,8 @@
 package org.smartregister.family.activity;
 
 import android.content.Intent;
-
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.domain.Form;
 
@@ -27,7 +27,7 @@ public abstract class BaseFamilyRegisterActivity extends BaseRegisterActivity im
 
     @Override
     public void startRegistration() {
-        startFormActivity(Utils.metadata().familyRegister.formName, null, (String) null);
+        startFormActivity(Utils.metadata().familyRegister.formName, null, (String)null);
     }
 
     @Override

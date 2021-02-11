@@ -1,6 +1,5 @@
 package org.smartregister.family.sample.activity;
 
-
 import androidx.viewpager.widget.ViewPager;
 
 import org.smartregister.family.activity.BaseFamilyProfileActivity;

@@ -1,8 +1,7 @@
 package org.smartregister.family.sample.activity;
 
-import android.view.MenuItem;
-
 import androidx.fragment.app.Fragment;
+import android.view.MenuItem;
 
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.model.BaseFamilyRegisterModel;
@@ -12,7 +11,7 @@ import org.smartregister.view.fragment.BaseRegisterFragment;
 
 import java.util.Map;
 
-public class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
+public  class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
 
     @Override
     protected void initializePresenter() {
@@ -30,8 +29,7 @@ public class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
     }
 
     @Override
-    public void startFormActivity(String s, String s1, Map<String, String> map) {
-        // Abstract method implementation
+    public void startFormActivity(String s, String s1, Map<String, String> map) {//do nothing
     }
 
     @Override

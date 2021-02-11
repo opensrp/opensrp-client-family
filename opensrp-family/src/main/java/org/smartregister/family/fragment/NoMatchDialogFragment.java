@@ -6,12 +6,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import androidx.annotation.Nullable;
 
 import org.smartregister.family.R;
 import org.smartregister.view.activity.BaseRegisterActivity;

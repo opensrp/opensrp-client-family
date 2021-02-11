@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -21,7 +20,6 @@ import org.smartregister.view.activity.BaseProfileActivity;
 
 
 @RunWith(RobolectricTestRunner.class)
-@PowerMockRunnerDelegate(RobolectricTestRunner.class)
 @Config(application = TestApplication.class, shadows = {CustomFontTextViewShadow.class}, sdk = Build.VERSION_CODES.P)
 @PowerMockIgnore({"org.mockito.*", "org.robolectric.*", "android.*"})
 public abstract class BaseUnitTest {

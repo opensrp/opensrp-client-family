@@ -4,9 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.widget.ImageView;
-
 import androidx.core.content.ContextCompat;
+import android.widget.ImageView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.domain.Photo;

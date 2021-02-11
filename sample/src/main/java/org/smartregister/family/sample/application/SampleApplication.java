@@ -13,6 +13,7 @@ import org.smartregister.family.sample.BuildConfig;
 import org.smartregister.family.sample.activity.FamilyProfileActivity;
 import org.smartregister.family.sample.job.SampleJobCreator;
 import org.smartregister.family.sample.repository.SampleRepository;
+import org.smartregister.family.sample.sync.SampleSyncConfiguration;
 import org.smartregister.family.sample.util.SampleConstants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
@@ -43,7 +44,7 @@ public class SampleApplication extends DrishtiApplication {
         context.updateCommonFtsObject(createCommonFtsObject());
 
         //Initialize Modules
-        CoreLibrary.init(context);
+        CoreLibrary.init(context,new SampleSyncConfiguration());
         ConfigurableViewsLibrary.init(context);
         FamilyLibrary.init(context, getMetadata(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 
@@ -54,8 +55,8 @@ public class SampleApplication extends DrishtiApplication {
         //Auto login by default
         byte[] password = "pwd".getBytes();
         context.session().start(context.session().lengthInMilliseconds());
-        context.configuration().getDrishtiApplication().setPassword(password.getBytes());
-        context.session().setPassword(password.getBytes());
+        context.configuration().getDrishtiApplication().setPassword(password);
+        context.session().setPassword(password);
 
 
         //init Job Manager

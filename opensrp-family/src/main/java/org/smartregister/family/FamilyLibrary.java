@@ -1,6 +1,5 @@
 package org.smartregister.family;
 
-
 import androidx.annotation.NonNull;
 
 import org.smartregister.Context;

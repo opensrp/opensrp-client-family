@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.junit.Before;
@@ -33,6 +33,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.family.BaseUnitTest;
+import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.R;
 import org.smartregister.family.activity.BaseFamilyRegisterActivity;
 import org.smartregister.family.mock.MockBaseFamilyRegisterFragment;
@@ -40,6 +41,7 @@ import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
 import org.smartregister.family.util.Utils;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
+import org.smartregister.view.contract.IView;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -117,8 +120,9 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
 
     @Test
     public void testInitializeAdapter() {
+        FamilyLibrary.getInstance().setMetadata(getMetadata());
         when(registerFragment.getActivity()).thenReturn(activity);
-        registerFragment.initializeAdapter(new HashSet<View>());
+        registerFragment.initializeAdapter(new HashSet<IView>());
         verify(clientsView).setAdapter(adapterArgumentCaptor.capture());
         assertNotNull(adapterArgumentCaptor.getValue());
         assertEquals(20, adapterArgumentCaptor.getValue().currentlimit);
@@ -161,7 +165,7 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
         Utils.metadata().updateFamilyRegister("register_family.json", "ec_family", "", "", "", "", "");
         when(registerFragment.getActivity()).thenReturn(baseFamilyRegisterActivity);
         registerFragment.startRegistration();
-        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json", null, null);
+        verify(baseFamilyRegisterActivity).startFormActivity("register_family.json", null, (String)null);
     }
 
     @Test

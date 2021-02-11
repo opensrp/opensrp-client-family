@@ -4,14 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -172,8 +173,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
 
     }
 
-    private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
-
+    protected void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String baseEntityId = pc.getCaseId();
         if (StringUtils.isNotBlank(baseEntityId)) {
             if (baseEntityId.equals(familyHead)) {
@@ -181,8 +181,6 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             } else {
                 viewHolder.familyHead.setVisibility(View.GONE);
             }
-
-
             if (baseEntityId.equals(primaryCaregiver)) {
                 viewHolder.primaryCaregiver.setVisibility(View.VISIBLE);
             } else {
@@ -257,6 +255,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
         public CustomFontTextView patientNameAge;
         public TextView gender;
         public TextView familyHead;
+        public TextView physicallyChallenged;
         public TextView primaryCaregiver;
         public ImageView nextArrow;
 
@@ -275,6 +274,7 @@ public class FamilyMemberRegisterProvider implements RecyclerViewProvider<Family
             gender = itemView.findViewById(R.id.gender);
             familyHead = itemView.findViewById(R.id.family_head);
             primaryCaregiver = itemView.findViewById(R.id.primary_caregiver);
+            physicallyChallenged = itemView.findViewById(R.id.physically_challenged);
             nextArrow = itemView.findViewById(R.id.next_arrow);
 
             statusLayout = itemView.findViewById(R.id.status_layout);

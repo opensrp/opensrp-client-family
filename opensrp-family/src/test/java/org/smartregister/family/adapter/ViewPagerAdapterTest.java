@@ -1,8 +1,8 @@
 package org.smartregister.family.adapter;
 
 import android.database.DataSetObserver;
-import androidx.core.app.Fragment;
-import androidx.core.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
 
 import org.junit.Before;
