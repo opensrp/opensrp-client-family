@@ -1,15 +1,20 @@
 package org.smartregister.family.model;
 
+import org.json.JSONArray;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
+import org.smartregister.domain.Response;
 import org.smartregister.family.contract.FamilyProfileActivityContract;
 import org.smartregister.family.util.ConfigHelper;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
+import org.smartregister.view.contract.IField;
+import org.smartregister.view.contract.IView;
 
+import java.util.List;
 import java.util.Set;
 
 public class BaseFamilyProfileActivityModel implements FamilyProfileActivityContract.Model {
@@ -25,7 +30,7 @@ public class BaseFamilyProfileActivityModel implements FamilyProfileActivityCont
     }
 
     @Override
-    public Set<View> getRegisterActiveColumns(String viewConfigurationIdentifier) {
+    public Set<IView> getRegisterActiveColumns(String viewConfigurationIdentifier) {
         return ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().getRegisterActiveColumns(viewConfigurationIdentifier);
     }
 
@@ -41,6 +46,21 @@ public class BaseFamilyProfileActivityModel implements FamilyProfileActivityCont
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         queryBUilder.selectInitiateMainTable(tableName, mainColumns(tableName));
         return queryBUilder.mainCondition(mainCondition);
+    }
+
+    @Override
+    public String getFilterText(List<IField> list, String s) {
+        return null;
+    }
+
+    @Override
+    public String getSortText(IField iField) {
+        return null;
+    }
+
+    @Override
+    public JSONArray getJsonArray(Response<String> response) {
+        return null;
     }
 
     protected String[] mainColumns(String tableName) {

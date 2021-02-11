@@ -7,6 +7,9 @@ import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
+import org.smartregister.view.contract.IField;
+import org.smartregister.view.contract.IView;
+import org.smartregister.view.contract.IViewConfiguration;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -21,7 +24,7 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
 
     protected RegisterConfiguration config;
 
-    protected Set<org.smartregister.configurableviews.model.View> visibleColumns = new TreeSet<>();
+    protected Set<IView> visibleColumns = new TreeSet<>();
     protected String viewConfigurationIdentifier;
 
     public BaseFamilyRegisterFragmentPresenter(FamilyRegisterFragmentContract.View view, FamilyRegisterFragmentContract.Model model, String viewConfigurationIdentifier) {
@@ -37,7 +40,7 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
             return;
         }
 
-        ViewConfiguration viewConfiguration = model.getViewConfiguration(viewConfigurationIdentifier);
+        IViewConfiguration viewConfiguration = model.getViewConfiguration(viewConfigurationIdentifier);
         if (viewConfiguration != null) {
             config = (RegisterConfiguration) viewConfiguration.getMetadata();
             setVisibleColumns(model.getRegisterActiveColumns(viewConfigurationIdentifier));
@@ -73,7 +76,7 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
     }
 
     @Override
-    public void updateSortAndFilter(List<Field> filterList, Field sortField) {
+    public void updateSortAndFilter(List<IField> filterList, IField sortField) {
         String filterText = model.getFilterText(filterList, getView().getString(org.smartregister.R.string.filter));
         String sortText = model.getSortText(sortField);
 
@@ -92,7 +95,7 @@ public abstract class BaseFamilyRegisterFragmentPresenter implements FamilyRegis
             return null;
     }
 
-    private void setVisibleColumns(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
+    private void setVisibleColumns(Set<IView> visibleColumns) {
         this.visibleColumns = visibleColumns;
     }
 

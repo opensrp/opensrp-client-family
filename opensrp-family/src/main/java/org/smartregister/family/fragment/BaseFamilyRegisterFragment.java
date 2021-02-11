@@ -15,6 +15,7 @@ import org.smartregister.family.util.Constants;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
+import org.smartregister.view.contract.IView;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 import org.smartregister.view.customcontrols.FontVariant;
 import org.smartregister.view.fragment.BaseRegisterFragment;
@@ -26,7 +27,7 @@ public abstract class BaseFamilyRegisterFragment extends BaseRegisterFragment im
     public static final String CLICK_VIEW_DOSAGE_STATUS = "click_view_dosage_status";
 
     @Override
-    public void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns) {
+    public void initializeAdapter(Set<IView> visibleColumns) {
         FamilyRegisterProvider familyRegisterProvider = new FamilyRegisterProvider(getActivity(), commonRepository(), visibleColumns, registerActionHandler, paginationViewHandler);
         clientAdapter = new RecyclerViewPaginatedAdapter(null, familyRegisterProvider, context().commonrepository(this.tablename));
         clientAdapter.setCurrentlimit(20);

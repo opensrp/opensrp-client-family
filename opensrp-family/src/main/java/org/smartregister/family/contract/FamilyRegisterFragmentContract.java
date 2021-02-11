@@ -15,15 +15,11 @@ public interface FamilyRegisterFragmentContract {
 
     interface View extends BaseRegisterFragmentContract.View {
 
-        void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns);
-
         FamilyRegisterFragmentContract.Presenter presenter();
 
     }
 
     interface Presenter extends BaseRegisterFragmentContract.Presenter {
-
-        void updateSortAndFilter(List<Field> filterList, Field sortField);
 
         String getMainCondition();
 
@@ -33,21 +29,13 @@ public interface FamilyRegisterFragmentContract {
 
     }
 
-    interface Model {
+    interface Model extends BaseRegisterFragmentContract.Model {
 
         RegisterConfiguration defaultRegisterConfiguration();
-
-        ViewConfiguration getViewConfiguration(String viewConfigurationIdentifier);
-
-        Set<org.smartregister.configurableviews.model.View> getRegisterActiveColumns(String viewConfigurationIdentifier);
 
         String countSelect(String tableName, String mainCondition);
 
         String mainSelect(String tableName, String mainCondition);
-
-        String getFilterText(List<Field> filterList, String filter);
-
-        String getSortText(Field sortField);
 
         JSONArray getJsonArray(Response<String> response);
 

@@ -2,8 +2,9 @@ package org.smartregister.family.contract;
 
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
-import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.view.contract.BaseProfileContract;
+import org.smartregister.view.contract.IView;
+import org.smartregister.view.contract.IViewConfiguration;
 
 import java.util.Set;
 
@@ -42,9 +43,9 @@ public interface FamilyOtherMemberContract {
     interface Model {
         RegisterConfiguration defaultRegisterConfiguration();
 
-        ViewConfiguration getViewConfiguration(String viewConfigurationIdentifier);
+        IViewConfiguration getViewConfiguration(String viewConfigurationIdentifier);
 
-        Set<org.smartregister.configurableviews.model.View> getRegisterActiveColumns(String viewConfigurationIdentifier);
+        Set<IView> getRegisterActiveColumns(String viewConfigurationIdentifier);
     }
 
     interface Interactor {

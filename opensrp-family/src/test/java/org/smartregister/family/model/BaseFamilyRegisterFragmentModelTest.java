@@ -10,12 +10,12 @@ import org.powermock.reflect.Whitebox;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.configurableviews.helper.ConfigurableViewsHelper;
 import org.smartregister.configurableviews.model.Field;
-import org.smartregister.configurableviews.model.View;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.ResponseStatus;
 import org.smartregister.family.BaseUnitTest;
+import org.smartregister.view.contract.IView;
 
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public class BaseFamilyRegisterFragmentModelTest extends BaseUnitTest {
     private ViewConfiguration viewConfiguration;
 
     @Mock
-    private Set<View> views;
+    private Set<IView> views;
 
     @Mock
     private Response<String> response;

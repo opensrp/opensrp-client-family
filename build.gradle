@@ -22,6 +22,7 @@ configure(allprojects) { project ->
             jcenter()
             mavenCentral()
             maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+            maven { url 'https://dl.bintray.com/ibm-watson-health/ibm-fhir-server-releases'}
             mavenLocal()
         }
     }
@@ -33,7 +34,7 @@ subprojects {
 
     group = 'org.smartregister'
 
-    ext.androidToolsBuildGradle     = '29.0.3'
+    ext.androidToolsBuildGradle     = '4.0.2'
     ext.androidBuildToolsVersion    = '29.0.3'
     ext.androidMinSdkVersion        = 18
     ext.androidCompileSdkVersion    = 28

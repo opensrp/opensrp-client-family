@@ -20,7 +20,7 @@ public interface FamilyRegisterContract {
 
         void saveLanguage(String language);
 
-        void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception;
+        void startForm(String formName, String entityId, String metadata, String currentLocationId);
 
         void saveForm(String jsonString, boolean isEditMode);
 

@@ -45,6 +45,4 @@ public  class FamilyRegisterActivity extends BaseFamilyRegisterActivity {
         bottomNavigationView.getMenu().removeItem(org.smartregister.R.id.action_library);
     }
 
-
-
 }

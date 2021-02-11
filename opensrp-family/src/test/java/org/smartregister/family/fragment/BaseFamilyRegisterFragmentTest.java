@@ -41,6 +41,7 @@ import org.smartregister.family.shadow.FamilyRegisterActivityShadow;
 import org.smartregister.family.util.Utils;
 import org.smartregister.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
+import org.smartregister.view.contract.IView;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class BaseFamilyRegisterFragmentTest extends BaseUnitTest {
     public void testInitializeAdapter() {
         FamilyLibrary.getInstance().setMetadata(getMetadata());
         when(registerFragment.getActivity()).thenReturn(activity);
-        registerFragment.initializeAdapter(new HashSet<View>());
+        registerFragment.initializeAdapter(new HashSet<IView>());
         verify(clientsView).setAdapter(adapterArgumentCaptor.capture());
         assertNotNull(adapterArgumentCaptor.getValue());
         assertEquals(20, adapterArgumentCaptor.getValue().currentlimit);

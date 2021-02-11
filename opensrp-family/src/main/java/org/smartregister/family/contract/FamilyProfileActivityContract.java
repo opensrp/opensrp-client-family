@@ -10,8 +10,6 @@ public interface FamilyProfileActivityContract {
 
     interface View extends BaseRegisterFragmentContract.View {
 
-        void initializeAdapter(Set<org.smartregister.configurableviews.model.View> visibleColumns);
-
         FamilyProfileActivityContract.Presenter presenter();
     }
 
@@ -24,13 +22,9 @@ public interface FamilyProfileActivityContract {
         String getQueryTable();
     }
 
-    interface Model {
+    interface Model extends BaseRegisterFragmentContract.Model{
 
         RegisterConfiguration defaultRegisterConfiguration();
-
-        ViewConfiguration getViewConfiguration(String viewConfigurationIdentifier);
-
-        Set<org.smartregister.configurableviews.model.View> getRegisterActiveColumns(String viewConfigurationIdentifier);
 
         String countSelect(String tableName, String mainCondition);
 

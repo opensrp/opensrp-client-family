@@ -2,13 +2,13 @@ package org.smartregister.family.model;
 
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
-import org.smartregister.configurableviews.model.View;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.family.contract.FamilyOtherMemberProfileFragmentContract;
 import org.smartregister.family.util.ConfigHelper;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.family.util.Utils;
+import org.smartregister.view.contract.IView;
 
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public class BaseFamilyOtherMemberProfileFragmentModel implements FamilyOtherMem
     }
 
     @Override
-    public Set<View> getRegisterActiveColumns(String viewConfigurationIdentifier) {
+    public Set<IView> getRegisterActiveColumns(String viewConfigurationIdentifier) {
         return ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().getRegisterActiveColumns(viewConfigurationIdentifier);
     }
 
