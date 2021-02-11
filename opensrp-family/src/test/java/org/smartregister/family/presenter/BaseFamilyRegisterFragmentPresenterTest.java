@@ -16,6 +16,7 @@ import org.smartregister.family.BaseUnitTest;
 import org.smartregister.family.FamilyLibrary;
 import org.smartregister.family.contract.FamilyRegisterFragmentContract;
 import org.smartregister.family.domain.FamilyMetadata;
+import org.smartregister.view.contract.IField;
 
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class BaseFamilyRegisterFragmentPresenterTest extends BaseUnitTest {
 
     @Test
     public void testUpdateSortAndFilter() {
-        List<Field> filterList = Mockito.mock(List.class);
+        List<IField> filterList = Mockito.mock(List.class);
         Field sortField = Mockito.mock(Field.class);
 
         Mockito.doReturn("123").when(view).getString(org.smartregister.R.string.filter);

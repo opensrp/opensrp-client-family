@@ -9,9 +9,9 @@ import org.mockito.junit.MockitoRule;
 import org.powermock.reflect.Whitebox;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.configurableviews.helper.ConfigurableViewsHelper;
-import org.smartregister.configurableviews.model.View;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.family.BaseUnitTest;
+import org.smartregister.view.contract.IView;
 
 import java.util.Set;
 
@@ -38,7 +38,7 @@ public class BaseFamilyOtherMemberProfileActivityModelTest extends BaseUnitTest 
     private ViewConfiguration viewConfiguration;
 
     @Mock
-    private Set<View> views;
+    private Set<IView> views;
 
     @Before
     public void setUp() {
