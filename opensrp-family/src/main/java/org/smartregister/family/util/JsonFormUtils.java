@@ -16,13 +16,16 @@ import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
+import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.form.FormLocation;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.dao.FamilyMemberDao;
 import org.smartregister.family.domain.FamilyEventClient;
+import org.smartregister.family.model.BaseFamilyMemberModel;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.ImageRepository;
@@ -40,6 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -244,11 +248,83 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
+            if (encounterType.equals(Utils.metadata().familyRegister.updateEventType))
+                if (baseClient != null) {
+                    updateFamilyMembersLastName(familyBaseEntityId, baseClient.getFirstName(),formTag(allSharedPreferences));
+                }
+
+
             return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
             Timber.e(e);
             return null;
         }
+    }
+
+    private static void updateFamilyMembersLastName(String familyBaseEntityId, String firstName, FormTag formTag) throws Exception {
+        List<BaseFamilyMemberModel> familyMemberModels = FamilyMemberDao.familyMembersToUpdateLastName(familyBaseEntityId);
+
+        if (firstName != null && familyMemberModels != null) {
+            for (BaseFamilyMemberModel familyMemberModel : familyMemberModels) {
+
+                Event event = new Event()
+                        .withBaseEntityId(familyMemberModel.getBaseEntityId())
+                        .withEventType(familyMemberModel.getEntityType().equals("ec_family_member") ? "Update Family Member Registration" : "Update Child Registration")
+                        .withEntityType(familyMemberModel.getEntityType())
+                        .withEventDate(new Date());
+                event.withDateCreated(new Date());
+
+                List<Obs> obs = new ArrayList<>();
+                obs.add(getObs("lastName", Collections.singletonList(firstName),
+                        "lastName", Collections.singletonList(firstName)));
+                event.setObs(obs);
+
+                tagSyncMetadata(Utils.context().allSharedPreferences(), event);
+
+                JSONObject eventPartialJson = new JSONObject(JsonFormUtils.gson.toJson(event));
+                getSyncHelper().addEvent(familyMemberModel.getBaseEntityId(), eventPartialJson);
+
+                // client
+                Client client = (Client) new Client(familyMemberModel.getBaseEntityId()).withFirstName(firstName)
+                        .withDateCreated(new Date());
+
+                client.setLocationId(formTag.locationId);
+                client.setTeamId(formTag.teamId);
+
+                client.setClientApplicationVersion(formTag.appVersion);
+                client.setClientApplicationVersionName(formTag.appVersionName);
+                client.setClientDatabaseVersion(formTag.databaseVersion);
+                JsonFormUtils.mergeAndSaveClient(getSyncHelper(), client);
+            }
+        }
+
+
+
+
+/*        if (baseClient != null) {
+            clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));
+//            if (isEditMode) {
+                JsonFormUtils.mergeAndSaveClient(getSyncHelper(), baseClient);
+            *//*} else {
+                getSyncHelper().addClient(baseClient.getBaseEntityId(), clientJson);
+            }*//*
+        }*/
+    }
+
+    public static ECSyncHelper getSyncHelper() {
+        return FamilyLibrary.getInstance().getEcSyncHelper();
+    }
+
+    private static Obs getObs(String fieldCode, List<Object> values, String formSubmissionField, List<Object> humanReadableValues) {
+        Obs obs = new Obs();
+        obs.setFieldType("concept");
+        obs.setFieldDataType("text");
+        obs.setFieldCode(fieldCode);
+        obs.setParentCode("");
+        obs.setValues(values);
+        obs.setFormSubmissionField(formSubmissionField);
+        obs.setHumanReadableValues(humanReadableValues);
+        return obs;
     }
 
     public static void mergeAndSaveClient(ECSyncHelper ecUpdater, Client baseClient) throws Exception {
@@ -282,7 +358,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         try {
             compressedImageFile = FamilyLibrary.getInstance().getCompressor().compressToBitmap(file);
         } catch (IOException e) {
-          Timber.e(e, "Error compressing image");
+            Timber.e(e, "Error compressing image");
         }
         saveStaticImageToDisk(compressedImageFile, providerId, entityId);
 
