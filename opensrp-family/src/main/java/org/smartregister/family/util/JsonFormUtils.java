@@ -2,13 +2,13 @@ package org.smartregister.family.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Pair;
 
 import com.google.common.reflect.TypeToken;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -249,7 +249,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
             if (encounterType.equals(Utils.metadata().familyRegister.updateEventType) && baseClient != null)
-                updateFamilyMembersLastName(familyBaseEntityId, baseClient.getFirstName(), formTag(allSharedPreferences));
+                updateFamilyMembersLastName(familyBaseEntityId, baseClient.getFirstName(), formTag(allSharedPreferences), allSharedPreferences);
 
             return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
@@ -258,8 +258,22 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    private static void updateFamilyMembersLastName(String familyBaseEntityId, String firstName, FormTag formTag) throws Exception {
+    private static void updateFamilyMembersLastName(String familyBaseEntityId, String firstName, FormTag formTag, AllSharedPreferences allSharedPreferences) throws Exception {
+        List<Pair<Client, Event>> familyMembersEvents = processFamilyMemberUpdateFamilyName(familyBaseEntityId, firstName, formTag, allSharedPreferences);
+
+        for (Pair<Client, Event> familyMembersEvent : familyMembersEvents) {
+
+            JSONObject eventPartialJson = new JSONObject(JsonFormUtils.gson.toJson(familyMembersEvent.getRight()));
+            getSyncHelper().addEvent(familyMembersEvent.getLeft().getBaseEntityId(), eventPartialJson);
+            JsonFormUtils.mergeAndSaveClient(getSyncHelper(), familyMembersEvent.getLeft());
+        }
+    }
+
+
+    protected static List<Pair<Client, Event>> processFamilyMemberUpdateFamilyName(String familyBaseEntityId, String firstName, FormTag formTag, AllSharedPreferences allSharedPreferences) {
         List<BaseFamilyMemberModel> familyMembers = FamilyMemberDao.familyMembersToUpdateLastName(familyBaseEntityId);
+        List<Pair<Client, Event>> clientEventPairsList = new ArrayList<>();
+
 
         if (firstName != null && familyMembers != null) {
             for (BaseFamilyMemberModel familyMember : familyMembers) {
@@ -272,14 +286,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 event.withDateCreated(new Date());
 
                 List<Obs> obs = new ArrayList<>();
-                obs.add(getObs("lastName", Collections.singletonList(firstName),
-                        "lastName", Collections.singletonList(firstName)));
+                obs.add(getObs(Collections.singletonList(firstName),
+                        Collections.singletonList(firstName)));
                 event.setObs(obs);
 
-                tagSyncMetadata(Utils.context().allSharedPreferences(), event);
-
-                JSONObject eventPartialJson = new JSONObject(JsonFormUtils.gson.toJson(event));
-                getSyncHelper().addEvent(familyMember.getBaseEntityId(), eventPartialJson);
+                tagSyncMetadata(allSharedPreferences, event);
 
                 // client
                 Client client = (Client) new Client(familyMember.getBaseEntityId()).withFirstName(firstName)
@@ -291,23 +302,27 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 client.setClientApplicationVersion(formTag.appVersion);
                 client.setClientApplicationVersionName(formTag.appVersionName);
                 client.setClientDatabaseVersion(formTag.databaseVersion);
-                JsonFormUtils.mergeAndSaveClient(getSyncHelper(), client);
+
+
+                clientEventPairsList.add(Pair.of(client, event));
             }
+            return clientEventPairsList;
         }
+        return clientEventPairsList;
     }
 
     public static ECSyncHelper getSyncHelper() {
         return FamilyLibrary.getInstance().getEcSyncHelper();
     }
 
-    private static Obs getObs(String fieldCode, List<Object> values, String formSubmissionField, List<Object> humanReadableValues) {
+    private static Obs getObs(List<Object> values, List<Object> humanReadableValues) {
         Obs obs = new Obs();
         obs.setFieldType("concept");
         obs.setFieldDataType("text");
-        obs.setFieldCode(fieldCode);
+        obs.setFieldCode("lastName");
         obs.setParentCode("");
         obs.setValues(values);
-        obs.setFormSubmissionField(formSubmissionField);
+        obs.setFormSubmissionField("lastName");
         obs.setHumanReadableValues(humanReadableValues);
         return obs;
     }
@@ -615,10 +630,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static void addLocHierarchyQuestions(JSONObject form) {
         try {
 
-            List<Pair<String, String>> locationFields = FamilyLibrary.getInstance().metadata().getLocationFields();
+            List<android.util.Pair<String, String>> locationFields = FamilyLibrary.getInstance().metadata().getLocationFields();
             ArrayList<String> allowedLevels = FamilyLibrary.getInstance().metadata().getLocationHierarchy();
             if (locationFields != null && locationFields.size() > 0) {
-                for (Pair<String, String> locationPair : locationFields) {
+                for (android.util.Pair<String, String> locationPair : locationFields) {
                     List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(allowedLevels);
                     List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, allowedLevels);
 
