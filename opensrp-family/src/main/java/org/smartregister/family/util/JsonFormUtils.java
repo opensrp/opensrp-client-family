@@ -248,11 +248,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
-            if (encounterType.equals(Utils.metadata().familyRegister.updateEventType))
-                if (baseClient != null) {
-                    updateFamilyMembersLastName(familyBaseEntityId, baseClient.getFirstName(),formTag(allSharedPreferences));
-                }
-
+            if (encounterType.equals(Utils.metadata().familyRegister.updateEventType) && baseClient != null)
+                updateFamilyMembersLastName(familyBaseEntityId, baseClient.getFirstName(), formTag(allSharedPreferences));
 
             return new FamilyEventClient(baseClient, baseEvent);
         } catch (Exception e) {
@@ -262,15 +259,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     private static void updateFamilyMembersLastName(String familyBaseEntityId, String firstName, FormTag formTag) throws Exception {
-        List<BaseFamilyMemberModel> familyMemberModels = FamilyMemberDao.familyMembersToUpdateLastName(familyBaseEntityId);
+        List<BaseFamilyMemberModel> familyMembers = FamilyMemberDao.familyMembersToUpdateLastName(familyBaseEntityId);
 
-        if (firstName != null && familyMemberModels != null) {
-            for (BaseFamilyMemberModel familyMemberModel : familyMemberModels) {
+        if (firstName != null && familyMembers != null) {
+            for (BaseFamilyMemberModel familyMember : familyMembers) {
 
                 Event event = new Event()
-                        .withBaseEntityId(familyMemberModel.getBaseEntityId())
-                        .withEventType(familyMemberModel.getEntityType().equals("ec_family_member") ? "Update Family Member Registration" : "Update Child Registration")
-                        .withEntityType(familyMemberModel.getEntityType())
+                        .withBaseEntityId(familyMember.getBaseEntityId())
+                        .withEventType(familyMember.getEntityType().equals("ec_family_member") ? "Update Family Member Registration" : "Update Child Registration")
+                        .withEntityType(familyMember.getEntityType())
                         .withEventDate(new Date());
                 event.withDateCreated(new Date());
 
@@ -282,10 +279,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 tagSyncMetadata(Utils.context().allSharedPreferences(), event);
 
                 JSONObject eventPartialJson = new JSONObject(JsonFormUtils.gson.toJson(event));
-                getSyncHelper().addEvent(familyMemberModel.getBaseEntityId(), eventPartialJson);
+                getSyncHelper().addEvent(familyMember.getBaseEntityId(), eventPartialJson);
 
                 // client
-                Client client = (Client) new Client(familyMemberModel.getBaseEntityId()).withFirstName(firstName)
+                Client client = (Client) new Client(familyMember.getBaseEntityId()).withFirstName(firstName)
                         .withDateCreated(new Date());
 
                 client.setLocationId(formTag.locationId);
@@ -297,18 +294,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 JsonFormUtils.mergeAndSaveClient(getSyncHelper(), client);
             }
         }
-
-
-
-
-/*        if (baseClient != null) {
-            clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));
-//            if (isEditMode) {
-                JsonFormUtils.mergeAndSaveClient(getSyncHelper(), baseClient);
-            *//*} else {
-                getSyncHelper().addClient(baseClient.getBaseEntityId(), clientJson);
-            }*//*
-        }*/
     }
 
     public static ECSyncHelper getSyncHelper() {
