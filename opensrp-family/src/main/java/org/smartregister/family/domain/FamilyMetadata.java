@@ -2,6 +2,7 @@ package org.smartregister.family.domain;
 
 import android.util.Pair;
 
+import com.vijay.jsonwizard.activities.FormConfigurationJsonWizardFormActivity;
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +34,23 @@ public class FamilyMetadata {
     private String defaultLocation = "";
     private ArrayList<String> locationHierarchy = new ArrayList<>();
 
-    public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity, Class<? extends JsonWizardFormActivity> familyMemberFormActivity, Class<? extends BaseProfileActivity> profileActivity, String uniqueIdentifierKey, boolean formWizardValidateRequiredFieldsBefore) {
+    public FamilyMetadata(Class<? extends JsonWizardFormActivity> familyFormActivity,
+                          Class<? extends JsonWizardFormActivity> familyMemberFormActivity,
+                          Class<? extends BaseProfileActivity> profileActivity,
+                          String uniqueIdentifierKey,
+                          boolean formWizardValidateRequiredFieldsBefore) {
+        this.familyFormActivity = familyFormActivity;
+        this.familyMemberFormActivity = familyMemberFormActivity;
+        this.profileActivity = profileActivity;
+        this.uniqueIdentifierKey = uniqueIdentifierKey;
+        this.formWizardValidateRequiredFieldsBefore = formWizardValidateRequiredFieldsBefore;
+    }
+
+    public FamilyMetadata(Class<? extends FormConfigurationJsonWizardFormActivity> familyFormActivity,
+                          Class<? extends FormConfigurationJsonWizardFormActivity> familyMemberFormActivity,
+                          Class<? extends BaseProfileActivity> profileActivity,
+                          boolean formWizardValidateRequiredFieldsBefore,
+                          String uniqueIdentifierKey) {
         this.familyFormActivity = familyFormActivity;
         this.familyMemberFormActivity = familyMemberFormActivity;
         this.profileActivity = profileActivity;
