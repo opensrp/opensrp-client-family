@@ -1,5 +1,6 @@
 package org.smartregister.family.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -7,29 +8,48 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
 
-import org.smartregister.family.delegates.FamilyWizardFormDelegate;
+import org.json.JSONObject;
+import org.smartregister.family.R;
 import org.smartregister.family.util.Constants;
+import org.smartregister.family.util.JsonFormUtils;
+import org.smartregister.util.LangUtils;
+
+import timber.log.Timber;
 
 public class FamilyWizardFormActivity extends JsonWizardFormActivity {
 
-    private FamilyWizardFormDelegate<FamilyWizardFormActivity> delegate;
+    private Boolean enableOnCloseDialog = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean enableOnCloseDialog = getIntent().getBooleanExtra(Constants.WizardFormActivity.EnableOnCloseDialog, true);
-        delegate = new FamilyWizardFormDelegate<>(enableOnCloseDialog);
+        enableOnCloseDialog = getIntent()
+                .getBooleanExtra(Constants.WizardFormActivity.EnableOnCloseDialog, true);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        delegate.onResume(this);
+        this.setConfirmCloseTitle(this.getString(R.string.confirm_form_close));
+        this.setConfirmCloseMessage(this.getString(R.string.confirm_form_close_explanation));
+
+        try {
+            JSONObject form = new JSONObject(this.currentJsonState());
+            String et = form.getString(JsonFormUtils.ENCOUNTER_TYPE);
+            if (et.trim().toLowerCase().contains("update")) {
+                this.setConfirmCloseMessage(this.getString(R.string.any_changes_you_make));
+            }
+        } catch (Exception e) {
+            Timber.e(e.toString());
+        }
     }
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        delegate.setSupportActionBar(toolbar);
+        if (toolbar != null){
+            toolbar.setContentInsetStartWithNavigation(0);
+        }
         super.setSupportActionBar(toolbar);
     }
 
@@ -38,13 +58,22 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
      */
     @Override
     public void onBackPressed() {
-        delegate.onBackPressed(this);
+        if (enableOnCloseDialog){
+            super.onBackPressed();
+        }else {
+            this.finish();
+        }
     }
 
     @Override
     protected void attachBaseContext(android.content.Context base) {
         // get language from prefs
-        delegate.attachBaseContext(this, base, context -> FamilyWizardFormActivity.super.attachBaseContext(context));
+        String lang = LangUtils.getLanguage(base.getApplicationContext());
+        Configuration newConfiguration = LangUtils.setAppLocale(base, lang);
+
+        super.attachBaseContext(base);
+
+        this.applyOverrideConfiguration(newConfiguration);
     }
 }
 
