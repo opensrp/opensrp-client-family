@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
-import com.vijay.jsonwizard.activities.JsonWizardFormActivity;
+import com.vijay.jsonwizard.activities.NoLocaleFormConfigurationJsonWizardFormActivity;
 
 import org.json.JSONObject;
 import org.smartregister.family.R;
@@ -16,7 +16,7 @@ import org.smartregister.util.LangUtils;
 
 import timber.log.Timber;
 
-public class FamilyWizardFormActivity extends JsonWizardFormActivity {
+public class NoLocaleFamilyWizardFormActivity extends NoLocaleFormConfigurationJsonWizardFormActivity {
 
     private Boolean enableOnCloseDialog = true;
 
@@ -25,7 +25,6 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
         super.onCreate(savedInstanceState);
         enableOnCloseDialog = getIntent()
                 .getBooleanExtra(Constants.WizardFormActivity.EnableOnCloseDialog, true);
-
     }
 
     @Override
@@ -75,5 +74,5 @@ public class FamilyWizardFormActivity extends JsonWizardFormActivity {
 
         this.applyOverrideConfiguration(newConfiguration);
     }
-}
 
+}

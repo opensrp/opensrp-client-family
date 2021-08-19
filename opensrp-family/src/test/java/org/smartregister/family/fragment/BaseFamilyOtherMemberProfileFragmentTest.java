@@ -1,5 +1,7 @@
 package org.smartregister.family.fragment;
 
+import android.widget.EditText;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.junit.Assert;
@@ -17,6 +19,15 @@ import org.smartregister.family.contract.FamilyOtherMemberProfileFragmentContrac
 import org.smartregister.family.shadow.BaseFamilyOtherMemberProfileFragmentShadow;
 
 import java.util.ArrayList;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by rkodev
@@ -46,5 +57,15 @@ public class BaseFamilyOtherMemberProfileFragmentTest extends BaseUnitTest {
     public void testPresenter() {
         FamilyOtherMemberProfileFragmentContract.Presenter presenterInstance = fragment.presenter();
         Assert.assertEquals(presenter, presenterInstance);
+    }
+
+    @Test
+    public void testSetUniqueId(){
+        BaseFamilyOtherMemberProfileFragment spyFragment = spy(fragment);
+        EditText editText = mock(EditText.class);
+        doReturn(editText).when(spyFragment).getSearchView();
+        assertThat(spyFragment.getSearchView(), is(equalTo(editText)));
+        spyFragment.setUniqueID("unique");
+        verify(editText).setText(eq("unique"));
     }
 }
