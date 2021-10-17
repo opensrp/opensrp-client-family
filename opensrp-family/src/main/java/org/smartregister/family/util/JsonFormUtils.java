@@ -151,10 +151,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             // fix the attributes when no option is selected by user on spinner
             Map<String, Object> attributes = baseClient.getAttributes();
             if (attributes != null) {
-                if (baseClient.getAttribute("fam_source_income").toString().equals("Family source of income"))
+                if (attributes.containsKey("fam_source_income") &&
+                        attributes.get("fam_source_income").toString().equals("Family source of income"))
                     attributes.remove("fam_source_income");
-                if (baseClient.getAttribute("income_bracket").toString().equals("Income Bracket"))
-                    attributes.remove("income_bracket");
+                if (attributes.containsKey("income_bracket") &&
+                        attributes.get("income_bracket").toString().equals("Income Bracket"))
                 baseClient.setAttributes(attributes.isEmpty() ? null : attributes);
             }
             // Default family values
@@ -291,7 +292,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         try {
             compressedImageFile = FamilyLibrary.getInstance().getCompressor().compressToBitmap(file);
         } catch (IOException e) {
-          Timber.e(e, "Error compressing image");
+            Timber.e(e, "Error compressing image");
         }
         saveStaticImageToDisk(compressedImageFile, providerId, entityId);
 
