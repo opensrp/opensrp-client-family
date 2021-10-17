@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import timber.log.Timber;
@@ -147,7 +148,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             dobUnknownUpdateFromAge(fields);
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag(allSharedPreferences), entityId);
-
+            // fix the attributes when no option is selected by user on spinner
+            Map<String, Object> attributes = baseClient.getAttributes();
+            if (attributes != null) {
+                if (baseClient.getAttribute("fam_source_income").toString().equals("Family source of income"))
+                    attributes.remove("fam_source_income");
+                if (baseClient.getAttribute("income_bracket").toString().equals("Income Bracket"))
+                    attributes.remove("income_bracket");
+                baseClient.setAttributes(attributes.isEmpty() ? null : attributes);
+            }
             // Default family values
             baseClient.setLastName("Family");
             baseClient.setBirthdate(new Date(0));
