@@ -156,6 +156,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     attributes.remove("fam_source_income");
                 if (attributes.containsKey("income_bracket") &&
                         attributes.get("income_bracket").toString().equals("Income Bracket"))
+                    attributes.remove("income_bracket");
                 baseClient.setAttributes(attributes.isEmpty() ? null : attributes);
             }
             // Default family values
