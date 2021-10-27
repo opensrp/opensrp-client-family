@@ -22,6 +22,7 @@ import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.form.FormLocation;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.R;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
@@ -152,10 +153,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Map<String, Object> attributes = baseClient.getAttributes();
             if (attributes != null) {
                 if (attributes.containsKey("fam_source_income") &&
-                        attributes.get("fam_source_income").toString().equals("Family source of income"))
+                        attributes.get("fam_source_income").toString().equals(Utils.context().getStringResource(R.string.fam_source_income_hint)))
                     attributes.remove("fam_source_income");
                 if (attributes.containsKey("income_bracket") &&
-                        attributes.get("income_bracket").toString().equals("Income Bracket"))
+                        attributes.get("income_bracket").toString().equals(Utils.context().getStringResource(R.string.income_bracket_hint)))
                     attributes.remove("income_bracket");
                 baseClient.setAttributes(attributes.isEmpty() ? null : attributes);
             }
