@@ -22,6 +22,7 @@ import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.form.FormLocation;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.family.FamilyLibrary;
+import org.smartregister.family.R;
 import org.smartregister.family.domain.FamilyEventClient;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import timber.log.Timber;
@@ -147,7 +149,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             dobUnknownUpdateFromAge(fields);
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag(allSharedPreferences), entityId);
-
+            // fix the attributes when no option is selected by user on spinner
+            Map<String, Object> attributes = baseClient.getAttributes();
+            if (attributes != null) {
+                if (attributes.containsKey("fam_source_income") &&
+                        attributes.get("fam_source_income").toString().equals(Utils.context().getStringResource(R.string.fam_source_income_hint)))
+                    attributes.remove("fam_source_income");
+                if (attributes.containsKey("income_bracket") &&
+                        attributes.get("income_bracket").toString().equals(Utils.context().getStringResource(R.string.income_bracket_hint)))
+                    attributes.remove("income_bracket");
+                baseClient.setAttributes(attributes.isEmpty() ? null : attributes);
+            }
             // Default family values
             baseClient.setLastName("Family");
             baseClient.setBirthdate(new Date(0));
@@ -282,7 +294,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         try {
             compressedImageFile = FamilyLibrary.getInstance().getCompressor().compressToBitmap(file);
         } catch (IOException e) {
-          Timber.e(e, "Error compressing image");
+            Timber.e(e, "Error compressing image");
         }
         saveStaticImageToDisk(compressedImageFile, providerId, entityId);
 

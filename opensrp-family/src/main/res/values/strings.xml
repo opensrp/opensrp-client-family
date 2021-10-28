@@ -35,6 +35,8 @@
     <string name="family_head">Family Head</string>
     <string name="primary_care_giver">Primary Caregiver</string>
     <string name="physically_challenged">Physically Challenged</string>
+    <string name="fam_source_income_hint">Family source of income</string>
+    <string name="income_bracket_hint">Income Bracket</string>
 
 
     <!-- member -->
